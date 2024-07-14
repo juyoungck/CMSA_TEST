@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-<!--최상단 레이아웃(수평배치)-->
+    <!--최상단 레이아웃(수평배치)-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,26 +25,77 @@
         <!--날씨 온도는 일단 숫자로만 표기했습니다.-->
         <TextView
             android:id="@+id/textTemp"
-            android:layout_width="70dp"
+            android:layout_width="290dp"
             android:layout_height="70dp"
             android:text="12°"
             android:textSize="40dp" />
-<!--정렬버튼 레이아웃-->
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background=""
+            android:scaleType="centerCrop"
+            android:padding="6dp"
+            android:layout_gravity="right"
+            android:src="@drawable/setting" />
     </LinearLayout>
     <!--정렬 버튼-->
-    <ImageButton
-        android:id="@+id/btnSort"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:background=""
-        android:padding="4dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/baseline_apps_24" />
-<!--스크롤 뷰는 하나의 자식만 가질 수 있기 때문에
-    하나의 레이아웃에 여러 레이아웃을 감쌌습니다.-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="옷장"
+            android:textSize="25dp"
+            android:gravity="center"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:background="#000000"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btnSort"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background=""
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sort" />
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background=""
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/search" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
+    <!--스크롤 뷰는 하나의 자식만 가질 수 있기 때문에
+        하나의 레이아웃에 여러 레이아웃을 감쌌습니다.-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="724dp"
+        android:layout_height="660dp"
         android:fillViewport="true">
         <!--스크롤뷰 하위 레이아웃(전부 감싸는 레이아웃)-->
         <LinearLayout
@@ -84,7 +135,8 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
-                    android:padding="50dp" />
+                    android:padding="50dp"
+                    />
 
             </LinearLayout>
             <!--사진 하단 태그-->
@@ -195,41 +247,44 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-<!--하단 버튼-->
-    <LinearLayout
+    <!--하단 버튼-->
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btnCloset"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="#e9ecef"
-            android:text="옷장" />
+        android:layout_height="95dp" >
 
-        <Button
-            android:id="@+id/btnCody"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="#e9ecef"
-            android:text="코디추천" />
+            android:layout_height="79dp"
+            android:layout_gravity="bottom">
 
-        <Button
-            android:id="@+id/btnRegist"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="#e9ecef"
-            android:text="옷 등록" />
+            <Button
+                android:id="@+id/btnCloset"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:background="#e9ecef"
+                android:gravity="left"
+                android:layout_gravity="bottom"
+                android:text="옷장" />
 
-        <Button
-            android:id="@+id/btnSet"
-            android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnCody"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:background="#e9ecef"
+                android:layout_gravity="bottom"
+                android:gravity="right"
+                android:text="코디" />
+        </LinearLayout>
+        <android.widget.Button
+            android:id="@+id/btnAdd"
+            android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="#e9ecef"
-            android:text="설정" />
-    </LinearLayout>
+            android:layout_gravity="top|center"
+            android:background="@drawable/circle_button"
+            android:text="+"
+            android:textSize="30dp"/>
+    </FrameLayout>
 </LinearLayout>
