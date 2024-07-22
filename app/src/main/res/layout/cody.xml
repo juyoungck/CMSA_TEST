@@ -7,13 +7,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--최상단 레이아웃(수평배치)-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!--날씨 아이콘 자체를 버튼으로 처리, ui연동 필요-->
         <ImageButton
             android:id="@+id/btnWeather"
             android:layout_width="70dp"
@@ -22,7 +20,7 @@
             android:padding="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/weather" />
-        <!--날씨 온도는 일단 숫자로만 표기했습니다.-->
+
         <TextView
             android:id="@+id/textTemp"
             android:layout_width="290dp"
@@ -40,7 +38,7 @@
             android:layout_gravity="right"
             android:src="@drawable/setting" />
     </LinearLayout>
-    <!--정렬 버튼-->
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -91,22 +89,20 @@
         android:layout_height="1dp"
         android:background="#000000" />
 
-    <!--스크롤 뷰는 하나의 자식만 가질 수 있기 때문에
-        하나의 레이아웃에 여러 레이아웃을 감쌌습니다.-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="660dp"
         android:fillViewport="true">
-        <!--스크롤뷰 하위 레이아웃(전부 감싸는 레이아웃)-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <!--이미지 버튼 레이아웃과 텍스트뷰(태그)레이아웃 한묶음-->
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" ><!--사진과 태그 가장 윗줄 라인(수평 배치)-->
-                <!--이미지를 누르면 화면이 뜨게 버튼으로 처리했습니다.-->
+                android:layout_height="wrap_content" >
+                
                 <ImageButton
                     android:id="@+id/clothImgbtn1"
                     android:layout_width="wrap_content"
@@ -116,7 +112,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
                     android:padding="50dp" />
-                <!--이미지버튼 하단의 공간을 줄이기 위해 top과 양옆에 margin을 줬습니다.-->
+
                 <ImageButton
                     android:id="@+id/clothImgbtn2"
                     android:layout_width="wrap_content"
@@ -139,13 +135,11 @@
                     />
 
             </LinearLayout>
-            <!--사진 하단 태그-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
-                <!--아예 이미지와 태그를 같이 묶어버리고 싶었는데
-                    그럴려면 이미지를 ImageButton이 아니라 Button으로 처리해버려야
-                    하는데 그렇게 하면 이미지 크기 조정이 안되서 사진과 태그를 분할 했습니다.-->
+
                 <TextView
                     android:id="@+id/clothTag1"
                     android:layout_width="25dp"
@@ -174,7 +168,7 @@
                     android:layout_weight="1"
                     android:text="태그"
                     android:padding="0dp" />
-                <!--상단의 이미지 버튼과 태그 레이아웃 반복-->
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -247,7 +241,6 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-    <!--하단 버튼-->
 
     <FrameLayout
         android:layout_width="match_parent"
