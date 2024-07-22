@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/Back"
+            android:id="@+id/btnBack"
             android:layout_width="200dp"
             android:layout_margin="0dp"
             android:layout_height="match_parent"
@@ -49,14 +49,14 @@
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/dark_Thema"/>
+                    android:id="@+id/switchDark_thema"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/black" />
             <Button
-                android:id="@+id/myPage"
+                android:id="@+id/btnMypage"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background=""
@@ -70,7 +70,7 @@
                 android:layout_height="1dp"
                 android:background="@color/black" />
             <Button
-                android:id="@+id/anN"
+                android:id="@+id/btnNotice"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background=""
@@ -84,7 +84,7 @@
                 android:layout_height="1dp"
                 android:background="@color/black" />
             <Button
-                android:id="@+id/version"
+                android:id="@+id/btnVersion"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background=""
@@ -98,7 +98,7 @@
                 android:layout_height="1dp"
                 android:background="@color/black" />
             <Button
-                android:id="@+id/Csr"
+                android:id="@+id/btnCsr"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background=""
