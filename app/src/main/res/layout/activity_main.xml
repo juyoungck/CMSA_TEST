@@ -280,10 +280,10 @@
         </LinearLayout>
         <android.widget.Button
             android:id="@+id/btnAdd"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="top|center"
-            android:background="@drawable/circle_button"
+            android:background="@drawable/baseline_circle_24"
             android:text="+"
             android:textSize="30dp"/>
     </FrameLayout>
