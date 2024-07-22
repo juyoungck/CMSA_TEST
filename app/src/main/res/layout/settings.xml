@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Back"
+            android:layout_width="200dp"
+            android:layout_margin="0dp"
+            android:layout_height="match_parent"
+            android:background="color/white"
+            android:textColor="@color/black"
+            android:text="← 뒤로가기"
+            android:textSize="30dp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="360dp"
+                    android:layout_height="match_parent"
+                    android:text="   다크테마"
+                    android:gravity="left|center"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dark_Thema"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <Button
+                android:id="@+id/myPage"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background=""
+                android:gravity="left|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:text="마이페이지" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <Button
+                android:id="@+id/anN"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background=""
+                android:gravity="left|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:text="공지사항" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <Button
+                android:id="@+id/version"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background=""
+                android:gravity="left|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:text="버전정보" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+            <Button
+                android:id="@+id/Csr"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background=""
+                android:gravity="left|center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:text="고객센터" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
