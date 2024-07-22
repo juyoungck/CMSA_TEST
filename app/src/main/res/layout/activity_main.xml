@@ -2,289 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--최상단 레이아웃(수평배치)-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:text="옷등록"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/clothes" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp">
 
-        <!--날씨 아이콘 자체를 버튼으로 처리, ui연동 필요-->
-        <ImageButton
-            android:id="@+id/btnWeather"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background=""
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/weather" />
-        <!--날씨 온도는 일단 숫자로만 표기했습니다.-->
         <TextView
-            android:id="@+id/textTemp"
-            android:layout_width="290dp"
-            android:layout_height="70dp"
-            android:text="12°"
-            android:textSize="40dp" />
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="옷 이름"
+            android:textSize="20dp" />
 
-        <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background=""
-            android:scaleType="centerCrop"
-            android:padding="6dp"
-            android:layout_gravity="right"
-            android:src="@drawable/setting" />
-    </LinearLayout>
-    <!--정렬 버튼-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="옷장"
-            android:textSize="25dp"
-            android:gravity="center"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="#000000"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <ImageButton
-            android:id="@+id/btnSort"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background=""
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sort" />
-        <ImageButton
-            android:id="@+id/btnSearch"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background=""
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/search" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
-
-    <!--스크롤 뷰는 하나의 자식만 가질 수 있기 때문에
-        하나의 레이아웃에 여러 레이아웃을 감쌌습니다.-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="660dp"
-        android:fillViewport="true">
-        <!--스크롤뷰 하위 레이아웃(전부 감싸는 레이아웃)-->
-        <LinearLayout
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--이미지 버튼 레이아웃과 텍스트뷰(태그)레이아웃 한묶음-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" ><!--사진과 태그 가장 윗줄 라인(수평 배치)-->
-                <!--이미지를 누르면 화면이 뜨게 버튼으로 처리했습니다.-->
-                <ImageButton
-                    android:id="@+id/clothImgbtn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp" />
-                <!--이미지버튼 하단의 공간을 줄이기 위해 top과 양옆에 margin을 줬습니다.-->
-                <ImageButton
-                    android:id="@+id/clothImgbtn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp" />
+            android:hint="옷 이름을 입력해주세요." />
 
-                <ImageButton
-                    android:id="@+id/clothImgbtn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp"
-                    />
-
-            </LinearLayout>
-            <!--사진 하단 태그-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-                <!--아예 이미지와 태그를 같이 묶어버리고 싶었는데
-                    그럴려면 이미지를 ImageButton이 아니라 Button으로 처리해버려야
-                    하는데 그렇게 하면 이미지 크기 조정이 안되서 사진과 태그를 분할 했습니다.-->
-                <TextView
-                    android:id="@+id/clothTag1"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:text="태그123123123" />
-
-                <TextView
-                    android:id="@+id/clothTag2"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="태그"
-                    android:padding="0dp" />
-
-                <TextView
-                    android:id="@+id/clothTag3"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="태그"
-                    android:padding="0dp" />
-                <!--상단의 이미지 버튼과 태그 레이아웃 반복-->
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:padding="50dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:id="@+id/clothTag4"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:text="태그123123123" />
-
-                <TextView
-                    android:id="@+id/clothTag5"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="태그123123123"
-                    android:padding="0dp" />
-
-                <TextView
-                    android:id="@+id/clothTag6"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="태그"
-                    android:padding="0dp" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-    <!--하단 버튼-->
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="95dp" >
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="79dp"
-            android:layout_gravity="bottom">
+            android:layout_height="40dp"
+            android:text="옷 브랜드"
+            android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/btnCloset"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:background="#e9ecef"
-                android:gravity="left"
-                android:layout_gravity="bottom"
-                android:text="옷장" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="브랜드 이름을 입력해주세요." />
 
-            <Button
-                android:id="@+id/btnCody"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:background="#e9ecef"
-                android:layout_gravity="bottom"
-                android:gravity="right"
-                android:text="코디" />
-        </LinearLayout>
-        <android.widget.Button
-            android:id="@+id/btnAdd"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="top|center"
-            android:background="@drawable/circle_button"
-            android:text="+"
-            android:textSize="30dp"/>
-    </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="옷 종류"
+            android:textSize="20dp" />
+
+        <RadioGroup
+            android:id="@+id/clothes_post"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상의" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="하의" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="양말" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="신발" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="옷 사이즈"
+            android:textSize="20dp" />
+
+        <RadioGroup
+            android:id="@+id/size_post"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="95" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="105" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="110" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="등록" />
+    </LinearLayout>
+
 </LinearLayout>
