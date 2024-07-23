@@ -3,6 +3,7 @@ package com.example.closetmanagementservicesapp;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "CMSA_Main.db";   // 메인 DB 이름 설정
@@ -16,14 +17,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 외래 키(FK) 사용 활성화
         db.execSQL("PRAGMA foreign_keys=ON;");
-        
+
         // 옷장 위치 테이블
         String Closet_Location_TABLE = "CREATE TABLE Closet_Location ("
                 + "c_loc INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "c_loc_name TEXT NOT NULL, "
                 + "c_loc_date TEXT NOT NULL)";
 
-        // 코디 위치 테이블 
+        // 코디 위치 테이블
         String Coordy_Location_TABLE = "CREATE TABLE Coordy_Location ("
                 + "cod_loc INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "cod_loc_name TEXT NOT NULL, "
@@ -53,6 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "c_loc INTEGER NOT NULL, "
                 + "c_img BLOB NOT NULL UNIQUE, "
                 + "c_name TEXT NOT NULL, "
+                + "c_type INTEGER NOT NULL, "
                 + "c_size TEXT, "
                 + "c_brand TEXT, "
                 + "c_tag INTEGER NOT NULL, "
@@ -94,8 +96,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "cod_index1, cod_index2, cod_index3, cod_index4, cod_index5, cod_index6, cod_index7, cod_index8 "
                 + "FROM Coordy_backup;");
 
-        db.execSQL("INSERT INTO Main_Closet (c_id, c_loc, c_img, c_name, c_size, c_brand, c_tag, c_memo, c_date, c_stack) "
-                + "SELECT c_id, c_loc, c_img, c_name, c_size, c_brand, c_tag, c_memo, c_date, c_stack "
+        db.execSQL("INSERT INTO Main_Closet (c_id, c_loc, c_img, c_name, c_type, c_size, c_brand, c_tag, c_memo, c_date, c_stack) "
+                + "SELECT c_id, c_loc, c_img, c_name, c_type, c_size, c_brand, c_tag, c_memo, c_date, c_stack "
                 + "FROM Main_Closet_backup;");
 
         // 백업 테이블 삭제
