@@ -14,6 +14,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +50,58 @@ public class MainActivity extends AppCompatActivity {
 
         // 임의 데이터 출력을 위한 메서드
         displayData();
+        TextView tv_rain,tv_wind,tv_cloud;
+
+
+        String date = "", time = "";
+
+        String x = "55", y= "127";
+
+
+        String weather = "";
+        ImageView iv_weather_back;
+        ImageView weather_image;
+
+
+        long now = System.currentTimeMillis();
+        Date mDate = new Date(now);
+
+        // 날짜, 시간의 형식 설정
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH");
+
+
+        // 현재 날짜를 받아오는 형식 설정 ex) 20221121
+        String getDate = simpleDateFormat1.format(mDate);
+        // 현재 시간를 받아오는 형식 설정, 시간만 가져오고 WeatherData의 timechange()를 사용하기 위해 시간만 가져오고 뒤에 00을 붙임 ex) 02 + "00"
+        String getTime = simpleDateFormat2.format(mDate) + "00";
+
+        Log.d("현재날짜",getDate);
+        Log.d("현재시간",getTime);
+
+
+        WeatherData wd = new WeatherData();
+        date = getDate;
+        time = getTime;
+        try {
+            weather = wd.lookUpWeather(date, time, x, y);
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Error");
+        } catch (JSONException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Error");
+        }
+        Log.d("현재날씨",weather);
+
+        // return한 값을 " " 기준으로 자른 후 배열에 추가
+        // array[0] = 구름의 양, array[1] = 강수 확률, array[2] = 기온, array[3] = 풍속, array[4] = 적설량, array[5] = 습도
+        String[] weatherarray = weather.split(" ");
+        for(int i = 0; i < weatherarray.length; i++) {
+            Log.d("weather = ", i + " " + weatherarray[i]);
+        }
+
+
 
     }
 
