@@ -52,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         displayData();
         TextView tv_rain,tv_wind,tv_cloud;
 
+        // 중앙 하단 등록 버튼 터치 시 등록 버튼 클릭 화면으로 넘어가는 기능
+        Button button = (Button) findViewById(R.id.btnAdd);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), codyAdd.class);
+                startActivity(intent);
+            }
+        });
 
         String date = "", time = "";
 
