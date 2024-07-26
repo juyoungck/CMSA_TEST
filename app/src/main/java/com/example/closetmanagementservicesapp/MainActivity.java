@@ -11,15 +11,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
+import android.view.View;
 
 import java.io.ByteArrayOutputStream;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 
