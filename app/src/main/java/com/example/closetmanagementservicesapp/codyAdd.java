@@ -21,5 +21,24 @@ public class codyAdd extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.codyadd);
+
+        Button BtnAddClothes = (Button) findViewById(R.id.btnAddClothes);
+        Button BtnAddCodey = (Button) findViewById(R.id.btnAddCodey);
+
+        BtnAddClothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), post.class);
+                startActivity(intent);
+            }
+        });
+
+        BtnAddCodey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), codyregistconfirm.class);
+                startActivity(intent);
+            }
+        });
     }
 }

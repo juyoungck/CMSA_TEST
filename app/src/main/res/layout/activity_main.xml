@@ -54,6 +54,13 @@
             android:text="옷장"
             android:textSize="25dp"
             android:gravity="center"/>
+        <Spinner
+            android:id="@+id/main_c_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="100dp"
+            />
+
         <View
             android:layout_width="1dp"
             android:layout_height="50dp"

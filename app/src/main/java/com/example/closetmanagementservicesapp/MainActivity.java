@@ -6,12 +6,17 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 
@@ -23,6 +28,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // MyApplication 클래스에서 DBHelper를 가져오는 코드
         MyApplication app = (MyApplication) getApplicationContext();
@@ -50,65 +57,19 @@ public class MainActivity extends AppCompatActivity {
         displayData();
         TextView tv_rain,tv_wind,tv_cloud;
 
+        // Spinner 값 출력 (TEST)
+        fillSpinner();
+
         // 중앙 하단 등록 버튼 터치 시 등록 버튼 클릭 화면으로 넘어가는 기능
-        Button button = (Button) findViewById(R.id.btnAdd);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button BtnAdd = (Button) findViewById(R.id.btnAdd);
+
+
+        BtnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), codyAdd.class);
                 startActivity(intent);
             }
         });
-
-        String date = "", time = "";
-
-        String x = "55", y= "127";
-
-
-        String weather = "";
-        ImageView iv_weather_back;
-        ImageView weather_image;
-
-
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
-
-        // 날짜, 시간의 형식 설정
-        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH");
-
-
-        // 현재 날짜를 받아오는 형식 설정 ex) 20221121
-        String getDate = simpleDateFormat1.format(mDate);
-        // 현재 시간를 받아오는 형식 설정, 시간만 가져오고 WeatherData의 timechange()를 사용하기 위해 시간만 가져오고 뒤에 00을 붙임 ex) 02 + "00"
-        String getTime = simpleDateFormat2.format(mDate) + "00";
-
-        Log.d("현재날짜",getDate);
-        Log.d("현재시간",getTime);
-
-
-        WeatherData wd = new WeatherData();
-        date = getDate;
-        time = getTime;
-        try {
-            weather = wd.lookUpWeather(date, time, x, y);
-        } catch (IOException e) {
-            //throw new RuntimeException(e);
-            System.out.println("Error");
-        } catch (JSONException e) {
-            //throw new RuntimeException(e);
-            System.out.println("Error");
-        }
-        Log.d("현재날씨",weather);
-
-        // return한 값을 " " 기준으로 자른 후 배열에 추가
-        // array[0] = 구름의 양, array[1] = 강수 확률, array[2] = 기온, array[3] = 풍속, array[4] = 적설량, array[5] = 습도
-        String[] weatherarray = weather.split(" ");
-        for(int i = 0; i < weatherarray.length; i++) {
-            Log.d("weather = ", i + " " + weatherarray[i]);
-        }
-
-
-
     }
 
     // 임의 데이터 입력
@@ -118,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
         values.put("c_loc", 1);
         values.put("c_loc_name", "옷장1");
         values.put("c_loc_date", "20240723");
+        db.insert("Closet_Location", null, values);
+        values.put("c_loc", 2);
+        values.put("c_loc_name", "옷장2");
+        values.put("c_loc_date", "20240806");
+        db.insert("Closet_Location", null, values);
+        values.put("c_loc", 3);
+        values.put("c_loc_name", "봄 옷장");
+        values.put("c_loc_date", "20240806");
         db.insert("Closet_Location", null, values);
 
         // 입력할 값 배열로 정렬
@@ -182,9 +151,9 @@ public class MainActivity extends AppCompatActivity {
                     imageButton.setOnClickListener(view -> {
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
-                        intent.putExtra("c_img", c_img);
+                        intent.putExtra("c_img", cursor.getBlob(cursor.getColumnIndexOrThrow("c_img")));
                         intent.putExtra("c_loc", cursor.getInt(cursor.getColumnIndexOrThrow("c_loc")));
-                        intent.putExtra("c_name", c_name);
+                        intent.putExtra("c_name", cursor.getString(cursor.getColumnIndexOrThrow("c_name")));
                         intent.putExtra("c_type", cursor.getString(cursor.getColumnIndexOrThrow("c_type")));
                         intent.putExtra("c_size", cursor.getString(cursor.getColumnIndexOrThrow("c_size")));
                         intent.putExtra("c_brand", cursor.getString(cursor.getColumnIndexOrThrow("c_brand")));
@@ -205,6 +174,33 @@ public class MainActivity extends AppCompatActivity {
         if (cursor != null) {
             cursor.close();
         }
+    }
+
+    private Spinner fillSpinner() {
+        String SpinnerInfo = "SELECT c_loc_name FROM Closet_Location ORDER BY c_loc ASC";
+
+        Cursor c = db.rawQuery(SpinnerInfo, null);
+
+        MatrixCursor matrixCursor = new MatrixCursor(new String[] {"_id", "c_loc_name"});
+
+        int id = 0;
+
+        while (c.moveToNext()) {
+            String c_loc = c.getString(c.getColumnIndex("c_loc_name"));
+            matrixCursor.addRow(new Object[] {id++, c_loc});
+        }
+
+        c.close();
+
+        String[] from = new String[] {"c_loc_name"};
+        int[] to = new int[] {android.R.id.text1};
+        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, matrixCursor, from, to, 0);
+        simpleCursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
+        Spinner main_c_loc = (Spinner) findViewById(R.id.main_c_loc);
+        main_c_loc.setAdapter(simpleCursorAdapter);
+
+        return main_c_loc;
     }
 
 

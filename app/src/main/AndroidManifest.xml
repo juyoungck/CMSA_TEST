@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".codyAdd"/>
+        <activity android:name=".post"/>
+        <activity android:name=".codyregistconfirm"/>
     </application>
 
 </manifest>
