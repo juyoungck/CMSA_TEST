@@ -19,7 +19,6 @@
             android:layout_margin="0dp"
             android:layout_height="match_parent"
             android:background="#00ff0000"
-            android:textColor="@color/black"
             android:text="← 뒤로가기"
             android:textSize="30dp" />
     </LinearLayout>
@@ -47,6 +46,7 @@
                     android:text="   다크테마"
                     android:gravity="left|center"
                     android:textSize="30dp"
+                    android:textColor="#000000"
                     android:textStyle="bold" />
                 <Switch
                     android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="30dp"
-                android:text="마이페이지" />
+                android:text="   마이페이지" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -80,7 +80,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="30dp"
-                android:text="공지사항" />
+                android:text="   공지사항" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -94,7 +94,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="30dp"
-                android:text="버전정보" />
+                android:text="   버전정보" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -108,7 +108,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="30dp"
-                android:text="고객센터" />
+                android:text="   고객센터" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
