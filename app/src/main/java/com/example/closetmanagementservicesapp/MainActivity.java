@@ -10,7 +10,9 @@ import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -18,11 +20,16 @@ import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.view.View;
+
 
 import java.io.ByteArrayOutputStream;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 
