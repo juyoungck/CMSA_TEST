@@ -12,3 +12,4 @@ public class CodyRegistConfirm extends AppCompatActivity {
         setContentView(R.layout.codyregistconfirm);
     }
 }
+11
