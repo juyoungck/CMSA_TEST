@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".codyAdd"/>
-        <activity android:name=".post"/>
+        <activity android:name=".CodyAdd"/>
+        <activity android:name=".Post"/>
         <activity android:name=".codyregistconfirm"/>
     </application>
 
