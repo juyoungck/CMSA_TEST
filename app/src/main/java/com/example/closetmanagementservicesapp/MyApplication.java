@@ -3,16 +3,16 @@ package com.example.closetmanagementservicesapp;
 import android.app.Application;
 
 public class MyApplication extends Application {
-    private DBHelper dbHelper;
+    private static DBHelper dbHelper;
 
     public void onCreate() {
         super.onCreate();
 
         // DBHelper 생성
-        dbHelper = new DBHelper(this);
+        dbHelper = DBHelper.getInstance(this);
     }
 
-    public DBHelper getDbHelper() {
+    public static DBHelper getDbHelper() {
         return dbHelper;
     }
 

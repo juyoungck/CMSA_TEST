@@ -6,18 +6,15 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CheckBox;
@@ -30,13 +27,13 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import org.json.JSONException;
-
-import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CodyAdd.class);
+                Intent intent = new Intent(getApplicationContext(), AddMenu.class);
                 startActivity(intent);
             }
         });
@@ -387,21 +384,19 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        
+
         // MyApplication 클래스에서 DBHelper를 가져오는 코드
-        MyApplication app = (MyApplication) getApplicationContext();
-        dbHelper = app.getDbHelper();
+        dbHelper = MyApplication.getDbHelper();
 
         // db 파일을 읽기/쓰기가 가능한 형식으로 연다
         db = dbHelper.getWritableDatabase();
 
 
-        // 임의 데이터 입력을 위한 메서드
-        insertDummyData();
+        // 기본 옷장 위치 추가
+        basicLocation();
 
         // 임의 데이터 출력을 위한 메서드
         displayData();
-        TextView tv_rain,tv_wind,tv_cloud;
 
         // Spinner 값 출력 (TEST)
         fillSpinner();
@@ -409,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
         
     }
 
-    // 임의 데이터 입력
+    /* 임의 데이터 입력 (데이터 입력 기능 추가로 주석처리)
     private void insertDummyData() {
         // values 생성 후 Closet_Location 테이블에 임의 값 입력
         ContentValues values = new ContentValues();
@@ -456,6 +451,7 @@ public class MainActivity extends AppCompatActivity {
             db.insert("Main_Closet", null, values);
         }
     }
+     */
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
     private void displayData() {
@@ -513,31 +509,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Spinner fillSpinner() {
-        String SpinnerInfo = "SELECT c_loc_name FROM Closet_Location ORDER BY c_loc ASC";
+    private void fillSpinner() {
+        Spinner spinner = findViewById(R.id.main_c_loc);
 
-        Cursor c = db.rawQuery(SpinnerInfo, null);
+        List<String> locations = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT c_loc_name FROM Closet_Location ORDER BY c_loc ASC", null);
 
-        MatrixCursor matrixCursor = new MatrixCursor(new String[] {"_id", "c_loc_name"});
-
-        int id = 0;
-
-        while (c.moveToNext()) {
-            String c_loc = c.getString(c.getColumnIndex("c_loc_name"));
-            matrixCursor.addRow(new Object[] {id++, c_loc});
+        while (cursor.moveToNext()) {
+            locations.add(cursor.getString(cursor.getColumnIndex("c_loc_name")));
         }
+        cursor.close();
 
-        c.close();
-
-        String[] from = new String[] {"c_loc_name"};
-        int[] to = new int[] {android.R.id.text1};
-        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, matrixCursor, from, to, 0);
-        simpleCursorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
-        Spinner main_c_loc = (Spinner) findViewById(R.id.main_c_loc);
-        main_c_loc.setAdapter(simpleCursorAdapter);
-
-        return main_c_loc;
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
 
@@ -551,5 +536,23 @@ public class MainActivity extends AppCompatActivity {
         if (db != null && db.isOpen()) {
             db.close();
         }
+    }
+
+    private void basicLocation() {
+        ContentValues values = new ContentValues();
+        values.put("c_loc", 1);
+        values.put("c_loc_name", "옷장 1");
+        values.put("c_loc_date", getToday());
+        db.insert("Closet_Location", null, values);
+    }
+
+    private String getToday() {
+        DateFormat Today = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN);
+        TimeZone KoreaTime = TimeZone.getTimeZone("Asia/Seoul");
+        Today.setTimeZone(KoreaTime);
+
+        Date date = new Date();
+
+        return Today.format(date);
     }
 }

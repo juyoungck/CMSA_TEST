@@ -7,9 +7,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "CMSA_Main.db";   // 메인 DB 이름 설정
     private static final int DB_VERSION = 1;                // 메인 DB 버전 설정
+    private static DBHelper instance;
 
-    public DBHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);   // 메인 DB 생성
+    private DBHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);   // 싱글톤 패턴을 적용해 메인 DB 생성
+    }
+
+    // DBHelper의 인스턴스를 반환하는 메서드
+    public static synchronized DBHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DBHelper(context.getApplicationContext());
+        }
+
+        return instance;
     }
 
     @Override
@@ -51,9 +61,9 @@ public class DBHelper extends SQLiteOpenHelper {
         String Main_Closet_TABLE = "CREATE TABLE Main_Closet ("
                 + "c_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "c_loc INTEGER NOT NULL, "
-                + "c_img BLOB NOT NULL UNIQUE, "
+                + "c_img BLOB NOT NULL, "
                 + "c_name TEXT NOT NULL, "
-                + "c_type INTEGER NOT NULL, "
+                + "c_type TEXT NOT NULL, "
                 + "c_size TEXT, "
                 + "c_brand TEXT, "
                 + "c_tag INTEGER NOT NULL, "
