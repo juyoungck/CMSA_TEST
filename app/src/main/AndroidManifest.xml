@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".CodyAdd"/>
         <activity android:name=".Post"/>
-        <activity android:name=".codyregistconfirm"/>
+        <activity android:name=".CodyRegistConfirm"/>
     </application>
 
 </manifest>
