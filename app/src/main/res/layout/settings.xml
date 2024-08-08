@@ -58,20 +58,6 @@
                 android:layout_height="1dp"
                 android:background="@color/black" />
             <Button
-                android:id="@+id/btnMypage"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:background="#00ff0000"
-                android:gravity="left|center"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:text="   마이페이지" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black" />
-            <Button
                 android:id="@+id/btnNotice"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
