@@ -25,6 +25,7 @@
         <activity android:name=".AddMenu"/>
         <activity android:name=".Post"/>
         <activity android:name=".CodyAdd"/>
+        <activity android:name=".Settings"/>
     </application>
 
 </manifest>
