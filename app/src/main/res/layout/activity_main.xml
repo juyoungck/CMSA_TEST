@@ -40,10 +40,7 @@
             android:src="@drawable/setting" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -61,15 +58,9 @@
             android:scrollbarSize="100dp"
             />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="#000000"/>
+
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -122,6 +113,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp" />
 
                 <ImageButton
@@ -132,6 +124,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp" />
 
                 <ImageButton
@@ -142,6 +135,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp"
                     />
 
@@ -157,8 +151,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:text="태그123123123" />
+                    android:layout_marginRight="15dp" />
 
                 <TextView
                     android:id="@+id/clothTag2"
@@ -167,7 +160,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:text="태그"
                     android:padding="0dp" />
 
                 <TextView
@@ -177,7 +169,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:text="태그"
                     android:padding="0dp" />
 
             </LinearLayout>
@@ -193,6 +184,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp" />
 
                 <ImageButton
@@ -203,6 +195,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp" />
 
                 <ImageButton
@@ -213,6 +206,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
+                    android:background="#00ff0000"
                     android:padding="50dp" />
 
             </LinearLayout>
@@ -226,8 +220,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:text="태그123123123" />
+                    android:layout_marginRight="15dp" />
 
                 <TextView
                     android:id="@+id/clothTag5"
@@ -236,7 +229,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:text="태그123123123"
                     android:padding="0dp" />
 
                 <TextView
@@ -246,7 +238,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_weight="1"
-                    android:text="태그"
                     android:padding="0dp" />
 
             </LinearLayout>
