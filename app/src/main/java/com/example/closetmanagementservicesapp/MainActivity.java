@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CheckBox;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomSheetDialog.show();
 
                 // 정렬 버튼 닫기
-                Button tabsortClose = view1.findViewById(R.id.tabsortClose);
+                ImageButton tabsortClose = view1.findViewById(R.id.tabsortClose);
                 tabsortClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -87,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
                 // 정렬 (날씨)
                 tabsort.weatherSelect(view1);
+            }
+        });
+
+        // 검색
+        SearchView searchView = findViewById(R.id.btnSearch);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
 
