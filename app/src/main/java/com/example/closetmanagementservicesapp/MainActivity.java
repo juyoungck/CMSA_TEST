@@ -91,20 +91,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 검색
-        SearchView searchView = findViewById(R.id.btnSearch);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-
         // MyApplication 클래스에서 DBHelper를 가져오는 코드
         dbHelper = MyApplication.getDbHelper();
 
