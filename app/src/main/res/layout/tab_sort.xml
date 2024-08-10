@@ -20,13 +20,14 @@
             android:layout_gravity="center"
             android:textStyle="bold" />
 
-        <Button
+        <ImageButton
             android:id="@+id/tabsortClose"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:background="@drawable/xmark"
-            android:backgroundTint="@android:color/black"/>
+            android:padding="50dp"
+            android:src="@drawable/xmark"
+            android:background="#00ff0000"/>
     </LinearLayout>
 
     <LinearLayout
@@ -247,7 +248,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="50dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -267,4 +268,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 </LinearLayout>
