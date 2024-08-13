@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -16,6 +17,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -71,10 +74,6 @@ public class Post extends AppCompatActivity {
         EditText c_memo_post = (EditText) findViewById(R.id.c_memo_post);   // 메모 호출
 
         Button save = (Button) findViewById(R.id.cloth_post);               // 등록 버튼
-
-
-
-
 
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -195,6 +194,8 @@ public class Post extends AppCompatActivity {
 
             }
         });
+
+        weatherSelect(); // 태그(계절) 함수 호출
     }
 
     private void fillSpinner_location() {
@@ -223,5 +224,157 @@ public class Post extends AppCompatActivity {
         Date date = new Date();
 
         return Today.format(date);
+    }
+
+
+    protected void weatherSelect() {
+        // 정렬 버튼 (계절)
+        CheckBox weatherSelect_spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox weatherSelect_summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox weatherSelect_fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        weatherSelect_spring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_summer.isChecked() && weatherSelect_fall.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(true);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_summer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_fall.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(true);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_fall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_summer.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(true);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_winter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_summer.isChecked()
+                            && weatherSelect_fall.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(true);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        // 정렬 버튼 (계절 - 전체 선택)
+        weatherSelect_communal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // 전체 선택 버튼이 선택된 경우
+                    weatherSelect_spring.setChecked(true);
+                    weatherSelect_summer.setChecked(true);
+                    weatherSelect_fall.setChecked(true);
+                    weatherSelect_winter.setChecked(true);
+
+                } else {
+                    if (!weatherSelect_spring.isChecked() || !weatherSelect_summer.isChecked()
+                            || !weatherSelect_fall.isChecked() || !weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                    } else {
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                    weatherButtonBase();
+                }
+            }
+        });
+    }
+    private void weatherButtonBase (){
+        CheckBox weatherSelect_spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox weatherSelect_summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox weatherSelect_fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
+        if (weatherSelect_spring.isChecked()) {
+            weatherSelect_spring.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_summer.isChecked()) {
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_fall.isChecked()) {
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_winter.isChecked()) {
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_communal.isChecked()) {
+            weatherSelect_communal.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
     }
 }
