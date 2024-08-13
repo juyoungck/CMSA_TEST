@@ -1,292 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:padding="16dp">
 
+    <!-- // 이미지 버튼을 클릭했을 때 이동되는 xml 코드 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/btnWeather"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:background="#00ff0000"
-            android:padding="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/weather" />
-        
-        <TextView
-            android:id="@+id/textTemp"
-            android:layout_width="290dp"
-            android:layout_height="match_parent"
-            android:text="12°"
-            android:textSize="40dp" />
-
-        <ImageButton
-            android:id="@+id/btnSettings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#00ff0000"
-            android:scaleType="centerCrop"
-            android:padding="6dp"
-            android:layout_gravity="right"
-            android:src="@drawable/setting" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.7">
-        <ImageButton
-            android:id="@+id/btnModify"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="#00ff0000"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/modify" />
-        <Spinner
-            android:id="@+id/main_c_loc"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbarSize="100dp"
+            android:id="@+id/detail_clothImg"
+            android:layout_marginBottom="16dp"
             android:layout_gravity="center" />
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:orientation="horizontal" >
-
-        <ImageButton
-            android:id="@+id/btnSort"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="#00ff0000"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sort" />
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            app:searchIcon="@drawable/search"
-            app:iconifiedByDefault="true"
-            android:layoutDirection="rtl"
-            app:queryHint="검색어를 입력하세요" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000000" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:id="@+id/detail_clothLocation"
+            android:text="옷장 위치"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-                
-                <ImageButton
-                    android:id="@+id/clothImgbtn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothName"
+            android:text="옷 이름"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-                <ImageButton
-                    android:id="@+id/clothImgbtn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothSize"
+            android:text="사이즈"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-                <ImageButton
-                    android:id="@+id/clothImgbtn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp"
-                    />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothBrand"
+            android:text="브랜드"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-            </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothTag"
+            android:text="태그"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothMemo"
+            android:text="메모"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:id="@+id/clothTag1"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothDate"
+            android:text="날짜"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:id="@+id/clothTag2"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_clothStack"
+            android:text="스택"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:id="@+id/clothTag3"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:id="@+id/clothTag4"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp" />
-
-                <TextView
-                    android:id="@+id/clothTag5"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-                <TextView
-                    android:id="@+id/clothTag6"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom">
-
-            <Button
-                android:id="@+id/btnCloset"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00ff00"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:text="옷장" />
-
-            <Button
-                android:id="@+id/btnCody"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00ff00"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:text="코디" />
-        </LinearLayout>
-
-        <android.widget.Button
-            android:id="@+id/btnAdd"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="top|center"
-            android:background="@drawable/baseline_add_circle_24" />
-    </FrameLayout>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
