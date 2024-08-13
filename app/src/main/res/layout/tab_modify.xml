@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/modify_Add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="추가"
+            android:drawableLeft="@drawable/listadd" />
+        <Button
+            android:id="@+id/modify_Modify"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="수정"
+            android:drawableLeft="@drawable/edit"/>
+        <Button
+            android:id="@+id/modify_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="삭제"
+            android:drawableLeft="@drawable/delete"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+        <ImageButton
+            android:id="@+id/tabmodifyClose"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:padding="50dp"
+            android:src="@drawable/xmark"
+            android:background="#00ff0000"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/modify_closet_edit"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:background="#00ff0000"
+                    android:padding="28dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="11dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/edit" />
+                <TextView
+                    android:id="@+id/closet1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00ff0000"
+                    android:layout_gravity="center"
+                    android:gravity="left|center"
+                    android:textColor="@color/black"
+                    android:paddingLeft="60dp"
+                    android:textStyle="bold"
+                    android:textSize="28dp"
+                    android:text="옷장1" />
+                <EditText
+                    android:id="@+id/modify_closet_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="left|center"
+                    android:textColor="@color/black"
+                    android:paddingLeft="60dp"
+                    android:textStyle="bold"
+                    android:textSize="28dp"
+                    android:text="옷장1" />
+                    />
+                <ImageButton
+                    android:id="@+id/modify_closet_delete"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#00ff0000"
+                    android:padding="28dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/delete" />
+            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="#aaa"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
