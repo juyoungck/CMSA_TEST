@@ -33,6 +33,8 @@
         <activity android:name=".Post"/>
         <activity android:name=".CodyAdd"/>
         <activity android:name=".Settings"/>
+        <activity android:name=".Cody" />
+        <activity android:name=".SettingsNotice" />
     </application>
 
 </manifest>
