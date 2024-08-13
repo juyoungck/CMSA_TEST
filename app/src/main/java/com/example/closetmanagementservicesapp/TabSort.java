@@ -10,22 +10,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TabSort extends AppCompatActivity {
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_sort);
-    }
 
+    // 옷 선택
     protected void clothesSelect(View view) {
         CheckBox clothesSelect_all = (CheckBox) view.findViewById(R.id.clothesSelect_all);
+        CheckBox clothesSelect_all_clothes = (CheckBox) view.findViewById(R.id.clothesSelect_all_clothes);
+        CheckBox clothesSelect_all_access = (CheckBox) view.findViewById(R.id.clothesSelect_all_access);
+        CheckBox clothesSelect_all_etc = (CheckBox) view.findViewById(R.id.clothesSelect_all_etc);
         CheckBox clothesSelect_top = (CheckBox) view.findViewById(R.id.clothesSelect_top);
         CheckBox clothesSelect_bottom = (CheckBox) view.findViewById(R.id.clothesSelect_bottom);
         CheckBox clothesSelect_outer = (CheckBox) view.findViewById(R.id.clothesSelect_outer);
         CheckBox clothesSelect_shoes = (CheckBox) view.findViewById(R.id.clothesSelect_shoes);
-        CheckBox clothesSelect_onepiece = (CheckBox) view.findViewById(R.id.clothesSelect_onepiece);
+        CheckBox clothesSelect_under = (CheckBox) view.findViewById(R.id.clothesSelect_under);
+        CheckBox clothesSelect_socks = (CheckBox) view.findViewById(R.id.clothesSelect_socks);
         CheckBox clothesSelect_hat = (CheckBox) view.findViewById(R.id.clothesSelect_hat);
+        CheckBox clothesSelect_access = (CheckBox) view.findViewById(R.id.clothesSelect_access);
         CheckBox clothesSelect_bag = (CheckBox) view.findViewById(R.id.clothesSelect_bag);
+        CheckBox clothesSelect_set = (CheckBox) view.findViewById(R.id.clothesSelect_set);
         CheckBox clothesSelect_etc = (CheckBox) view.findViewById(R.id.clothesSelect_etc);
+        CheckBox clothesSelect_input = (CheckBox) view.findViewById(R.id.clothesSelect_input);
 
         clothesSelect_top.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -33,25 +36,23 @@ public class TabSort extends AppCompatActivity {
                 if (isChecked) {
                     if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
                             && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
+                    if (clothesSelect_all_clothes.isChecked())
                     {
-                        clothesSelect_all.setChecked(false);
+                        clothesSelect_all_clothes.setChecked(false);
                         clothesSelect_top.setChecked(true);
                         clothesSelect_bottom.setChecked(false);
                         clothesSelect_outer.setChecked(false);
                         clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(false);
                     }
                 }
             }
+
         });
 
         clothesSelect_bottom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,25 +61,22 @@ public class TabSort extends AppCompatActivity {
                 if (isChecked) {
                     if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
                             && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
+                    if (clothesSelect_all_clothes.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(true);
                         clothesSelect_outer.setChecked(false);
                         clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(false);
                     }
                 }
             }
+
         });
 
         clothesSelect_outer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -87,22 +85,18 @@ public class TabSort extends AppCompatActivity {
                 if (isChecked) {
                     if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
                             && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
+                    if (clothesSelect_all_clothes.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(false);
                         clothesSelect_outer.setChecked(true);
                         clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(false);
                     }
                 }
             }
@@ -114,49 +108,66 @@ public class TabSort extends AppCompatActivity {
                 if (isChecked) {
                     if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
                             && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
+                    if (clothesSelect_all_clothes.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(false);
                         clothesSelect_outer.setChecked(false);
                         clothesSelect_shoes.setChecked(true);
-                        clothesSelect_onepiece.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(false);
                     }
                 }
             }
+
         });
 
-        clothesSelect_onepiece.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        clothesSelect_under.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
                             && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
+                    if (clothesSelect_all_clothes.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(false);
                         clothesSelect_outer.setChecked(false);
                         clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(true);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(false);
+                    }
+                }
+            }
+
+        });
+
+        clothesSelect_socks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
+                            && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
+                            && clothesSelect_under.isChecked() && clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(true);
+                    }
+                } else {
+                    if (clothesSelect_all_clothes.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
+                        clothesSelect_top.setChecked(false);
+                        clothesSelect_bottom.setChecked(false);
+                        clothesSelect_outer.setChecked(false);
+                        clothesSelect_shoes.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -166,51 +177,74 @@ public class TabSort extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
-                            && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                    if (clothesSelect_hat.isChecked() && clothesSelect_access.isChecked()
+                            && clothesSelect_bag.isChecked()) {
+                        clothesSelect_all_access.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
+                    if (clothesSelect_all_access.isChecked()) {
+                        clothesSelect_all_access.setChecked(false);
                         clothesSelect_hat.setChecked(true);
+                        clothesSelect_access.setChecked(false);
                         clothesSelect_bag.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
                     }
                 }
             }
+        });
+
+        clothesSelect_access.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (clothesSelect_hat.isChecked() && clothesSelect_access.isChecked()
+                            && clothesSelect_bag.isChecked()) {
+                        clothesSelect_all_access.setChecked(true);
+                    }
+                } else {
+                    if (clothesSelect_all_access.isChecked()) {
+                        clothesSelect_all_access.setChecked(false);
+                        clothesSelect_hat.setChecked(false);
+                        clothesSelect_access.setChecked(true);
+                        clothesSelect_bag.setChecked(false);
+                    }
+                }
+            }
+
         });
 
         clothesSelect_bag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
-                            && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                    if (clothesSelect_hat.isChecked() && clothesSelect_access.isChecked()
+                            && clothesSelect_bag.isChecked()) {
+                        clothesSelect_all_access.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
+                    if (clothesSelect_all_access.isChecked()) {
+                        clothesSelect_all_access.setChecked(false);
                         clothesSelect_hat.setChecked(false);
+                        clothesSelect_access.setChecked(false);
                         clothesSelect_bag.setChecked(true);
+                    }
+                }
+            }
+        });
+
+        clothesSelect_set.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (clothesSelect_set.isChecked() && clothesSelect_etc.isChecked()
+                            && clothesSelect_input.isChecked()) {
+                        clothesSelect_all_etc.setChecked(true);
+                    }
+                } else {
+                    if (clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all_etc.setChecked(false);
+                        clothesSelect_set.setChecked(true);
                         clothesSelect_etc.setChecked(false);
+                        clothesSelect_input.setChecked(false);
                     }
                 }
             }
@@ -220,32 +254,41 @@ public class TabSort extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if (clothesSelect_top.isChecked() && clothesSelect_bottom.isChecked()
-                            && clothesSelect_outer.isChecked() && clothesSelect_shoes.isChecked()
-                            && clothesSelect_onepiece.isChecked() && clothesSelect_hat.isChecked()
-                            && clothesSelect_bag.isChecked() && clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(true);
+                    if (clothesSelect_set.isChecked() && clothesSelect_etc.isChecked()
+                            && clothesSelect_input.isChecked()) {
+                        clothesSelect_all_etc.setChecked(true);
                     }
                 } else {
-                    if(clothesSelect_all.isChecked())
-                    {
-                        clothesSelect_all.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
+                    if (clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all_etc.setChecked(false);
+                        clothesSelect_set.setChecked(false);
                         clothesSelect_etc.setChecked(true);
+                        clothesSelect_input.setChecked(false);
                     }
                 }
             }
         });
 
-        
-        // 정렬 버튼(옷 종류 - 모두 선택)
-        clothesSelect_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        clothesSelect_input.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (clothesSelect_set.isChecked() && clothesSelect_etc.isChecked()
+                            && clothesSelect_input.isChecked()) {
+                        clothesSelect_all_etc.setChecked(true);
+                    }
+                } else {
+                    if (clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all_etc.setChecked(false);
+                        clothesSelect_set.setChecked(false);
+                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_input.setChecked(true);
+                    }
+                }
+            }
+        });
+
+        clothesSelect_all_clothes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -253,31 +296,114 @@ public class TabSort extends AppCompatActivity {
                     clothesSelect_bottom.setChecked(true);
                     clothesSelect_outer.setChecked(true);
                     clothesSelect_shoes.setChecked(true);
-                    clothesSelect_onepiece.setChecked(true);
-                    clothesSelect_hat.setChecked(true);
-                    clothesSelect_bag.setChecked(true);
-                    clothesSelect_etc.setChecked(true);
+                    clothesSelect_under.setChecked(true);
+                    clothesSelect_socks.setChecked(true);
+                    if (clothesSelect_all_clothes.isChecked() && clothesSelect_all_access.isChecked()
+                            && clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all.setChecked(true);
+                    }
                 } else {
                     if (!clothesSelect_top.isChecked() || !clothesSelect_bottom.isChecked()
                             || !clothesSelect_outer.isChecked() || !clothesSelect_shoes.isChecked()
-                            || !clothesSelect_onepiece.isChecked() || !clothesSelect_hat.isChecked()
-                            || !clothesSelect_bag.isChecked() || !clothesSelect_etc.isChecked()) {
-                        clothesSelect_all.setChecked(false);
+                            || !clothesSelect_under.isChecked() || !clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_clothes.setChecked(false);
                     } else {
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(false);
                         clothesSelect_outer.setChecked(false);
                         clothesSelect_shoes.setChecked(false);
-                        clothesSelect_onepiece.setChecked(false);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(false);
+                        if(clothesSelect_all.isChecked())
+                        {
+                            clothesSelect_all.setChecked(false);
+                        }
+                    }
+                }
+            }
+        });
+
+        clothesSelect_all_access.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    clothesSelect_hat.setChecked(true);
+                    clothesSelect_access.setChecked(true);
+                    clothesSelect_bag.setChecked(true);
+                    if (clothesSelect_all_clothes.isChecked() && clothesSelect_all_access.isChecked()
+                            && clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all.setChecked(true);
+                    }
+                } else {
+                    if (!clothesSelect_hat.isChecked() || !clothesSelect_access.isChecked()
+                            || !clothesSelect_bag.isChecked()) {
+                        clothesSelect_all_access.setChecked(false);
+                    } else {
                         clothesSelect_hat.setChecked(false);
+                        clothesSelect_access.setChecked(false);
                         clothesSelect_bag.setChecked(false);
+                        if(clothesSelect_all.isChecked())
+                        {
+                            clothesSelect_all.setChecked(false);
+                        }
+                    }
+                }
+            }
+        });
+
+        clothesSelect_all_etc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    clothesSelect_set.setChecked(true);
+                    clothesSelect_etc.setChecked(true);
+                    clothesSelect_input.setChecked(true);
+                    if (clothesSelect_all_clothes.isChecked() && clothesSelect_all_access.isChecked()
+                            && clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all.setChecked(true);
+                    }
+                } else {
+                    if ( !clothesSelect_set.isChecked() || !clothesSelect_etc.isChecked()
+                            || !clothesSelect_input.isChecked()) {
+                        clothesSelect_all_etc.setChecked(false);
+                    } else {
+                        clothesSelect_set.setChecked(false);
                         clothesSelect_etc.setChecked(false);
+                        clothesSelect_input.setChecked(false);
+                        if(clothesSelect_all.isChecked())
+                        {
+                            clothesSelect_all.setChecked(false);
+                        }
+                    }
+                }
+            }
+        });
+
+        // 정렬 버튼(옷 종류 - 모두 선택)
+        clothesSelect_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    clothesSelect_all.setChecked(true);
+                    clothesSelect_all_clothes.setChecked(true);
+                    clothesSelect_all_access.setChecked(true);
+                    clothesSelect_all_etc.setChecked(true);
+                } else {
+                    if (!clothesSelect_all_clothes.isChecked() || !clothesSelect_all_access.isChecked()
+                            || !clothesSelect_all_etc.isChecked()) {
+                        clothesSelect_all.setChecked(false);
+                    } else {
+                        clothesSelect_all_clothes.setChecked(false);
+                        clothesSelect_all_access.setChecked(false);
+                        clothesSelect_all_etc.setChecked(false);
                     }
                 }
             }
         });
     }
 
+
+    // 계절 선택
     protected void weatherSelect(View view) {
         // 정렬 버튼 (계절)
         CheckBox weatherSelect_spring = (CheckBox) view.findViewById(R.id.weatherSelect_spring);
@@ -430,6 +556,7 @@ public class TabSort extends AppCompatActivity {
         });
     }
 
+    // 계절 버튼 클릭 시 색상 변환
     private void weatherButtonBase (View view) {
         CheckBox weatherSelect_spring = (CheckBox) view.findViewById(R.id.weatherSelect_spring);
         CheckBox weatherSelect_summer = (CheckBox) view.findViewById(R.id.weatherSelect_summer);
@@ -463,4 +590,3 @@ public class TabSort extends AppCompatActivity {
         }
     }
 }
-
