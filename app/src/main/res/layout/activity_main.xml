@@ -45,18 +45,20 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.7">
-        <TextView
+        <ImageButton
+            android:id="@+id/btnModify"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="옷장"
-            android:textSize="25dp"
-            android:gravity="center"/>
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/modify" />
         <Spinner
             android:id="@+id/main_c_loc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbarSize="100dp"
-            />
+            android:layout_gravity="center" />
 
 
     </LinearLayout>
@@ -75,16 +77,6 @@
             android:padding="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/sort" />
-
-        <ImageButton
-            android:id="@+id/btnModify"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="#00ff0000"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/modify" />
-
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/btnSearch"
