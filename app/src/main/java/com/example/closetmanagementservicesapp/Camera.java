@@ -1,6 +1,7 @@
 package com.example.closetmanagementservicesapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -24,6 +25,7 @@ import java.util.Locale;
 public class Camera extends AppCompatActivity {
     ImageView iv1;
     Button btn1;
+    String savedImagePath = "";  // 저장된 이미지 경로를 저장할 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,32 +67,45 @@ public class Camera extends AppCompatActivity {
             if (bitmap != null) {
                 SimpleDateFormat timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA);
                 String time = timeStamp.format(new Date());
-                String fileName = "my_image_" + time + ".jpg";
-                saveImageInternalStorage(bitmap, fileName);
-                iv1.setImageBitmap(bitmap);
+                String fileName = "image_" + time + ".jpg";
+
+                // 이미지 저장
+                savedImagePath = saveImageInternalStorage(bitmap, fileName);
+
+                // 저장된 이미지 불러오기
+                loadImageFromStorage(savedImagePath);
             }
         }
     }
 
-    private void saveImageInternalStorage(Bitmap bitmap, String fileName) {
-        // 이미지 저장 디렉토리 설정
+    private String saveImageInternalStorage(Bitmap bitmap, String fileName) {
         File directory = new File(getFilesDir(), "images");
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        // 파일 생성 및 저장
         File file = new File(directory, fileName);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             Toast.makeText(this, "이미지가 내부 저장소에 저장되었습니다.", Toast.LENGTH_SHORT).show();
-
-            // 저장된 파일의 절대 경로를 로그로 출력
             Log.d("File Save Path", file.getAbsolutePath());
+
+            // 저장된 파일의 경로 반환
+            return file.getAbsolutePath();
 
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "이미지 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    private void loadImageFromStorage(String path) {
+        if (path != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            iv1.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(this, "이미지를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 }
