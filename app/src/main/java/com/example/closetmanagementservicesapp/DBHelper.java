@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String Main_Closet_TABLE = "CREATE TABLE Main_Closet ("
                 + "c_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "c_loc INTEGER NOT NULL, "
-                + "c_img BLOB NOT NULL, "
+                + "c_img TEXT, "
                 + "c_name TEXT NOT NULL, "
                 + "c_type TEXT NOT NULL, "
                 + "c_size TEXT, "

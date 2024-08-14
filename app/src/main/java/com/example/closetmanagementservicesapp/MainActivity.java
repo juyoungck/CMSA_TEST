@@ -154,55 +154,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /* 임의 데이터 입력 (데이터 입력 기능 추가로 주석처리)
-    private void insertDummyData() {
-        // values 생성 후 Closet_Location 테이블에 임의 값 입력
-        ContentValues values = new ContentValues();
-        values.put("c_loc", 1);
-        values.put("c_loc_name", "옷장1");
-        values.put("c_loc_date", "20240723");
-        db.insert("Closet_Location", null, values);
-        values.put("c_loc", 2);
-        values.put("c_loc_name", "옷장2");
-        values.put("c_loc_date", "20240806");
-        db.insert("Closet_Location", null, values);
-        values.put("c_loc", 3);
-        values.put("c_loc_name", "봄 옷장");
-        values.put("c_loc_date", "20240806");
-        db.insert("Closet_Location", null, values);
-
-        // 입력할 값 배열로 정렬
-        int[] imageResources = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image4};
-        String[] names = {"라운드 반팔티", "청바지", "후드집업", "니트셔츠"};
-        String[] types = {"1", "2", "1", "1"};
-        String[] sizes = {"100(XL)", "100(XL)", null, null};
-        String[] brands = {"MUSINSA", null, null, null};
-        String[] memos = {"조금 낡음", null, null, "버릴 예정"};
-
-        // for 문으로 배열 끝까지 Main_Closet 테이블에 임의값 입력
-        for (int i = 0; i < 4; i++) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResources[i]);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            byte[] imageBytes = outputStream.toByteArray();
-
-            values = new ContentValues();
-            values.put("c_id", i + 1);
-            values.put("c_loc", 1);
-            values.put("c_img", imageBytes);
-            values.put("c_name", names[i]);
-            values.put("c_type", types[i]);
-            values.put("c_size", sizes[i]);
-            values.put("c_brand", brands[i]);
-            values.put("c_tag", 1);
-            values.put("c_memo", memos[i]);
-            values.put("c_date", "20240723");
-            values.put("c_stack", 0);
-            db.insert("Main_Closet", null, values);
-        }
-    }
-     */
-
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
     private void displayData() {
         // Main_Closet 테이블의 모든 값을 불러옴
@@ -214,47 +165,54 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < count; i++) {
                 String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
-                byte[] c_img = cursor.getBlob(cursor.getColumnIndexOrThrow("c_img"));
+                String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(c_img, 0, c_img.length);
+                Bitmap bitmap = BitmapFactory.decodeFile(c_img);
 
                 // getResources().getIdentifier() 메서드를 사용해서 xml 파일의 clothTag1, clothTag2 등의 id 값들을 차례대로 불러옴
                 @SuppressLint("DiscouragedApi") int textViewId = getResources().getIdentifier("clothTag" + (i + 1), "id", getPackageName());
                 @SuppressLint("DiscouragedApi") int imageButtonId = getResources().getIdentifier("clothImgbtn" + (i + 1), "id", getPackageName());
 
-                TextView textView = findViewById(textViewId);
-                ImageButton imageButton = findViewById(imageButtonId);
+                TextView textView = (TextView) findViewById(textViewId);
+                ImageButton imageButton = (ImageButton) findViewById(imageButtonId);
 
                 // 유효성 검사 후 문제가 없으면 해당 코드 실행 (현재 오류 발생 중, 추후 수정)
                 if (textView != null && imageButton != null) {
                     textView.setText(c_name);
                     imageButton.setImageBitmap(bitmap);
 
+                    int finalI = i;
+
                     // 이미지 버튼을 클릭하면 해당하는 컬럼의 모든 데이터를 볼 수 있는 탭으로 이동한다. (DetailActivity.java와 activity_detail.xml 파일 참고)
                     imageButton.setOnClickListener(view -> {
-                        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                        new Thread(() -> {
+                            Cursor detailCursor = db.query("Main_Closet", null, null, null, null, null, null);
+                            if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
+                                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                                intent.putExtra("c_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_img")));
+                                intent.putExtra("c_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_loc")));
+                                intent.putExtra("c_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_name")));
+                                intent.putExtra("c_type", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_type")));
+                                intent.putExtra("c_size", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_size")));
+                                intent.putExtra("c_brand", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_brand")));
+                                intent.putExtra("c_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_tag")));
+                                intent.putExtra("c_memo", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_memo")));
+                                intent.putExtra("c_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_date")));
+                                intent.putExtra("c_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_stack")));
 
-                        intent.putExtra("c_img", cursor.getBlob(cursor.getColumnIndexOrThrow("c_img")));
-                        intent.putExtra("c_loc", cursor.getInt(cursor.getColumnIndexOrThrow("c_loc")));
-                        intent.putExtra("c_name", cursor.getString(cursor.getColumnIndexOrThrow("c_name")));
-                        intent.putExtra("c_type", cursor.getString(cursor.getColumnIndexOrThrow("c_type")));
-                        intent.putExtra("c_size", cursor.getString(cursor.getColumnIndexOrThrow("c_size")));
-                        intent.putExtra("c_brand", cursor.getString(cursor.getColumnIndexOrThrow("c_brand")));
-                        intent.putExtra("c_tag", cursor.getInt(cursor.getColumnIndexOrThrow("c_tag")));
-                        intent.putExtra("c_memo", cursor.getString(cursor.getColumnIndexOrThrow("c_memo")));
-                        intent.putExtra("c_date", cursor.getString(cursor.getColumnIndexOrThrow("c_date")));
-                        intent.putExtra("c_stack", cursor.getInt(cursor.getColumnIndexOrThrow("c_stack")));
-                        startActivity(intent);
+                                // 커서 닫기 및 인텐트 실행은 UI 스레드에서 실행
+                                runOnUiThread(() -> {
+                                    startActivity(intent);
+                                    detailCursor.close(); // 사용 후 커서 닫기
+                                });
+                            } else if (detailCursor != null) {
+                                detailCursor.close(); // 커서가 유효하지 않을 경우에도 닫기
+                            }
+                        }).start();
                     });
                 }
-
-                if (!cursor.moveToNext()) {
-                    break;
-                }
+                cursor.moveToNext();
             }
-        }
-
-        if (cursor != null) {
             cursor.close();
         }
     }
@@ -305,5 +263,4 @@ public class MainActivity extends AppCompatActivity {
 
         return Today.format(date);
     }
-
 }

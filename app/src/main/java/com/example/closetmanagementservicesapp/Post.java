@@ -27,6 +27,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class Post extends AppCompatActivity {
 
         ImageView c_img_post = (ImageView) findViewById(R.id.c_img_post);   // 이미지 호출
 
-        fillSpinner_location();                                                      // 옷장 위치 값 호출
+        fillSpinner_location();                                             // 옷장 위치 값 호출
 
         EditText c_name_post = (EditText) findViewById(R.id.c_name_post);   // 옷 이름 호출
 
@@ -145,36 +148,67 @@ public class Post extends AppCompatActivity {
                             .setCancelable(false)                               // 뒤로 버튼 클릭시 취소 가능 설정
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image1);
-                                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                                    byte[] imageBytes = outputStream.toByteArray();
+                                    db.beginTransaction();
+                                    try {
+                                        ContentValues values = new ContentValues();
+                                        values.put("c_loc", c_loc);
+                                        values.put("c_name", c_name);
 
-                                    ContentValues values = new ContentValues();
-                                    values.put("c_loc", c_loc);
-                                    values.put("c_img", imageBytes);
-                                    values.put("c_name", c_name);
+                                        if (c_type.equals("직접입력")) {
+                                            values.put("c_type", c_type_add);
+                                        } else {
+                                            values.put("c_type", c_type);
+                                        }
 
-                                    if (c_type.equals("직접입력")) {
-                                        values.put("c_type", c_type_add);
-                                    } else {
-                                        values.put("c_type", c_type);
+                                        if (c_size.equals("직접입력")) {
+                                            values.put("c_size", c_size_add);
+                                        } else if (c_size.equals("선택안함")) {
+                                            values.put("c_size", "");
+                                        } else {
+                                            values.put("c_size", c_size);
+                                        }
+
+                                        values.put("c_brand", c_brand);
+                                        values.put("c_tag", 1);
+                                        values.put("c_memo", c_memo);
+                                        values.put("c_date", getToday());
+                                        values.put("c_stack", 0);
+
+                                        long rowId = db.insert("Main_Closet", null, values);
+                                        Cursor cursor = db.rawQuery("SELECT c_id FROM Main_Closet WHERE rowid = ?", new String[]{String.valueOf(rowId)});
+                                        int cId = -1;
+
+                                        if (cursor != null && cursor.moveToFirst()) {
+                                            cId = cursor.getInt(cursor.getColumnIndex("c_id"));
+                                            cursor.close();
+                                        }
+
+                                        String fileName = "image_" + cId + ".png";
+                                        File directory = new File(getFilesDir(), "images");
+
+                                        if (!directory.exists()) {
+                                            directory.mkdirs();
+                                        }
+
+                                        File imageFile = new File(directory, fileName);
+
+                                        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+                                            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image2);
+                                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        values = new ContentValues();
+                                        values.put("c_img", imageFile.getAbsolutePath());
+                                        db.update("Main_Closet", values, "c_id = ?", new String[]{String.valueOf(cId)});
+
+                                        db.setTransactionSuccessful();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        db.endTransaction();
                                     }
-
-                                    if (c_size.equals("직접입력")) {
-                                        values.put("c_size", c_size_add);
-                                    } else if (c_size.equals("선택안함")) {
-                                        values.put("c_size", "");
-                                    } else {
-                                        values.put("c_size", c_size);
-                                    }
-
-                                    values.put("c_brand", c_brand);
-                                    values.put("c_tag", 1);
-                                    values.put("c_memo", c_memo);
-                                    values.put("c_date", getToday());
-                                    values.put("c_stack", 0);
-                                    db.insert("Main_Closet", null, values);
 
                                     Toast.makeText(getApplicationContext(), "옷 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Post.this, MainActivity.class);
@@ -191,10 +225,8 @@ public class Post extends AppCompatActivity {
                     AlertDialog dialog = builder.create();    // 알림창 객체 생성
                     dialog.show();    // 알림창 띄우기
                 }
-
             }
         });
-
         weatherSelect(); // 태그(계절) 함수 호출
     }
 

@@ -13,14 +13,14 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothImg"
+            android:id="@+id/detail_c_img"
             android:layout_marginBottom="16dp"
             android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothLocation"
+            android:id="@+id/detail_c_loc"
             android:text="옷장 위치"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothName"
+            android:id="@+id/detail_c_name"
             android:text="옷 이름"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -36,7 +36,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothSize"
+            android:id="@+id/detail_c_type"
+            android:text="옷 종류"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_c_size"
             android:text="사이즈"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -44,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothBrand"
+            android:id="@+id/detail_c_brand"
             android:text="브랜드"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -52,7 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothTag"
+            android:id="@+id/detail_c_tag"
             android:text="태그"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -60,7 +68,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothMemo"
+            android:id="@+id/detail_c_memo"
             android:text="메모"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -68,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothDate"
+            android:id="@+id/detail_c_date"
             android:text="날짜"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -76,7 +84,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_clothStack"
+            android:id="@+id/detail_c_stack"
             android:text="스택"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>

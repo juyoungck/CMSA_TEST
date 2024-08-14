@@ -1,5 +1,6 @@
 package com.example.closetmanagementservicesapp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,36 +17,39 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        byte[] c_img = getIntent().getByteArrayExtra("c_img");
-        int c_loc = getIntent().getIntExtra("c_loc", 0);
-        String c_name = getIntent().getStringExtra("c_name");
-        String c_size = getIntent().getStringExtra("c_size");
-        String c_brand = getIntent().getStringExtra("c_brand");
-        int c_tag = getIntent().getIntExtra("c_tag", 0);
-        String c_memo = getIntent().getStringExtra("c_memo");
-        String c_date = getIntent().getStringExtra("c_date");
-        int c_stack = getIntent().getIntExtra("c_stack", 0);
+        ImageView imageView = (ImageView) findViewById(R.id.detail_c_img);
+        TextView detail_c_loc = (TextView) findViewById(R.id.detail_c_loc);
+        TextView detail_c_name = (TextView) findViewById(R.id.detail_c_name);
+        TextView detail_c_type = (TextView) findViewById(R.id.detail_c_type);
+        TextView detail_c_size = (TextView) findViewById(R.id.detail_c_size);
+        TextView detail_c_brand = (TextView) findViewById(R.id.detail_c_brand);
+        TextView detail_c_tag = (TextView) findViewById(R.id.detail_c_tag);
+        TextView detail_c_memo = (TextView) findViewById(R.id.detail_c_memo);
+        TextView detail_c_date = (TextView) findViewById(R.id.detail_c_date);
+        TextView detail_c_stack = (TextView) findViewById(R.id.detail_c_stack);
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(c_img, 0, c_img.length);
+        Intent intent = getIntent();
+        String c_img = intent.getStringExtra("c_img");
+        int c_loc = intent.getIntExtra("c_loc", 1);
+        String c_name = intent.getStringExtra("c_name");
+        String c_type = intent.getStringExtra("c_type");
+        String c_size = intent.getStringExtra("c_size");
+        String c_brand = intent.getStringExtra("c_brand");
+        int c_tag = intent.getIntExtra("c_tag", 1);
+        String c_memo = intent.getStringExtra("c_memo");
+        String c_date = intent.getStringExtra("c_date");
+        int c_stack = intent.getIntExtra("c_stack", 0);
 
-        ImageView imageView = findViewById(R.id.detail_clothImg);
-        TextView locationTextView = findViewById(R.id.detail_clothLocation);
-        TextView nameTextView = findViewById(R.id.detail_clothName);
-        TextView sizeTextView = findViewById(R.id.detail_clothSize);
-        TextView brandTextView = findViewById(R.id.detail_clothBrand);
-        TextView tagTextView = findViewById(R.id.detail_clothTag);
-        TextView memoTextView = findViewById(R.id.detail_clothMemo);
-        TextView dateTextView = findViewById(R.id.detail_clothDate);
-        TextView stackTextView = findViewById(R.id.detail_clothStack);
-
+        Bitmap bitmap = BitmapFactory.decodeFile(c_img);
         imageView.setImageBitmap(bitmap);
-        locationTextView.setText(String.valueOf(c_loc));
-        nameTextView.setText(c_name);
-        sizeTextView.setText(c_size);
-        brandTextView.setText(c_brand);
-        tagTextView.setText(String.valueOf(c_tag));
-        memoTextView.setText(c_memo);
-        dateTextView.setText(c_date);
-        stackTextView.setText(String.valueOf(c_stack));
+        detail_c_loc.setText(String.valueOf(c_loc));
+        detail_c_name.setText(c_name);
+        detail_c_type.setText(c_type);
+        detail_c_size.setText(c_size);
+        detail_c_brand.setText(c_brand);
+        detail_c_tag.setText(String.valueOf(c_tag));
+        detail_c_memo.setText(c_memo);
+        detail_c_date.setText(c_date);
+        detail_c_stack.setText(String.valueOf(c_stack));
     }
 }
