@@ -1,16 +1,12 @@
 package com.example.closetmanagementservicesapp;
-
-import android.Manifest;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,11 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.OutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Camera extends AppCompatActivity {
-    private String imageFilePath;
     ImageView iv1;
     Button btn1;
 
@@ -34,12 +33,7 @@ public class Camera extends AppCompatActivity {
         iv1 = findViewById(R.id.iv);
         btn1 = findViewById(R.id.btn_capture);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestCameraPermission();
-            }
-        });
+        btn1.setOnClickListener(v -> requestCameraPermission());
     }
 
     private void requestCameraPermission() {
@@ -52,13 +46,13 @@ public class Camera extends AppCompatActivity {
 
             @Override
             public void onPermissionDenied(List<String> deniedPermissions) {
-                // 권한 거부 시 실행할 코드
+                Toast.makeText(Camera.this, "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
             }
         };
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("카메라 권한이 필요합니다. [설정] > [권한]에서 권한을 허용해주세요.")
-                .setPermissions(Manifest.permission.CAMERA)
+                .setPermissions(android.Manifest.permission.CAMERA)
                 .check();
     }
 
@@ -68,34 +62,35 @@ public class Camera extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             Bitmap bitmap = (Bitmap) data.getParcelableExtra("data");
-
-            // 저장할 위치와 파일 이름 설정
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, "my_image_" + System.currentTimeMillis() + ".jpg");
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-
-            // Pictures/Clothes 디렉토리에 저장
-            values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Clothes");
-
-            // ContentResolver를 통해 이미지 저장
-            ContentResolver resolver = getContentResolver();
-            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            try {
-                if (imageUri != null) {
-                    // 이미지 저장
-                    OutputStream outputStream = resolver.openOutputStream(imageUri);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    if (outputStream != null) {
-                        outputStream.close();
-                    }
-
-                    // 저장된 이미지 URI로 ImageView에 이미지 설정
-                    iv1.setImageURI(imageUri);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (bitmap != null) {
+                SimpleDateFormat timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA);
+                String time = timeStamp.format(new Date());
+                String fileName = "my_image_" + time + ".jpg";
+                saveImageInternalStorage(bitmap, fileName);
+                iv1.setImageBitmap(bitmap);
             }
+        }
+    }
+
+    private void saveImageInternalStorage(Bitmap bitmap, String fileName) {
+        // 이미지 저장 디렉토리 설정
+        File directory = new File(getFilesDir(), "images");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // 파일 생성 및 저장
+        File file = new File(directory, fileName);
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Toast.makeText(this, "이미지가 내부 저장소에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+            // 저장된 파일의 절대 경로를 로그로 출력
+            Log.d("File Save Path", file.getAbsolutePath());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "이미지 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 }
