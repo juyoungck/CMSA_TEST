@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -47,6 +48,24 @@ public class Post extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post);
+
+        // 이미지 버튼 클릭시 다이얼로그 생성
+        ImageButton imageButton = findViewById(R.id.c_img_post);
+        imageButton.setOnClickListener(v -> showImageOptionsDialog());
+    }
+    private void showImageOptionsDialog() {
+        String[] options = {"촬영", "파일에서 가져오기"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("옵션 선택")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                        } else if (which == 1) {
+                        }
+                    }
+                });
+        builder.show();
 
         // MyApplication 클래스에서 DBHelper를 가져오는 코드
         dbHelper = MyApplication.getDbHelper();
