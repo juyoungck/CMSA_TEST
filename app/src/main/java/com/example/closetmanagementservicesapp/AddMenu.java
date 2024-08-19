@@ -9,27 +9,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddMenu extends AppCompatActivity {
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.addmenu);
 
-        Button BtnAddClothes = (Button) findViewById(R.id.btnAddClothes);
-        Button BtnAddCodey = (Button) findViewById(R.id.btnAddCodey);
+    protected void AddBtn(View addView) {
+
+        Button BtnAddClothes = (Button) addView.findViewById(R.id.btnAddClothes);
+        Button BtnAddCodey = (Button) addView.findViewById(R.id.btnAddCodey);
 
         BtnAddClothes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Post.class);
-                startActivity(intent);
+                Intent intent = new Intent(addView.getContext(), Post.class);
+                addView.getContext().startActivity(intent);
             }
         });
-
         BtnAddCodey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CodyAdd.class);
-                startActivity(intent);
+                Intent intent = new Intent(addView.getContext(), CodyAdd.class);
+                addView.getContext().startActivity(intent);
             }
         });
     }
