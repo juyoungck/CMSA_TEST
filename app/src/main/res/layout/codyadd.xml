@@ -68,7 +68,63 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:src="@drawable/btm"/>
-            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
+        android:layout_gravity="center">
+
+        <CheckBox
+            android:id="@+id/weatherSelect_spring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="봄"
+            android:textAlignment="center"
+            android:background="#f1f3f5" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="여름"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_summer"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="가을"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_fall" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="겨울"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_winter" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="전체"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_communal"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
