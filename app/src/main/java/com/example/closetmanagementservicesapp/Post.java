@@ -52,6 +52,12 @@ public class Post extends AppCompatActivity {
         // 이미지 버튼 클릭시 다이얼로그 생성
         ImageButton imageButton = findViewById(R.id.c_img_post);
         imageButton.setOnClickListener(v -> showImageOptionsDialog());
+
+        // 닫기 버튼
+        CloseButton();
+
+        //
+
     }
     private void showImageOptionsDialog() {
         String[] options = {"촬영", "파일에서 가져오기"};
@@ -427,5 +433,17 @@ public class Post extends AppCompatActivity {
         } else {
             weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
+    }
+
+    private void CloseButton() {
+        ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_post);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Post.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
