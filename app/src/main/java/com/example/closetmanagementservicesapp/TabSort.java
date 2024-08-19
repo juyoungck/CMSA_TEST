@@ -404,7 +404,7 @@ public class TabSort extends AppCompatActivity {
 
 
     // 계절 선택
-    protected void weatherSelect(View view) {
+    public void weatherSelect(View view) {
         // 정렬 버튼 (계절)
         CheckBox weatherSelect_spring = (CheckBox) view.findViewById(R.id.weatherSelect_spring);
         CheckBox weatherSelect_summer = (CheckBox) view.findViewById(R.id.weatherSelect_summer);
