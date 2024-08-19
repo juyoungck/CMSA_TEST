@@ -49,12 +49,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 하단 등록 버튼 이동
+        // 하단 등록 버튼(+) 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddMenu.class);
-                startActivity(intent);
+                Dialog dialog = new Dialog(MainActivity.this);
+                View addMenuView = LayoutInflater.from(MainActivity.this).inflate(R.layout.addmenu, null);
+
+                dialog.setContentView(addMenuView);
+                dialog.show();
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width=WindowManager.LayoutParams.WRAP_CONTENT;
+                params.height=WindowManager.LayoutParams.WRAP_CONTENT;
+                dialog.getWindow().setAttributes(params);
+
+                ImageButton addMenuClose = (ImageButton) addMenuView.findViewById(R.id.addMenuClose);
+                addMenuClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                AddMenu addMenu = new AddMenu();
+
+                addMenu.AddBtn(addMenuView);
             }
         });
 
