@@ -10,13 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btnWeather"
             android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_height="match_parent"
             android:background="#00ff0000"
             android:padding="0dp"
             android:scaleType="centerCrop"
@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/textTemp"
             android:layout_width="290dp"
-            android:layout_height="70dp"
+            android:layout_height="match_parent"
             android:text="12°"
             android:textSize="40dp" />
 
@@ -40,17 +40,30 @@
             android:src="@drawable/setting" />
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="0.7" >
-        <TextView
+        android:layout_weight="0.7">
+        <ImageButton
+            android:id="@+id/btnModify"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="코디"
-            android:textSize="25dp"
-            android:gravity="center"/>
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/modify" />
+
+        <Spinner
+            android:id="@+id/cody_c_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="100dp"
+            android:layout_gravity="center" />
+
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -60,19 +73,22 @@
         <ImageButton
             android:id="@+id/btnSort"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:background="#00ff0000"
             android:padding="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/sort" />
-        <ImageButton
+
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/btnSearch"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#00ff0000"
-            android:padding="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/search" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            app:searchIcon="@drawable/search"
+            app:iconifiedByDefault="true"
+            android:layoutDirection="rtl"
+            app:queryHint="검색어를 입력하세요" />
+
     </LinearLayout>
 
     <View
@@ -94,7 +110,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-                
+
                 <ImageButton
                     android:id="@+id/clothImgbtn1"
                     android:layout_width="wrap_content"
@@ -274,5 +290,4 @@
             android:layout_gravity="top|center"
             android:background="@drawable/baseline_add_circle_24" />
     </FrameLayout>
-
 </LinearLayout>
