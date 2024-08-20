@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
+
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CheckBox;
@@ -54,27 +58,43 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialog = new Dialog(MainActivity.this);
-                View addMenuView = LayoutInflater.from(MainActivity.this).inflate(R.layout.addmenu, null);
+                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                dialog.setContentView(addMenuView);
-                dialog.show();
+                LinearLayout Add_menu = (LinearLayout)inflater.inflate(R.layout.addmenu, null);
 
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width=WindowManager.LayoutParams.WRAP_CONTENT;
-                params.height=WindowManager.LayoutParams.WRAP_CONTENT;
-                dialog.getWindow().setAttributes(params);
+                Add_menu.setBackgroundColor(Color.parseColor("#99000000"));
 
-                ImageButton addMenuClose = (ImageButton) addMenuView.findViewById(R.id.addMenuClose);
-                addMenuClose.setOnClickListener(new View.OnClickListener() {
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.FILL_PARENT);
+                addContentView(Add_menu,param);
+
+                Button BtnAddClothes = (Button) findViewById(R.id.btnAddClothes);
+                Button BtnAddCody = (Button) findViewById(R.id.btnAddCodey);
+                ImageButton AddMenuClose = (ImageButton) findViewById(R.id.addMenuClose);
+
+                BtnAddClothes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
+                        Intent intent = new Intent(getApplicationContext(), Post.class);
+                        startActivity(intent);
                     }
                 });
-                AddMenu addMenu = new AddMenu();
-
-                addMenu.AddBtn(addMenuView);
+                BtnAddCody.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), CodyAdd.class);
+                        startActivity(intent);
+                    }
+                });
+                AddMenuClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ViewGroup parentViewGroup = (ViewGroup) Add_menu.getParent();
+                        if(parentViewGroup != null) {
+                            parentViewGroup.removeView(Add_menu);
+                        }
+                    }
+                });
             }
         });
 
@@ -173,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
     private void displayData() {
