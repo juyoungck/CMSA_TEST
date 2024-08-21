@@ -1,11 +1,13 @@
 package com.example.closetmanagementservicesapp;
 
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,45 +16,100 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class WeatherData {
+
+    private TextView weatherTextView;
+    private ImageView imageViewIcon;
+
+    // 생성자에서 TextView를 전달받도록 수정
+    public WeatherData(TextView weatherTextView, ImageView imageViewIcon) {
+        this.weatherTextView = weatherTextView;
+        this.imageViewIcon = imageViewIcon;
+    }
+
+    // 비동기 작업 클래스
+    private class FetchWeatherTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String date = params[0];
+            String time = params[1];
+            String nx = params[2];
+            String ny = params[3];
+
+            try {
+                return lookUpWeather(date, time, nx, ny);
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String weather) {
+            if (weather != null) {
+                // UI 업데이트 작업은 여기서 처리
+                Log.d("WeatherData", "Weather: " + weather);
+                String[] weatherarray = weather.split(" ");
+                for(int i = 0; i < weatherarray.length; i++) {
+                    Log.d("weather = ", i + " " + weatherarray[i]);
+                }
+                StringBuilder weatherInfo = new StringBuilder();
+
+                // 각 요소를 TextView에 표시
+                for (int i = 0; i < weatherarray.length; i++) {
+                    weatherInfo.append("Item ").append(i).append(": ").append(weatherarray[i]).append("\n");
+                }
+                // weatherarray[0]의 값에 따라 이미지 변경
+                Log.d("asd",weatherarray[0]);
+                switch (weatherarray[0]) {
+                    case "맑음":
+                        imageViewIcon.setImageResource(R.drawable.ic_launcher_background);
+                        break;
+                    case "비":
+                        imageViewIcon.setImageResource(R.drawable.ic_launcher_foreground);
+                        break;
+                    case "구름많음":
+                        imageViewIcon.setImageResource(R.drawable.ic_launcher_foreground);
+                        break;
+                    case "흐림":
+                        imageViewIcon.setImageResource(R.drawable.ic_launcher_background);
+                        break;
+                    default:
+                        break;
+                }
+                // xml 설정
+                weatherTextView.setText(weatherarray[2]);
+            } else {
+                Log.e("WeatherData", "날씨 정보 오류");
+            }
+        }
+    }
+
+    public void fetchWeather(String date, String time, String nx, String ny) {
+        new FetchWeatherTask().execute(date, time, nx, ny);
+    }
+
     private String sky, temperature, wind, rain, snow, humidity;
-    private String current_weather_code;
-    private String data_sky;
 
     public String lookUpWeather(String date, String time, String nx, String ny) throws IOException, JSONException {
-        String baseDate = date; // 2024xxxx 형식을 사용해야 함
-        String baseTime = timeChange(time); // 0500 형식을 사용해야 함
-        String type = "json";
-
-
-        // end point 주소값
-        String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
-        // 일반 인증키
+        String baseDate = date;
+        String baseTime = timeChange(time);
+        String apiUrl = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         String serviceKey = "V2S%2FS3EkiyV9qtXme8oDskBE0kRe2jt5QWf2Fdd6DTRlKSvdOTOrZbRwKsCjVA9vs25BI95PoDMaaacZRGThvQ%3D%3D";
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey); // 서비스 키
-        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8")); // x좌표
-        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); // y좌표
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("12", "UTF-8")); /*한 페이지 결과 수*/
-        urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
-        urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /* 조회하고싶은 시간 0200시부터 3시간 단위 */
-        urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));    /* 타입 */
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
+        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("12", "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
 
-        /*
-         * GET방식으로 전송해서 파라미터 받아오기
-         */
         URL url = new URL(urlBuilder.toString());
-        // json데이터들을 웹페이지를통해 확인할 수 있게  로그캣에 링크 출력
-        System.out.println("url : " + url);
-
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-        /*conn.setConnectTimeout(15000);
-        conn.setReadTimeout(10000);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);*/
         conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
+        Log.d("API URL", "URL: " + url);
 
         BufferedReader rd;
         if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
@@ -60,6 +117,7 @@ public class WeatherData {
         } else {
             rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
         }
+
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
@@ -69,123 +127,83 @@ public class WeatherData {
         rd.close();
         conn.disconnect();
         String result = sb.toString();
-        System.out.println(result);
+        Log.d("API Result", result);
 
-        // response 키를 가지고 데이터를 파싱
         JSONObject jsonObj_1 = new JSONObject(result);
         String response = jsonObj_1.getString("response");
+        Log.d("response", response);
 
-        // response 로 부터 body 찾기
         JSONObject jsonObj_2 = new JSONObject(response);
         String body = jsonObj_2.getString("body");
+        Log.d("body", body);
 
-        // body 로 부터 items 찾기
         JSONObject jsonObj_3 = new JSONObject(body);
         String items = jsonObj_3.getString("items");
-        Log.i("ITEMS", items);
+        Log.d("items", items);
 
-        // items로 부터 itemlist 를 받기
         JSONObject jsonObj_4 = new JSONObject(items);
         JSONArray jsonArray = jsonObj_4.getJSONArray("item");
 
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObj_4 = jsonArray.getJSONObject(i);
-            String fcstValue = jsonObj_4.getString("fcstValue"); //fcstValue
+            String fcstValue = jsonObj_4.getString("fcstValue");
             String category = jsonObj_4.getString("category");
+            Log.d("category", category + ": " + fcstValue);
 
-            //날씨
             if (category.equals("SKY")) {
-                if (fcstValue.equals("1")) {
-                    sky = "맑음 ";
-                    current_weather_code = "1";
-                } else if (fcstValue.equals("2")) {
-                    sky = "비 ";
-                    current_weather_code = "2";
-                } else if (fcstValue.equals("3")) {
-                    sky = "구름많음 ";
-                    current_weather_code = "3";
-                } else if (fcstValue.equals("4")) {
-                    sky = "흐림 ";
-                    current_weather_code = "4";
-                }
-            }
-            //기온
-            if (category.equals("TMP")) {
-                temperature = fcstValue + "℃ ";
-            }
-            //풍속
-            if(category.equals("WSD")) {
+                sky = fcstValue.equals("1") ? "맑음 " : fcstValue.equals("2") ? "비 " : fcstValue.equals("3") ? "구름많음 " : "흐림 ";
+            } else if (category.equals("TMP")) {
+                temperature = fcstValue + "° ";
+            } else if (category.equals("WSD")) {
                 wind = fcstValue + "m/s ";
-            }
-            //강수확률
-            if(category.equals("POP")) {
+            } else if (category.equals("POP")) {
                 rain = fcstValue + "% ";
-            }
-            //눈 적설량
-            if(category.equals("SNO")) {
+            } else if (category.equals("SNO")) {
                 snow = fcstValue + " ";
-            }
-            //습도
-            if(category.equals("REH")) {
+            } else if (category.equals("REH")) {
                 humidity = fcstValue + "% ";
             }
-
         }
-
+        Log.d("Sky",sky + rain + temperature + wind + snow + humidity);
         return sky + rain + temperature + wind + snow + humidity;
     }
 
-    public String timeChange(String time)
-    {
-        // 현재 시간에 따라 데이터 시간 설정(3시간 마다 업데이트) //
-        /**
-         시간은 3시간 단위로 조회해야 함
-         ex) 0200, 0500, 0800 ~ 2300
-         시간을 3시간 단위로 변경하는 메소드
-         **/
+    public String timeChange(String time) {
         switch(time) {
-
             case "0200":
             case "0300":
             case "0400":
-                time = "0200";
-                break;
+                return "0200";
             case "0500":
             case "0600":
             case "0700":
-                time = "0500";
-                break;
+                return "0500";
             case "0800":
             case "0900":
             case "1000":
-                time = "0800";
-                break;
+                return "0800";
             case "1100":
             case "1200":
             case "1300":
-                time = "1100";
-                break;
+                return "1100";
             case "1400":
             case "1500":
             case "1600":
-                time = "1400";
-                break;
+                return "1400";
             case "1700":
             case "1800":
             case "1900":
-                time = "1700";
-                break;
+                return "1700";
             case "2000":
             case "2100":
             case "2200":
-                time = "2000";
-                break;
+                return "2000";
             case "2300":
             case "0000":
             case "0100":
-                time = "2300";
-
+                return "2300";
+            default:
+                return time;
         }
-        return time;
     }
 }

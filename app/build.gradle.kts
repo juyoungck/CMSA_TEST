@@ -38,5 +38,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     //위지청보, 카메라 기능 권한 설정
     implementation("io.github.ParkSangGwon:tedpermission:2.3.0")
+    //위치 가져오기
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    //엑셀 파일 읽기
+    implementation ("net.sourceforge.jexcelapi:jxl:2.6.12")
 
 }

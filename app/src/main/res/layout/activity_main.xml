@@ -57,7 +57,7 @@
                                 android:layout_width="70dp"
                                 android:layout_height="match_parent"
                                 android:text="12°"
-                                android:textSize="40dp" />
+                                android:textSize="34dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/weatherTime"
