@@ -64,7 +64,6 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 public class MainActivity extends AppCompatActivity {
-
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
@@ -86,6 +85,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // DB OPEN
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
 
         // 하단 등록 버튼(+) 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -209,13 +212,6 @@ public class MainActivity extends AppCompatActivity {
                 tabModify.modifyButton(modifyView);
             }
         });
-
-        // MyApplication 클래스에서 DBHelper를 가져오는 코드
-        dbHelper = MyApplication.getDbHelper();
-
-        // db 파일을 읽기/쓰기가 가능한 형식으로 연다
-        db = dbHelper.getWritableDatabase();
-
 
         // 기본 옷장 위치 추가
         basicLocation();

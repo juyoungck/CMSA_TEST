@@ -33,10 +33,6 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_after_remove);
 
-        // DB OPEN
-        dbHelper = MyApplication.getDbHelper();
-        db = dbHelper.getWritableDatabase();
-
         iv1 = findViewById(R.id.iv);
         btn1 = findViewById(R.id.btn_capture);
 
