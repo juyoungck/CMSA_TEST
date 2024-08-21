@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class Camera extends AppCompatActivity {
-    private DBHelper dbHelper;
-    private SQLiteDatabase db;
     ImageView iv1;
     Button btn1;
     String savedImagePath = "";  // 저장된 이미지 경로를 저장할 변수
