@@ -46,12 +46,48 @@ public class Cody extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 하단 등록 버튼 이동
+        // 하단 등록 버튼(+) 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddMenu.class);
-                startActivity(intent);
+                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                LinearLayout Add_menu = (LinearLayout)inflater.inflate(R.layout.addmenu, null);
+
+                Add_menu.setBackgroundColor(Color.parseColor("#99000000"));
+
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams
+                        (LinearLayout.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.FILL_PARENT);
+                addContentView(Add_menu,param);
+
+                Button BtnAddClothes = (Button) findViewById(R.id.btnAddClothes);
+                Button BtnAddCody = (Button) findViewById(R.id.btnAddCodey);
+                ImageButton AddMenuClose = (ImageButton) findViewById(R.id.addMenuClose);
+
+                BtnAddClothes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), Post.class);
+                        startActivity(intent);
+                    }
+                });
+                BtnAddCody.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), CodyAdd.class);
+                        startActivity(intent);
+                    }
+                });
+                AddMenuClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ViewGroup parentViewGroup = (ViewGroup) Add_menu.getParent();
+                        if(parentViewGroup != null) {
+                            parentViewGroup.removeView(Add_menu);
+                        }
+                    }
+                });
             }
         });
 
