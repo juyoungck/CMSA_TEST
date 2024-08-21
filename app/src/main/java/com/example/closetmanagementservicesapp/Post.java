@@ -49,6 +49,12 @@ public class Post extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post);
 
+        // DB OPEN
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
+
+        ImageView c_img_post = (ImageView) findViewById(R.id.c_img_post);   // 이미지 호출
+
         // 이미지 버튼 클릭시 다이얼로그 생성
         ImageButton imageButton = findViewById(R.id.c_img_post);
         imageButton.setOnClickListener(v -> showImageOptionsDialog());
@@ -57,29 +63,6 @@ public class Post extends AppCompatActivity {
         CloseButton();
 
         //
-
-    }
-    private void showImageOptionsDialog() {
-        String[] options = {"촬영", "파일에서 가져오기"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("옵션 선택")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                        } else if (which == 1) {
-                        }
-                    }
-                });
-        builder.show();
-
-        // MyApplication 클래스에서 DBHelper를 가져오는 코드
-        dbHelper = MyApplication.getDbHelper();
-
-        // db 파일을 읽기/쓰기가 가능한 형식으로 연다
-        db = dbHelper.getWritableDatabase();
-
-        ImageView c_img_post = (ImageView) findViewById(R.id.c_img_post);   // 이미지 호출
 
         fillSpinner_location();                                             // 옷장 위치 값 호출
 
@@ -92,17 +75,6 @@ public class Post extends AppCompatActivity {
         c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         c_type_spinner.setAdapter(c_type_adapter);
         EditText c_type_post_add = (EditText) findViewById(R.id.c_type_post_add);   // 옷 종류(직접입력) 호출
-
-        Spinner c_size_spinner = (Spinner) findViewById(R.id.c_size_post);  // 옷 사이즈 호출
-        ArrayAdapter<CharSequence> c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, android.R.layout.simple_spinner_item);
-        c_size_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        c_size_spinner.setAdapter(c_size_adapter);
-        EditText c_size_post_add = (EditText) findViewById(R.id.c_size_post_add);   // 옷 사이즈((직접입력) 호출
-
-        EditText c_memo_post = (EditText) findViewById(R.id.c_memo_post);   // 메모 호출
-
-        Button save = (Button) findViewById(R.id.cloth_post);               // 등록 버튼
-
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -121,6 +93,12 @@ public class Post extends AppCompatActivity {
 
             }
         });
+
+        Spinner c_size_spinner = (Spinner) findViewById(R.id.c_size_post);  // 옷 사이즈 호출
+        ArrayAdapter<CharSequence> c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, android.R.layout.simple_spinner_item);
+        c_size_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c_size_spinner.setAdapter(c_size_adapter);
+        EditText c_size_post_add = (EditText) findViewById(R.id.c_size_post_add);   // 옷 사이즈((직접입력) 호출
 
         c_size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -143,6 +121,9 @@ public class Post extends AppCompatActivity {
             }
         });
 
+        EditText c_memo_post = (EditText) findViewById(R.id.c_memo_post);   // 메모 호출
+
+        Button save = (Button) findViewById(R.id.cloth_post);               // 등록 버튼
 
         // 등록 버튼을 누르면 실행되는 함수
         save.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +233,24 @@ public class Post extends AppCompatActivity {
                 }
             }
         });
+
         weatherSelect(); // 태그(계절) 함수 호출
+    }
+
+
+    private void showImageOptionsDialog() {
+        String[] options = {"촬영", "파일에서 가져오기"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("옵션 선택")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                        } else if (which == 1) {
+                        }
+                    }
+                });
+        builder.show();
     }
 
     private void fillSpinner_location() {
