@@ -62,16 +62,16 @@ public class WeatherData {
                 Log.d("asd",weatherarray[0]);
                 switch (weatherarray[0]) {
                     case "맑음":
-                        imageViewIcon.setImageResource(R.drawable.ic_launcher_background);
+                        imageViewIcon.setImageResource(R.drawable.sun);
                         break;
                     case "비":
-                        imageViewIcon.setImageResource(R.drawable.ic_launcher_foreground);
+                        imageViewIcon.setImageResource(R.drawable.rain);
                         break;
                     case "구름많음":
-                        imageViewIcon.setImageResource(R.drawable.ic_launcher_foreground);
+                        imageViewIcon.setImageResource(R.drawable.cloud);
                         break;
                     case "흐림":
-                        imageViewIcon.setImageResource(R.drawable.ic_launcher_background);
+                        imageViewIcon.setImageResource(R.drawable.clouds);
                         break;
                     default:
                         break;
