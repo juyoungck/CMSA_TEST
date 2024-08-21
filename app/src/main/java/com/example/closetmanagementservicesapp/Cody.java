@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +24,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
+
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CheckBox;
@@ -46,7 +49,7 @@ public class Cody extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 하단 등록 버튼(+) 이동
+        // 하단 등록 버튼 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
