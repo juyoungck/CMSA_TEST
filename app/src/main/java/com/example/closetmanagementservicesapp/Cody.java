@@ -91,7 +91,7 @@ public class Cody extends AppCompatActivity {
             }
         });
 
-        // 코디 탭 이동
+        // 메인 탭 이동
         Button btnCloset = (Button) findViewById(R.id.btnCloset);
         btnCloset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
