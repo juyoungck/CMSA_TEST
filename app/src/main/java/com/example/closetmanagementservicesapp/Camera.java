@@ -1,5 +1,6 @@
 package com.example.closetmanagementservicesapp;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,6 +32,10 @@ public class Camera extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_after_remove);
+
+        // DB OPEN
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
 
         iv1 = findViewById(R.id.iv);
         btn1 = findViewById(R.id.btn_capture);
