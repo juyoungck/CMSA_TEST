@@ -67,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
+
     String date = "", time = "";
     String x = "55", y = "127";
 
-    TextView weatherTextView;
+    TextView weatherTextView,timeNow;
 
     ImageView imageViewIcon;
 
@@ -79,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
     private ExcelReader excelReader;
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    String[] REQUIRED_PERMISSIONS = {android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,19 +225,22 @@ public class MainActivity extends AppCompatActivity {
         fillSpinner();
 
         //날씨, gps 코드
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
+        /*long now = System.currentTimeMillis();
+        Date mDate = new Date(now);*/
 
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("HH:mm", Locale.KOREA);
+        TimeZone KoreaTime = TimeZone.getTimeZone("Asia/Seoul");
+        simpleDateFormat1.setTimeZone(KoreaTime);
+        simpleDateFormat2.setTimeZone(KoreaTime);
+        Date date = new Date();
+        Log.d("시간",simpleDateFormat1.format(date));
+        Log.d("시간",simpleDateFormat2.format(date));
+        Log.d("시간",simpleDateFormat3.format(date));
 
-        String getDate = simpleDateFormat1.format(mDate);
-        String getTime = simpleDateFormat2.format(mDate) + "00";
-
-        Log.d("현재날짜", getDate);
-        Log.d("현재시간", getTime);
-
-
+        String getDate = simpleDateFormat1.format(date);
+        String getTime =  simpleDateFormat2.format(date)+ "00";
 
         gpsHelper = new GpsHelper(this);
         excelReader = new ExcelReader(this);
@@ -246,6 +250,12 @@ public class MainActivity extends AppCompatActivity {
         final Button textview_address = findViewById(R.id.refresh);
 
         ImageButton ShowLocationButton = findViewById(R.id.btnLocation);
+
+        timeNow = findViewById(R.id.timeNow);
+        morningAfternoon ma = new morningAfternoon(simpleDateFormat3.format(date));
+        String abc = ma.asd();
+        timeNow.setText(abc);
+
         ShowLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
