@@ -42,7 +42,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:background="@drawable/clothes"/>
+            android:background="@drawable/baseline_add_box_24"/>
 
         <TextView
             android:layout_marginTop="10dp"
