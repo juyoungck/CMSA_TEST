@@ -18,8 +18,8 @@ public class CodyAdd extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.codyadd);
 
-        Button cancleBtn= (Button) findViewById(R.id.codyadd_canclebtn);
-        cancleBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_codyadd);
+        btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent(CodyAdd.this, Cody.class);
                 startActivity(intent);
