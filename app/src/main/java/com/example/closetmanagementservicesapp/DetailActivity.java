@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -75,5 +76,14 @@ public class DetailActivity extends AppCompatActivity {
         detail_c_date.setText(c_date);
         detail_c_stack.setText(String.valueOf(c_stack));
 
+        ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_detail);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
