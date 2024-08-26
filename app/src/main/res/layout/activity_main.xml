@@ -174,154 +174,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:fillViewport="true">
+        android:id="@+id/sv_main"
+        android:fillViewport="true" >
 
-        <LinearLayout
+        <GridLayout
+            android:id="@+id/gl_main"
+            tools:background="#00ff0000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-                
-                <ImageButton
-                    android:id="@+id/clothImgbtn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:id="@+id/clothTag1"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp" />
-
-                <TextView
-                    android:id="@+id/clothTag2"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-                <TextView
-                    android:id="@+id/clothTag3"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-                <ImageButton
-                    android:id="@+id/clothImgbtn6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:background="#00ff0000"
-                    android:padding="50dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:id="@+id/clothTag4"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp" />
-
-                <TextView
-                    android:id="@+id/clothTag5"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-                <TextView
-                    android:id="@+id/clothTag6"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:padding="0dp" />
-
-            </LinearLayout>
-        </LinearLayout>
+            android:rowCount="3"
+            android:columnCount="100" >
+        </GridLayout>
     </ScrollView>
 
     <FrameLayout
