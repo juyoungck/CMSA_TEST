@@ -19,12 +19,11 @@
             <ImageButton
                 android:layout_width="30dp"
                 android:layout_height="38dp"
-                android:id="@+id/btnBack_post"
+                android:id="@+id/btnBack_detail"
                 android:background="#00ff0000"
                 android:src="@drawable/arrow_back"
                 android:layout_marginLeft="-10dp"
                 android:layout_marginTop="-10dp"/>
-
 
             <TextView
                 android:layout_marginTop="-10dp"
