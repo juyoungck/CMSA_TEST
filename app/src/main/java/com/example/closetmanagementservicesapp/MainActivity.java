@@ -5,52 +5,42 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.view.View;
 import android.widget.Toast;
 
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
+    private GridLayout gridLayout;
+
+    private int imgCounter = 1001;
+    private int tagCounter = 2001;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = MyApplication.getDbHelper();
         db = dbHelper.getWritableDatabase();
 
+        gridLayout = findViewById(R.id.gl_main);
+
         // 하단 등록 버튼(+) 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,6 +211,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 중앙 이미지 레이아웃과 이미지 호출
+        List<Integer> imgCounterList = ItemAddImg(imgCounter);
+
+        // 중앙 태그 레이아웃과 태그 호출
+        List<Integer> tagCounterList = ItemAddTag(tagCounter);
+
         // 기본 옷장 위치 추가
         basicLocation();
 
@@ -223,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Spinner 값 출력 (TEST)
         fillSpinner();
+
 
         //날씨, gps 코드
         /*long now = System.currentTimeMillis();
@@ -294,22 +297,26 @@ public class MainActivity extends AppCompatActivity {
         // Main_Closet 테이블의 모든 값을 불러옴
         Cursor cursor = db.query("Main_Closet", null, null, null, null, null, null);
 
+        // 초기값
+        int initialImgCounter = 1001;
+        int initialTagCounter = 2001;
+
         // 커서 위치 유효성 검사 후 문제가 없으면 해당 코드 실행
         if (cursor != null && cursor.moveToFirst()) {
             int count = cursor.getCount();
 
+            GridLayout gridLayout = findViewById(R.id.gl_main);
+
             for (int i = 0; i < count; i++) {
                 String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
                 String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
-
                 Bitmap bitmap = BitmapFactory.decodeFile(c_img);
 
-                // getResources().getIdentifier() 메서드를 사용해서 xml 파일의 clothTag1, clothTag2 등의 id 값들을 차례대로 불러옴
-                @SuppressLint("DiscouragedApi") int textViewId = getResources().getIdentifier("clothTag" + (i + 1), "id", getPackageName());
-                @SuppressLint("DiscouragedApi") int imageButtonId = getResources().getIdentifier("clothImgbtn" + (i + 1), "id", getPackageName());
+                int imgCounter = initialImgCounter + i; // ImageButton의 ID
+                int tagCounter = initialTagCounter + i; // TextView의 ID
 
-                TextView textView = (TextView) findViewById(textViewId);
-                ImageButton imageButton = (ImageButton) findViewById(imageButtonId);
+                ImageButton imageButton = (ImageButton) findViewById(imgCounter);
+                TextView textView = (TextView) findViewById(tagCounter);
 
                 // 유효성 검사 후 문제가 없으면 해당 코드 실행 (현재 오류 발생 중, 추후 수정)
                 if (textView != null && imageButton != null) {
@@ -398,10 +405,94 @@ public class MainActivity extends AppCompatActivity {
 
         return Today.format(date);
     }
-    
+
     //위치 권한 코드
     public void onRequestPermissionsResult(int permsRequestCode, @NonNull String[] permissions, @NonNull int[] grandResults) {
         super.onRequestPermissionsResult(permsRequestCode, permissions, grandResults);
         gpsHelper.checkRunTimePermission();
+    }
+
+    private List<Integer> ItemAddImg(int imgCounter){
+
+        List<Integer> imgCounters = new ArrayList<>();
+        int buttonWidth = 300;
+        int buttonHeight = 300;
+        int textViewWidth = 300;
+        int textViewHeight = 300;
+        int margin = 300;
+
+        GridLayout gridLayout = findViewById(R.id.gl_main);
+        gridLayout.setRowCount(100);
+        gridLayout.setColumnCount(3);
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 3; col++) {
+
+                // ImageButton
+                ImageButton clothImgbtn = new ImageButton(this);
+                clothImgbtn.setBackgroundColor(Color.parseColor("#00ff0000"));
+                clothImgbtn.setPadding(150, 150, 150, 150);
+                clothImgbtn.setId(imgCounter);
+
+                // GridLayout에 레이아웃 매개변수 설정
+                GridLayout.LayoutParams paramsImageButton = new GridLayout.LayoutParams();
+                paramsImageButton.width = 300;
+                paramsImageButton.height = 300;
+                paramsImageButton.setMargins(30, 45, 30, 0);
+                paramsImageButton.rowSpec = GridLayout.spec(row * 2);
+                paramsImageButton.columnSpec = GridLayout.spec(col);
+                clothImgbtn.setLayoutParams(paramsImageButton);
+
+                // GridLayout에 뷰 추가
+                gridLayout.addView(clothImgbtn);
+
+                imgCounters.add(imgCounter);
+
+                imgCounter++;
+            }
+        }
+        return imgCounters;
+    }
+
+    private List<Integer> ItemAddTag(int tagCounter){
+
+        List<Integer> tagCounters = new ArrayList<>();
+        int buttonWidth = 300;
+        int buttonHeight = 300;
+        int textViewWidth = 300;
+        int textViewHeight = 300;
+        int margin = 300;
+
+        GridLayout gridLayout = findViewById(R.id.gl_main);
+        gridLayout.setRowCount(100);
+        gridLayout.setColumnCount(3);
+
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 3; col++) {
+
+                // TextView 생성 및 설정
+                TextView clothTag = new TextView(this);
+                clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
+                clothTag.setGravity(Gravity.CENTER);
+                clothTag.setId(tagCounter);
+
+                GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
+                paramsTextView.width = 300;
+                paramsTextView.height = 75;
+                paramsTextView.setMargins(30, 0, 30, 0);
+                paramsTextView.rowSpec = GridLayout.spec(row * 2 + 1);
+                paramsTextView.columnSpec = GridLayout.spec(col);
+                clothTag.setLayoutParams(paramsTextView);
+
+                // GridLayout에 뷰 추가
+                gridLayout.addView(clothTag);
+
+                tagCounters.add(tagCounter);
+
+                tagCounter++;
+            }
+        }
+        return tagCounters;
     }
 }
