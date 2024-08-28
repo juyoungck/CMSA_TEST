@@ -26,7 +26,14 @@ public class CameraUtil {
     private SQLiteDatabase db;
     private Context context;
     private ImageButton imageButton;
+
+    private ImageView imageView;
     private String savedImagePath = "";
+
+    public CameraUtil(Context context, ImageView imageView) {
+        this.context = context;
+        this.imageView = imageView;
+    }
 
     public CameraUtil(Context context, ImageButton imageButton) {
         this.context = context;
@@ -96,7 +103,7 @@ public class CameraUtil {
     private void loadImageFromStorage(String path) {
         if (path != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            imageButton.setImageBitmap(bitmap);
+            imageView.setImageBitmap(bitmap);
         } else {
             Toast.makeText(context, "이미지를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }

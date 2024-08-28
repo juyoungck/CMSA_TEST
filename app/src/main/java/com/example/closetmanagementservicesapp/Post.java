@@ -84,7 +84,7 @@ public class Post extends AppCompatActivity {
         EditText c_type_post_add = (EditText) findViewById(R.id.c_type_post_add);   // 옷 종류(직접입력) 호출
 
         //카메라
-        cameraUtil = new CameraUtil(this, imageButton); //화면, 이미지뷰
+        cameraUtil = new CameraUtil(this, c_img_post); //화면, 이미지뷰
 
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
