@@ -28,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private int c_id;
+    private boolean isModified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,64 +88,54 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        Button modifyButton = findViewById(R.id.detail_Modify);
-        modifyButton.setOnClickListener(new View.OnClickListener() {
+        Button detailModifyButton = findViewById(R.id.detail_Modify);
+        Button deleteButton = findViewById(R.id.detail_delete);
+
+        detailModifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSaveConfirmationDialog();
+                if (!isModified) {
+                    // 첫 번째 클릭: 버튼 텍스트 변경
+                    detailModifyButton.setText("저장");
+                    isModified = true;
+                } else {
+                    // 두 번째 클릭: 다이얼로그 표시
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                    builder.setMessage("옷을 저장하겠습니까?")
+                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
+                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
             }
         });
 
-        Button deleteButton = findViewById(R.id.detail_delete);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeleteConfirmationDialog();
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setMessage("옷을 삭제하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
             }
         });
-    }
-
-    private void showSaveConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("옷을 저장하시겠습니까?");
-
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void showDeleteConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("옷을 삭제하시겠습니까?");
-
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }
+
 
 
 
