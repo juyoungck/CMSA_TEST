@@ -2,6 +2,8 @@ package com.example.closetmanagementservicesapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
@@ -20,6 +22,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CameraUtil {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private Context context;
     private ImageButton imageButton;
     private String savedImagePath = "";
@@ -35,18 +39,34 @@ public class CameraUtil {
     }
 
     public void handleCameraResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // DB OPEN
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
+
         if (requestCode == 1 && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             Bitmap bitmap = (Bitmap) data.getParcelableExtra("data");
+
             if (bitmap != null) {
-                SimpleDateFormat timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA);
-                String time = timeStamp.format(new Date());
-                String fileName = "image_" + time + ".jpg";
+                Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
+                int cId = 0;
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    cId = cursor.getInt(0);
+                    cId++;
+                    cursor.close();
+                }
+
+                String fileName = "image_" + cId + ".png";
 
                 // 이미지 저장
                 savedImagePath = saveImageInternalStorage(bitmap, fileName);
 
                 // 저장된 이미지 불러오기
                 loadImageFromStorage(savedImagePath);
+
+                Intent intent = new Intent(context, Post.class);
+                intent.putExtra("fileName", fileName);
+                context.startActivity(intent);
             }
         }
     }
@@ -59,7 +79,7 @@ public class CameraUtil {
 
         File file = new File(directory, fileName);
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             Toast.makeText(context, "이미지가 내부 저장소에 저장되었습니다.", Toast.LENGTH_SHORT).show();
             Log.d("File Save Path", file.getAbsolutePath());
 

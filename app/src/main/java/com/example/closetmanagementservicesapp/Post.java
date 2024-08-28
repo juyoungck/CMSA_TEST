@@ -140,7 +140,19 @@ public class Post extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Drawable drawable = c_img_post.getDrawable();
+                Intent intent = getIntent();
+                String fileName = intent.getStringExtra("fileName");
+
+                Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
+                int cId = 0;
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    cId = cursor.getInt(0);
+                    cId++;
+                    cursor.close();
+                }
+                String fileNameCheck = "image_" + cId + ".png";
+
                 int selectedLocIndex = ((Spinner) findViewById(R.id.c_loc_post)).getSelectedItemPosition();
                 Integer c_loc = c_loc_value.get(selectedLocIndex);
                 String c_name = c_name_post.getText().toString();
@@ -151,10 +163,9 @@ public class Post extends AppCompatActivity {
                 String c_brand = c_brand_post.getText().toString();
                 String c_memo = c_memo_post.getText().toString();
 
-                // if (drawable == null) {
-                //                    Toast.makeText(getApplicationContext(), "사진 파일이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                //                } else
-                if (c_name.equals("")) {
+                if (!fileNameCheck.equals(fileName)) {
+                    Toast.makeText(getApplicationContext(), "사진 파일이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                } else if (c_name.equals("")) {
                     Toast.makeText(getApplicationContext(), "옷 이름이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 } else if (c_type.equals("직접입력") && c_type_add.equals("")) {
                     Toast.makeText(getApplicationContext(), "옷 종류가 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
@@ -168,6 +179,8 @@ public class Post extends AppCompatActivity {
                                     db.beginTransaction();
                                     try {
                                         ContentValues values = new ContentValues();
+
+                                        values.put("c_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + fileName);
                                         values.put("c_loc", c_loc);
                                         values.put("c_name", c_name);
 
@@ -191,35 +204,7 @@ public class Post extends AppCompatActivity {
                                         values.put("c_date", getToday());
                                         values.put("c_stack", 0);
 
-                                        long rowId = db.insert("Main_Closet", null, values);
-                                        Cursor cursor = db.rawQuery("SELECT c_id FROM Main_Closet WHERE rowid = ?", new String[]{String.valueOf(rowId)});
-                                        int cId = -1;
-
-                                        if (cursor != null && cursor.moveToFirst()) {
-                                            cId = cursor.getInt(cursor.getColumnIndex("c_id"));
-                                            cursor.close();
-                                        }
-
-                                        String fileName = "image_" + cId + ".png";
-                                        File directory = new File(getFilesDir(), "images");
-
-                                        if (!directory.exists()) {
-                                            directory.mkdirs();
-                                        }
-
-                                        File imageFile = new File(directory, fileName);
-
-                                        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-                                            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image2);
-                                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        values = new ContentValues();
-                                        values.put("c_img", imageFile.getAbsolutePath());
-                                        db.update("Main_Closet", values, "c_id = ?", new String[]{String.valueOf(cId)});
-
+                                        db.insert("Main_Closet", null, values);
                                         db.setTransactionSuccessful();
                                     } catch (Exception e) {
                                         e.printStackTrace();
