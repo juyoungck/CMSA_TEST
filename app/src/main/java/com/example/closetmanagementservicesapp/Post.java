@@ -27,6 +27,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import com.example.closetmanagementservicesapp.CameraUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,6 +47,9 @@ public class Post extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private List<Integer> c_loc_value;
+
+    private CameraUtil cameraUtil;
+    private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +82,10 @@ public class Post extends AppCompatActivity {
         c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         c_type_spinner.setAdapter(c_type_adapter);
         EditText c_type_post_add = (EditText) findViewById(R.id.c_type_post_add);   // 옷 종류(직접입력) 호출
+
+        //카메라
+        cameraUtil = new CameraUtil(this, imageButton); //화면, 이미지뷰
+
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -246,6 +257,7 @@ public class Post extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
+                            requestCameraPermission();
                         } else if (which == 1) {
                         }
                     }
@@ -443,5 +455,30 @@ public class Post extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    //카메라 권한
+    private void requestCameraPermission() {
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                cameraUtil.openCameraForResult(CAMERA_REQUEST_CODE);
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(Post.this, "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        };
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("카메라 권한이 필요합니다. [설정] > [권한]에서 권한을 허용해주세요.")
+                .setPermissions(android.Manifest.permission.CAMERA)
+                .check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        cameraUtil.handleCameraResult(requestCode, resultCode, data);
     }
 }
