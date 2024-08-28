@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
         TimeZone KoreaTime = TimeZone.getTimeZone("Asia/Seoul");
         simpleDateFormat1.setTimeZone(KoreaTime);
         simpleDateFormat2.setTimeZone(KoreaTime);
+        simpleDateFormat3.setTimeZone(KoreaTime);
         Date date = new Date();
         Log.d("시간",simpleDateFormat1.format(date));
         Log.d("시간",simpleDateFormat2.format(date));
