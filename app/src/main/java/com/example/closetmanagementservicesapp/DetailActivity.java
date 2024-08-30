@@ -27,6 +27,7 @@ public class DetailActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private int c_id;
+    private boolean isModified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,5 +86,53 @@ public class DetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button detailModifyButton = findViewById(R.id.detail_Modify);
+        Button deleteButton = findViewById(R.id.detail_delete);
+
+        detailModifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isModified) {
+                    detailModifyButton.setText("저장");
+                    isModified = true;
+                } else {
+                    // 두 번째 클릭: 다이얼로그 표시
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                    builder.setMessage("옷을 저장하겠습니까?")
+                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            })
+                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setMessage("옷을 삭제하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+            }
+        });
     }
 }
+
+
