@@ -268,11 +268,11 @@ public class MainActivity extends AppCompatActivity {
                 double longitude = location[1];
 
                 String address = gpsHelper.getCurrentAddress(latitude, longitude);
-                textview_address.setText(address);
+                textview_address.setText("수정구 복정동");//textview_address.setText(address);
 
                 String[] local = address.split(" ");
                 String localName = local[3];
-                localName ="태평1동"; //임시값
+                localName ="복정동"; //임시값
                 String[] gridCoordinates = excelReader.readExcel(localName);
                 String x = gridCoordinates[0];
                 String y = gridCoordinates[1];

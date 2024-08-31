@@ -1,5 +1,6 @@
 package com.example.closetmanagementservicesapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -48,9 +49,11 @@ public class Post extends AppCompatActivity {
     private SQLiteDatabase db;
     private List<Integer> c_loc_value;
 
+    private ImageLoader imageLoader;
     private CameraUtil cameraUtil;
     private static final int CAMERA_REQUEST_CODE = 1;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +66,9 @@ public class Post extends AppCompatActivity {
         ImageView c_img_post = (ImageView) findViewById(R.id.c_img_post);   // 이미지 호출
 
         // 이미지 버튼 클릭시 다이얼로그 생성
-        ImageButton imageButton = findViewById(R.id.c_img_post);
-        imageButton.setOnClickListener(v -> showImageOptionsDialog());
+        /*ImageButton imageButton = findViewById(R.id.c_img_post);*/
+        Button button = findViewById(R.id.btnbtn);
+        button.setOnClickListener(v -> showImageOptionsDialog());
 
         // 닫기 버튼
         CloseButton();
@@ -85,6 +89,7 @@ public class Post extends AppCompatActivity {
 
         //카메라
         cameraUtil = new CameraUtil(this, c_img_post); //화면, 이미지뷰
+        imageLoader = new ImageLoader(this, c_img_post);
 
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -243,7 +248,9 @@ public class Post extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             requestCameraPermission();
+
                         } else if (which == 1) {
+                            imageLoader.selectImage();
                         }
                     }
                 });
@@ -447,6 +454,7 @@ public class Post extends AppCompatActivity {
             @Override
             public void onPermissionGranted() {
                 cameraUtil.openCameraForResult(CAMERA_REQUEST_CODE);
+
             }
 
             @Override
@@ -464,6 +472,12 @@ public class Post extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        cameraUtil.handleCameraResult(requestCode, resultCode, data);
+        if(requestCode==1) {
+            System.out.println("되는듯");
+            cameraUtil.handleCameraResult(requestCode, resultCode, data);
+        }
+        if(requestCode==2) {
+            imageLoader.loadImageFromResult(requestCode, resultCode, data);
+        }
     }
 }

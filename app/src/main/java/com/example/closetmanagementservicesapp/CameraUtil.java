@@ -100,7 +100,7 @@ public class CameraUtil {
         }
     }
 
-    private void loadImageFromStorage(String path) {
+     private void loadImageFromStorage(String path) {
         if (path != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             imageView.setImageBitmap(bitmap);
