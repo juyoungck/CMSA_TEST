@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int imgCounter = 1001;
     private int tagCounter = 2001;
+    private int imgRow = 0;
+    private int tagRow = 0;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -298,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         // Main_Closet 테이블의 모든 값을 불러옴
         Cursor cursor = db.query("Main_Closet", null, null, null, null, null, null);
 
-        // 초기값
         int initialImgCounter = 1001;
         int initialTagCounter = 2001;
 
@@ -323,6 +324,20 @@ public class MainActivity extends AppCompatActivity {
                 if (textView != null && imageButton != null) {
                     textView.setText(c_name);
                     imageButton.setImageBitmap(bitmap);
+
+                    if ((imgCounter - 1000) % 3 == 0) {
+                        imgRow++;
+                        imgCounter++;
+                        List<Integer> imgCounterList = ItemAddImg(imgCounter);
+                        imgCounter += imgCounterList.size();
+                    }
+
+                    if ((tagCounter - 2000) % 3 == 0) {
+                        tagRow++;
+                        tagCounter++;
+                        List<Integer> tagCounterList = ItemAddTag(tagCounter);
+                        tagCounter += tagCounterList.size();
+                    }
 
                     int finalI = i;
 
@@ -375,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
-
+    
 
     // MainActivity가 종료 될 때 호출 되는 메서드
     @Override
@@ -423,12 +438,11 @@ public class MainActivity extends AppCompatActivity {
         int margin = 300;
 
         GridLayout gridLayout = findViewById(R.id.gl_main);
-        gridLayout.setRowCount(100);
+        gridLayout.setRowCount(50);
         gridLayout.setColumnCount(3);
 
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 3; col++) {
 
+            for (int col = 0; col < 3; col++) {
                 // ImageButton
                 ImageButton clothImgbtn = new ImageButton(this);
                 clothImgbtn.setBackgroundColor(Color.parseColor("#00ff0000"));
@@ -440,22 +454,21 @@ public class MainActivity extends AppCompatActivity {
                 paramsImageButton.width = 300;
                 paramsImageButton.height = 300;
                 paramsImageButton.setMargins(30, 45, 30, 0);
-                paramsImageButton.rowSpec = GridLayout.spec(row * 2);
+                paramsImageButton.rowSpec = GridLayout.spec(imgRow * 2);
                 paramsImageButton.columnSpec = GridLayout.spec(col);
                 clothImgbtn.setLayoutParams(paramsImageButton);
 
                 // GridLayout에 뷰 추가
                 gridLayout.addView(clothImgbtn);
-
                 imgCounters.add(imgCounter);
-
                 imgCounter++;
             }
-        }
+
+
         return imgCounters;
     }
 
-    private List<Integer> ItemAddTag(int tagCounter){
+    private List<Integer> ItemAddTag(int tagCounter) {
 
         List<Integer> tagCounters = new ArrayList<>();
         int buttonWidth = 300;
@@ -465,16 +478,15 @@ public class MainActivity extends AppCompatActivity {
         int margin = 300;
 
         GridLayout gridLayout = findViewById(R.id.gl_main);
-        gridLayout.setRowCount(100);
+        gridLayout.setRowCount(50);
         gridLayout.setColumnCount(3);
 
 
-        for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 3; col++) {
 
                 // TextView 생성 및 설정
                 TextView clothTag = new TextView(this);
-                clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
+                clothTag.setBackgroundColor(Color.parseColor("#ffffff"));
                 clothTag.setGravity(Gravity.CENTER);
                 clothTag.setId(tagCounter);
 
@@ -482,18 +494,17 @@ public class MainActivity extends AppCompatActivity {
                 paramsTextView.width = 300;
                 paramsTextView.height = 75;
                 paramsTextView.setMargins(30, 0, 30, 0);
-                paramsTextView.rowSpec = GridLayout.spec(row * 2 + 1);
+                paramsTextView.rowSpec = GridLayout.spec(tagRow * 2 + 1);
                 paramsTextView.columnSpec = GridLayout.spec(col);
                 clothTag.setLayoutParams(paramsTextView);
 
                 // GridLayout에 뷰 추가
                 gridLayout.addView(clothTag);
-
                 tagCounters.add(tagCounter);
-
                 tagCounter++;
             }
-        }
+
         return tagCounters;
     }
 }
+
