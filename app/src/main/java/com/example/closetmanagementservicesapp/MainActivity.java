@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // TextView 생성 및 설정
                 TextView clothTag = new TextView(this);
-                clothTag.setBackgroundColor(Color.parseColor("#ffffff"));
+                clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
                 clothTag.setGravity(Gravity.CENTER);
                 clothTag.setId(tagCounter);
 
