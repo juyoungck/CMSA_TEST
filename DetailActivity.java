@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,10 +43,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
         ImageView imageView = (ImageView) findViewById(R.id.detail_c_img);
-        EditText detail_c_loc = (EditText) findViewById(R.id.detail_c_loc);
+        Spinner detail_c_loc = (Spinner) findViewById(R.id.detail_c_loc);
         EditText detail_c_name = (EditText) findViewById(R.id.detail_c_name);
-        EditText detail_c_type = (EditText) findViewById(R.id.detail_c_type);
-        EditText detail_c_size = (EditText) findViewById(R.id.detail_c_size);
+        Spinner detail_c_type = (Spinner) findViewById(R.id.detail_c_type);
+        Spinner detail_c_size = (Spinner) findViewById(R.id.detail_c_size);
         EditText detail_c_brand = (EditText) findViewById(R.id.detail_c_brand);
         EditText detail_c_tag = (EditText) findViewById(R.id.detail_c_tag);
         EditText detail_c_memo = (EditText) findViewById(R.id.detail_c_memo);
@@ -68,10 +70,10 @@ public class DetailActivity extends AppCompatActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(c_img);
         imageView.setImageBitmap(bitmap);
-        detail_c_loc.setText(String.valueOf(c_loc));
+        //detail_c_loc.setSpinner(String.valueOf(c_loc));
         detail_c_name.setText(c_name);
-        detail_c_type.setText(c_type);
-        detail_c_size.setText(c_size);
+        //detail_c_type.setText(c_type);
+        //detail_c_size.setText(c_size);
         detail_c_brand.setText(c_brand);
         detail_c_tag.setText(String.valueOf(c_tag));
         detail_c_memo.setText(c_memo);
@@ -95,7 +97,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isModified) {
-                    // 첫 번째 클릭: 버튼 텍스트 변경
                     detailModifyButton.setText("저장");
                     isModified = true;
                 } else {
@@ -124,6 +125,7 @@ public class DetailActivity extends AppCompatActivity {
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                             }
+
                         })
                         .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -133,9 +135,62 @@ public class DetailActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        Spinner detail_c_type_spinner = (Spinner) findViewById(R.id.detail_c_type);  // 옷 종류 호출
+        ArrayAdapter<CharSequence> detail_c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, android.R.layout.simple_spinner_item);
+        detail_c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        detail_c_type_spinner.setAdapter(detail_c_type_adapter);
+        EditText detail_c_type_add = (EditText) findViewById(R.id.detail_c_type_add);   // 옷 종류(직접입력) 호출
+
+
+        detail_c_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String c_type = detail_c_type_spinner.getSelectedItem().toString();
+
+                if (c_type.equals("직접입력")) {
+                    detail_c_type_add.setVisibility(View.VISIBLE);
+                } else {
+                    detail_c_type_add.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        Spinner detail_c_size_spinner = (Spinner) findViewById(R.id.detail_c_size);  // 옷 사이즈 호출
+        ArrayAdapter<CharSequence> detail_c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, android.R.layout.simple_spinner_item);
+        detail_c_size_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        detail_c_size_spinner.setAdapter(detail_c_size_adapter);
+        EditText detail_c_size_add = (EditText) findViewById(R.id.detail_c_size_add);   // 옷 사이즈((직접입력) 호출
+
+        detail_c_size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String c_size = detail_c_size_spinner.getSelectedItem().toString();
+
+                if (c_size.equals("직접입력")) {
+                    detail_c_size_add.setVisibility(View.VISIBLE);
+                } else if (c_size.equals("선택안함")) {
+                    detail_c_size_add.setVisibility(View.INVISIBLE);
+                    detail_c_size_add.setText("");
+                } else {
+                    detail_c_size_add.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
     }
 }
-
 
 
 
