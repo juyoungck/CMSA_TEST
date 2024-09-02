@@ -130,7 +130,7 @@
             android:src="@drawable/modify" />
 
         <Spinner
-            android:id="@+id/cody_c_loc"
+            android:id="@+id/main_cod_loc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbarSize="100dp"

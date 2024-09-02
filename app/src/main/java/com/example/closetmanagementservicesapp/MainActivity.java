@@ -219,14 +219,14 @@ public class MainActivity extends AppCompatActivity {
         // 중앙 태그 레이아웃과 태그 호출
         List<Integer> tagCounterList = ItemAddTag(tagCounter);
 
-        // 기본 옷장 위치 추가
+        // 기본 옷장, 코디 위치 추가
         basicLocation();
 
         // 임의 데이터 출력을 위한 메서드
         displayData();
 
-        // Spinner 값 출력 (TEST)
-        fillSpinner();
+        // 옷장 위치 스피너 출력
+        fillSpinner_c_loc();
 
 
         //날씨, gps 코드
@@ -375,7 +375,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void fillSpinner() {
+    // 옷장 위치 스피너 출력
+    private void fillSpinner_c_loc() {
         Spinner spinner = findViewById(R.id.main_c_loc);
 
         List<String> locations = new ArrayList<>();
@@ -410,6 +411,12 @@ public class MainActivity extends AppCompatActivity {
         values.put("c_loc_name", "옷장 1");
         values.put("c_loc_date", getToday());
         db.insert("Closet_Location", null, values);
+
+        values = new ContentValues();
+        values.put("cod_loc", 1);
+        values.put("cod_loc_name", "코디 1");
+        values.put("cod_loc_date", getToday());
+        db.insert("Coordy_Location", null, values);
     }
 
     private String getToday() {

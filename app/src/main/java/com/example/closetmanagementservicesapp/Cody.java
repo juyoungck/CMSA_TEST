@@ -43,11 +43,20 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class Cody extends AppCompatActivity {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.cody);
+
+        // DB OPEN
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
+
+        // 코디 위치 스피너 출력
+        fillSpinner_cod_loc();
 
         // 하단 등록 버튼 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -93,6 +102,7 @@ public class Cody extends AppCompatActivity {
                 });
             }
         });
+
 
         // 메인 탭 이동
         Button btnCloset = (Button) findViewById(R.id.btnCloset);
@@ -170,5 +180,22 @@ public class Cody extends AppCompatActivity {
                 tabModify.modifyButton(modifyView);
             }
         });
+    }
+
+    // 코디 위치 스피너 출력
+    private void fillSpinner_cod_loc() {
+        Spinner spinner = findViewById(R.id.main_cod_loc);
+
+        List<String> locations = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT cod_loc_name FROM Coordy_Location ORDER BY cod_loc ASC", null);
+
+        while (cursor.moveToNext()) {
+            locations.add(cursor.getString(cursor.getColumnIndex("cod_loc_name")));
+        }
+        cursor.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 }
