@@ -2,10 +2,12 @@ package com.example.closetmanagementservicesapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -26,14 +29,7 @@ public class CameraUtil {
     private SQLiteDatabase db;
     private Context context;
     private ImageButton imageButton;
-
-    private ImageView imageView;
     private String savedImagePath = "";
-
-    public CameraUtil(Context context, ImageView imageView) {
-        this.context = context;
-        this.imageView = imageView;
-    }
 
     public CameraUtil(Context context, ImageButton imageButton) {
         this.context = context;
@@ -71,7 +67,12 @@ public class CameraUtil {
                 // 저장된 이미지 불러오기
                 loadImageFromStorage(savedImagePath);
 
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
                 Intent intent = new Intent(context, Post.class);
+                intent.putExtra("imageData", byteArray);
                 intent.putExtra("fileName", fileName);
                 context.startActivity(intent);
             }
@@ -103,7 +104,7 @@ public class CameraUtil {
      private void loadImageFromStorage(String path) {
         if (path != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            imageView.setImageBitmap(bitmap);
+            imageButton.setImageBitmap(bitmap);
         } else {
             Toast.makeText(context, "이미지를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
