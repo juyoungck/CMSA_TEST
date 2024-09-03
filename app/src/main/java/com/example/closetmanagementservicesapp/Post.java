@@ -36,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class Post extends AppCompatActivity {
     private CameraUtil cameraUtil;
     private static final int CAMERA_REQUEST_CODE = 1;
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,17 +65,12 @@ public class Post extends AppCompatActivity {
         dbHelper = MyApplication.getDbHelper();
         db = dbHelper.getWritableDatabase();
 
-        ImageView c_img_post = (ImageView) findViewById(R.id.c_img_post);   // 이미지 호출
+        ImageButton c_img_post = (ImageButton) findViewById(R.id.c_img_post);
 
-        // 이미지 버튼 클릭시 다이얼로그 생성
-        /*ImageButton imageButton = findViewById(R.id.c_img_post);*/
-        Button button = findViewById(R.id.btnbtn);
-        button.setOnClickListener(v -> showImageOptionsDialog());
+        c_img_post.setOnClickListener(v -> showImageOptionsDialog());
 
         // 닫기 버튼
         CloseButton();
-
-        //
 
         fillSpinner_location();                                             // 옷장 위치 값 호출
 
@@ -89,8 +86,16 @@ public class Post extends AppCompatActivity {
 
         //카메라
         cameraUtil = new CameraUtil(this, c_img_post); //화면, 이미지뷰
+        Intent intent = getIntent();
+        byte[] byteArray = intent.getByteArrayExtra("imageData");
+        if (byteArray != null && byteArray.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            if (bitmap != null) {
+                c_img_post.setImageBitmap(bitmap);
+            }
+        }
         imageLoader = new ImageLoader(this, c_img_post);
-
+        intent = getIntent();
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -147,6 +152,7 @@ public class Post extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = getIntent();
                 String fileName = intent.getStringExtra("fileName");
+
 
                 Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
                 int cId = 0;
