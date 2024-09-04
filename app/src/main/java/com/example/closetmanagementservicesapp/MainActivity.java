@@ -347,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
                             Cursor detailCursor = db.query("Main_Closet", null, null, null, null, null, null);
                             if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
                                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                                intent.putExtra("c_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_id")));
                                 intent.putExtra("c_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_img")));
                                 intent.putExtra("c_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_loc")));
                                 intent.putExtra("c_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_name")));
