@@ -50,7 +50,7 @@ public class CameraUtil {
             Bitmap bitmap = (Bitmap) data.getParcelableExtra("data");
 
             if (bitmap != null) {
-                Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300;
+                Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
                 Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
                 int cId = 0;
 
