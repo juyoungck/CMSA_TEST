@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.EditText;
@@ -48,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
         Spinner detail_c_type = (Spinner) findViewById(R.id.detail_c_type);
         Spinner detail_c_size = (Spinner) findViewById(R.id.detail_c_size);
         EditText detail_c_brand = (EditText) findViewById(R.id.detail_c_brand);
-        EditText detail_c_tag = (EditText) findViewById(R.id.detail_c_tag);
+        // EditText detail_c_tag = (EditText) findViewById(R.id.detail_c_tag);
         EditText detail_c_memo = (EditText) findViewById(R.id.detail_c_memo);
         EditText detail_c_date = (EditText) findViewById(R.id.detail_c_date);
         EditText detail_c_stack = (EditText) findViewById(R.id.detail_c_stack);
@@ -70,12 +71,12 @@ public class DetailActivity extends AppCompatActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(c_img);
         imageView.setImageBitmap(bitmap);
-        //detail_c_loc.setSpinner(String.valueOf(c_loc));
+        //detail_c_loc.setText(String.valueOf(c_loc));
         detail_c_name.setText(c_name);
         //detail_c_type.setText(c_type);
         //detail_c_size.setText(c_size);
         detail_c_brand.setText(c_brand);
-        detail_c_tag.setText(String.valueOf(c_tag));
+        //detail_c_tag.setText(String.valueOf(c_tag));
         detail_c_memo.setText(c_memo);
         detail_c_date.setText(c_date);
         detail_c_stack.setText(String.valueOf(c_stack));
@@ -92,6 +93,26 @@ public class DetailActivity extends AppCompatActivity {
 
         Button detailModifyButton = findViewById(R.id.detail_Modify);
         Button deleteButton = findViewById(R.id.detail_delete);
+        // 수정 버튼 클릭 전 비활성화
+        Spinner detailctype = findViewById(R.id.detail_c_type);
+        Spinner detailcloc = findViewById(R.id.detail_c_loc);
+        Spinner detailcsize = findViewById(R.id.detail_c_size);
+        EditText detailcname= findViewById(R.id.detail_c_name);
+        EditText detailcbrand= findViewById(R.id.detail_c_brand);
+        CheckBox weatherSelectspring= findViewById(R.id.weatherSelect_spring);
+        CheckBox weatherSelectsummer= findViewById(R.id.weatherSelect_summer);
+        CheckBox weatherSelectfall= findViewById(R.id.weatherSelect_fall);
+        CheckBox weatherSelectwinter= findViewById(R.id.weatherSelect_winter);
+        CheckBox weatherSelectcommunal= findViewById(R.id.weatherSelect_communal);
+        EditText detailcmemo= findViewById(R.id.detail_c_memo);
+        EditText detailcdate= findViewById(R.id.detail_c_date);
+        EditText detailcstack= findViewById(R.id.detail_c_stack);
+        detailctype.setEnabled(false);
+        detailctype.setClickable(false);
+        detailcloc.setEnabled(false);
+        detailcloc.setClickable(false);
+        detailcsize.setEnabled(false);
+        detailcsize.setClickable(false);
 
         detailModifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +120,24 @@ public class DetailActivity extends AppCompatActivity {
                 if (!isModified) {
                     detailModifyButton.setText("저장");
                     isModified = true;
+                    // 수정 버튼 클릭 후 활성화
+                    detailctype.setEnabled(true);
+                    detailcloc.setEnabled(true);
+                    detailcsize.setEnabled(true);
+                    detailcsize.setClickable(true);
+                    detailcname.setEnabled(true);
+                    detailcbrand.setEnabled(true);
+                    detailcmemo.setEnabled(true);
+                    detailcdate.setEnabled(true);
+                    detailcstack.setEnabled(true);
+                    weatherSelectspring.setEnabled(true);
+                    weatherSelectsummer.setEnabled(true);
+                    weatherSelectfall.setEnabled(true);
+                    weatherSelectwinter.setEnabled(true);
+                    weatherSelectcommunal.setEnabled(true);
+                    detailctype.setClickable(true);
+                    detailcloc.setClickable(true);
+                    detailcsize.setClickable(true);
                 } else {
                     // 두 번째 클릭: 다이얼로그 표시
                     AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
@@ -135,7 +174,6 @@ public class DetailActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
-
         Spinner detail_c_type_spinner = (Spinner) findViewById(R.id.detail_c_type);  // 옷 종류 호출
         ArrayAdapter<CharSequence> detail_c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, android.R.layout.simple_spinner_item);
         detail_c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -188,10 +226,5 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-
     }
 }
-
-
-
-
