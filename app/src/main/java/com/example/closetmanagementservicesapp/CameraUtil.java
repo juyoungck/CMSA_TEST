@@ -50,6 +50,7 @@ public class CameraUtil {
             Bitmap bitmap = (Bitmap) data.getParcelableExtra("data");
 
             if (bitmap != null) {
+                Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300;
                 Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
                 int cId = 0;
 
@@ -62,7 +63,7 @@ public class CameraUtil {
                 String fileName = "image_" + cId + ".png";
 
                 // 이미지 저장
-                savedImagePath = saveImageInternalStorage(bitmap, fileName);
+                savedImagePath = saveImageInternalStorage(resizedBitmap, fileName);
 
                 // 저장된 이미지 불러오기
                 loadImageFromStorage(savedImagePath);
@@ -108,5 +109,9 @@ public class CameraUtil {
         } else {
             Toast.makeText(context, "이미지를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private Bitmap resizeBitmap(Bitmap originalBitmap, int width, int height) {
+        return Bitmap.createScaledBitmap(originalBitmap, width, height, true);
     }
 }
