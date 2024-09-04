@@ -77,13 +77,11 @@
             android:text="옷장 위치"
             android:textSize="20dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <Spinner
             android:id="@+id/detail_c_loc"
-            android:text="옷장 위치"
-            android:textSize="18dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_marginTop="20dp"
@@ -95,6 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_c_name"
+            android:enabled="false"
             android:text="옷 이름"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -109,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_c_brand"
+            android:enabled="false"
             android:text="브랜드"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -125,12 +125,19 @@
                 android:text="옷 종류"
                 android:textSize="20dp" />
             <EditText
+                android:id="@+id/detail_c_type_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:text=""
+                android:hint="종류 입력"/>
+
+            <Spinner
                 android:id="@+id/detail_c_type"
-                android:text="옷 종류"
-                android:textSize="18dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="20dp"
@@ -144,23 +151,90 @@
                 android:text="옷 사이즈"
                 android:textSize="20dp" />
             <EditText
+                android:id="@+id/detail_c_size_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:text=""
+                android:hint="사이즈 입력"/>
+
+            <Spinner
                 android:id="@+id/detail_c_size"
-                android:text="사이즈"
-                android:textSize="18dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="100dp"
             android:layout_height="50dp" >
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_c_tag"
+                android:layout_marginTop="10dp"
                 android:text="태그"
                 android:textSize="18dp"
                 android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center">
+
+            <CheckBox
+                android:id="@+id/weatherSelect_spring"
+                android:enabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:text="봄"
+                android:textAlignment="center"
+                android:background="#f1f3f5" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:text="여름"
+                android:textAlignment="center"
+                android:background="#f1f3f5"
+                android:id="@+id/weatherSelect_summer"
+                android:enabled="false"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="가을"
+                android:layout_weight="1"
+                android:button="@null"
+                android:textAlignment="center"
+                android:background="#f1f3f5"
+                android:id="@+id/weatherSelect_fall"
+                android:enabled="false"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="겨울"
+                android:layout_weight="1"
+                android:button="@null"
+                android:textAlignment="center"
+                android:background="#f1f3f5"
+                android:id="@+id/weatherSelect_winter"
+                android:enabled="false"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="전체"
+                android:layout_weight="1"
+                android:button="@null"
+                android:textAlignment="center"
+                android:background="#f1f3f5"
+                android:id="@+id/weatherSelect_communal"
+                android:enabled="false"/>
         </LinearLayout>
 
         <TextView
@@ -173,6 +247,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_c_memo"
+            android:enabled="false"
             android:text="메모"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -180,6 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_c_date"
+            android:enabled="false"
             android:text="날짜"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
@@ -187,6 +263,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_c_stack"
+            android:enabled="false"
             android:text="스택"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
