@@ -230,6 +230,11 @@ public class DetailActivity extends AppCompatActivity {
                                 db.beginTransaction();
                                 try {
                                     db.delete("Main_Closet", "c_id = ?", new String[]{String.valueOf(c_id)});
+                                    String delete_filename = "/data/user/0/com.example.closetmanagementservicesapp/files/images/image_" + c_id + ".png";
+                                    File deleteFile = new File(delete_filename);
+                                    if (deleteFile.delete()) {
+                                        Log.d("img_deleted", deleteFile.getName());
+                                    }
 
                                     db.setTransactionSuccessful();
                                 } catch (Exception e) {

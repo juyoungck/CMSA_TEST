@@ -74,6 +74,7 @@ public class CameraUtil_Modify {
                     intent.putExtra("c_memo", cursor.getString(cursor.getColumnIndexOrThrow("c_memo")));
                     intent.putExtra("c_date", cursor.getString(cursor.getColumnIndexOrThrow("c_date")));
                     intent.putExtra("c_stack", cursor.getInt(cursor.getColumnIndexOrThrow("c_stack")));
+
                     context.startActivity(intent);
                     cursor.close();
                 }
