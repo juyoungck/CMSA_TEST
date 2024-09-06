@@ -439,11 +439,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Integer> ItemAddImg(int imgCounter){
 
         List<Integer> imgCounters = new ArrayList<>();
-        int buttonWidth = 300;
-        int buttonHeight = 300;
-        int textViewWidth = 300;
-        int textViewHeight = 300;
-        int margin = 300;
 
         GridLayout gridLayout = findViewById(R.id.gl_main);
         gridLayout.setRowCount(50);
@@ -479,11 +474,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Integer> ItemAddTag(int tagCounter) {
 
         List<Integer> tagCounters = new ArrayList<>();
-        int buttonWidth = 300;
-        int buttonHeight = 300;
-        int textViewWidth = 300;
-        int textViewHeight = 300;
-        int margin = 300;
 
         GridLayout gridLayout = findViewById(R.id.gl_main);
         gridLayout.setRowCount(50);
