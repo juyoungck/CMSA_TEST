@@ -16,15 +16,19 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,6 +49,12 @@ import java.util.TimeZone;
 public class Cody extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private GridLayout gridLayout;
+    private int imgCounter = 3001;
+    private int tagCounter = 4001;
+    private int imgViewCounter = 5001;
+    private int imgRow = 0;
+    private int tagRow = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +65,73 @@ public class Cody extends AppCompatActivity {
         dbHelper = MyApplication.getDbHelper();
         db = dbHelper.getWritableDatabase();
 
+        gridLayout = findViewById(R.id.gl_cody);
+
         // 코디 위치 스피너 출력
         fillSpinner_cod_loc();
+
+        List<Integer> imgCounterList = ItemCodyImgBtn(imgCounter);
+
+        List<Integer> tagCounterList = ItemCodyTag(tagCounter);
+
+
+        /**
+        int initialImgCounter = 3001;
+        int initialTagCounter = 4001;
+        int initialImgViewCounter = 5001;
+
+        int imgCounter = initialImgCounter + i; // ImageButton의 ID
+        int tagCounter = initialTagCounter + i; // TextView의 ID
+        int imgViewCounter = initialImgViewCounter + i;
+
+        ImageButton imageButton = (ImageButton) findViewById(imgCounter);
+        TextView textView = (TextView) findViewById(tagCounter);
+        ImageView imageView = (ImageView) findViewById(imgViewCounter);
+
+        if ((imgCounter - 3000) % 2 == 0) {
+            imgRow++;
+            imgCounter++;
+            List<Integer> imgCounterList = ItemCodyImgBtn(imgCounter);
+            imgCounter += imgCounterList.size();
+        }
+
+        if ((tagCounter - 4000) % 2 == 0) {
+            tagRow++;
+            tagCounter++;
+            List<Integer> tagCounterList = ItemCodyTag(tagCounter);
+            tagCounter += tagCounterList.size();
+        }
+
+        // 내부 이미지뷰(2X4) 코드 ******5001번 부터 시작********
+
+        switch (imgViewCounter - 5000) % 8) {
+            case 1:
+                상의
+                break;
+            case 2:
+                하의
+                break;
+            case 3:
+                신발
+                break;
+            case 4:
+                외투
+                break;
+            case 5:
+                속옷
+                break;
+            case 6:
+                양말
+                break;
+            case 7:
+                악세사리
+                break;
+            case 0:    // 8로 처리
+                가방
+                break;
+        }
+        */
+
 
         // 하단 등록 버튼 이동
         Button btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -197,5 +272,107 @@ public class Cody extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private List<Integer> ItemCodyImgBtn(int imgCounter){
+
+        List<Integer> imgCounters = new ArrayList<>();
+
+        GridLayout gridLayout = findViewById(R.id.gl_cody);
+        gridLayout.setPadding(0,-70,0,0);
+        gridLayout.setRowCount(50);
+        gridLayout.setColumnCount(2);
+
+        // 전체 코디 목록
+        for (int col = 0; col < 2; col++) {
+            FrameLayout frameLayout = new FrameLayout(this);
+            GridLayout.LayoutParams frameParams = new GridLayout.LayoutParams();
+            frameParams.width = 625;
+            frameParams.height = 700;
+            frameParams.setMargins(60, 120,  -190, 0);
+            frameLayout.setLayoutParams(frameParams);
+
+            GridLayout innerGridLayout = new GridLayout(this);
+            innerGridLayout.setRowCount(4);
+            innerGridLayout.setColumnCount(2);
+
+            // 내부 이미지 뷰(2X4)
+            for (int row = 0; row < 4; row++) {
+                for(int gridCol = 0; gridCol < 2; gridCol++) {
+                    // GridLayout 내부에 ImageButton 추가
+                    ImageView gridImgView = new ImageView(this);
+                    gridImgView.setBackgroundColor(Color.parseColor("#000000"));
+
+                    gridImgView.setPadding(10, 10, 10, 10);
+
+                    gridImgView.setId(imgViewCounter);
+
+                    GridLayout.LayoutParams gridImgViewParams = new GridLayout.LayoutParams();
+                    gridImgViewParams.width = 210;
+                    gridImgViewParams.height = 150;
+                    gridImgViewParams.setMargins(10, 10, 10, 10);
+                    gridImgViewParams.rowSpec = GridLayout.spec(row);
+                    gridImgViewParams.columnSpec = GridLayout.spec(gridCol);
+                    gridImgView.setLayoutParams(gridImgViewParams);
+
+                    innerGridLayout.addView(gridImgView);
+                    imgCounters.add(imgViewCounter);
+                    imgViewCounter++;
+                }
+            }
+
+            // 이미지 버튼
+            ImageButton clothImgbtn = new ImageButton(this);
+            clothImgbtn.setBackgroundColor(Color.parseColor("#00ff0000"));
+            clothImgbtn.setPadding(10,10,10,10);
+            clothImgbtn.setId(imgCounter);
+
+            // GridLayout에 레이아웃 매개변수 설정
+            GridLayout.LayoutParams paramsImageButton = new GridLayout.LayoutParams();
+            paramsImageButton.width = 440;
+            paramsImageButton.height = 660;
+            paramsImageButton.setMargins(10, 10, 10, 10);
+            paramsImageButton.rowSpec = GridLayout.spec(imgRow * 2);
+            paramsImageButton.columnSpec = GridLayout.spec(col);
+            clothImgbtn.setLayoutParams(paramsImageButton);
+
+            frameLayout.addView(innerGridLayout);
+            frameLayout.addView(clothImgbtn);
+            gridLayout.addView(frameLayout);
+            imgCounters.add(imgCounter);
+            imgCounter++;
+        }
+
+        return imgCounters;
+    }
+
+    private List<Integer> ItemCodyTag(int tagCounter) {
+
+        List<Integer> tagCounters = new ArrayList<>();
+
+        GridLayout gridLayout = findViewById(R.id.gl_cody);
+
+        for (int col = 0; col < 2; col++) {
+            // TextView 생성 및 설정
+            TextView clothTag = new TextView(this);
+            clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
+            clothTag.setGravity(Gravity.CENTER);
+            clothTag.setId(tagCounter);
+
+            GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
+            paramsTextView.width = 440;
+            paramsTextView.height = 75;
+            paramsTextView.setMargins(70, 0, -190, 0);
+            paramsTextView.rowSpec = GridLayout.spec(tagRow * 2 + 1);
+            paramsTextView.columnSpec = GridLayout.spec(col);
+            clothTag.setLayoutParams(paramsTextView);
+
+            // GridLayout에 뷰 추가
+            gridLayout.addView(clothTag);
+            tagCounters.add(tagCounter);
+            tagCounter++;
+        }
+
+        return tagCounters;
     }
 }
