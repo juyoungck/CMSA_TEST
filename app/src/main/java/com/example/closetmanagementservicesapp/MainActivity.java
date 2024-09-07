@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -16,30 +15,31 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -48,10 +48,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
 
 public class MainActivity extends AppCompatActivity {
     private DBHelper dbHelper;
@@ -79,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
     private int imgRow = 0;
     private int tagRow = 0;
 
+    BottomNavigationView bottomNavigationView;
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +90,26 @@ public class MainActivity extends AppCompatActivity {
 
         gridLayout = findViewById(R.id.gl_main);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+                if (itemId == R.id.btnCody) {
+                    bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+                    startActivity(new Intent(MainActivity.this, Cody.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         // 하단 등록 버튼(+) 이동
-        Button btnAdd = (Button) findViewById(R.id.btnAdd);
+        ImageButton btnAdd = (ImageButton) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,15 +150,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-            }
-        });
-
-        // 코디 탭 이동
-        Button btnCody = (Button) findViewById(R.id.btnCody);
-        btnCody.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Cody.class);
-                startActivity(intent);
             }
         });
 
