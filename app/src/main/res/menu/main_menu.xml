@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/btnCloset"
-        android:icon="@drawable/closet"
+        android:icon="@drawable/closetimg"
         android:enabled="true"
         android:title="옷장" />
 
