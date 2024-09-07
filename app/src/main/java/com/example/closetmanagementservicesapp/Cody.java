@@ -1,5 +1,6 @@
 package com.example.closetmanagementservicesapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,6 +39,7 @@ import android.widget.CompoundButton;
 import android.view.View;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,6 +59,8 @@ public class Cody extends AppCompatActivity {
     private int imgRow = 0;
     private int tagRow = 0;
 
+    BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,24 @@ public class Cody extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         gridLayout = findViewById(R.id.gl_cody);
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.btnCody);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+                if (itemId == R.id.btnCloset) {
+                    bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+                    startActivity(new Intent(Cody.this, MainActivity.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         // 코디 위치 스피너 출력
         fillSpinner_cod_loc();
@@ -134,7 +157,7 @@ public class Cody extends AppCompatActivity {
 
 
         // 하단 등록 버튼 이동
-        Button btnAdd = (Button) findViewById(R.id.btnAdd);
+        ImageButton btnAdd = (ImageButton) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,15 +201,6 @@ public class Cody extends AppCompatActivity {
             }
         });
 
-
-        // 메인 탭 이동
-        Button btnCloset = (Button) findViewById(R.id.btnCloset);
-        btnCloset.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // 설정 탭 이동
         ImageButton btnSettings = (ImageButton) findViewById(R.id.btnSettings);
