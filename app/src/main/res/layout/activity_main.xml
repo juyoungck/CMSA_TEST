@@ -179,8 +179,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:id="@+id/sv_main"
             android:fillViewport="true" >
 
@@ -188,7 +187,7 @@
                 android:id="@+id/gl_main"
                 tools:background="#00ff0000"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" >
+                android:layout_height="match_parent" >
             </GridLayout>
         </ScrollView>
 
