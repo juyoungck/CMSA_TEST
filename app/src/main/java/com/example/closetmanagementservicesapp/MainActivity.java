@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                TabModify tabModify = new TabModify();
+                TabModify tabModify = new TabModify(MainActivity.this);
 
                 tabModify.modifyButton(modifyView);
             }

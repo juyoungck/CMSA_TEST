@@ -264,7 +264,7 @@ public class Cody extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                TabModify tabModify = new TabModify();
+                TabModify tabModify = new TabModify(Cody.this);
 
                 tabModify.modifyButton(modifyView);
             }
