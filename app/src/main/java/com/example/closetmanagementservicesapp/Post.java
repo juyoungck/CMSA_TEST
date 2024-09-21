@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,12 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import com.example.closetmanagementservicesapp.CameraUtil;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +41,8 @@ public class Post extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private List<Integer> c_loc_value;
-
-    private ImageLoader imageLoader;
-    private CameraUtil cameraUtil;
+    private ImageLoader_Closet imageLoader;
+    private CameraUtil_Closet cameraUtil;
     private static final int CAMERA_REQUEST_CODE = 1;
 
 
@@ -85,7 +76,7 @@ public class Post extends AppCompatActivity {
         EditText c_type_post_add = (EditText) findViewById(R.id.c_type_post_add);   // 옷 종류(직접입력) 호출
 
         //카메라
-        cameraUtil = new CameraUtil(this, c_img_post); //화면, 이미지뷰
+        cameraUtil = new CameraUtil_Closet(this, c_img_post); //화면, 이미지뷰
         Intent intent = getIntent();
         byte[] byteArray = intent.getByteArrayExtra("imageData");
         if (byteArray != null && byteArray.length > 0) {
@@ -94,7 +85,7 @@ public class Post extends AppCompatActivity {
                 c_img_post.setImageBitmap(bitmap);
             }
         }
-        imageLoader = new ImageLoader(this, c_img_post);
+        imageLoader = new ImageLoader_Closet(this, c_img_post);
         intent = getIntent();
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
