@@ -33,11 +33,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".Post"/>
-        <activity android:name=".CodyAdd"/>
+        <activity
+            android:name=".CodyAdd"
+            android:exported="true"
+            android:launchMode="singleTop"/>
         <activity android:name=".Settings"/>
         <activity android:name=".Cody" />
         <activity android:name=".SettingsNotice" />
         <activity android:name=".DetailActivity"/>
+        <activity
+            android:name=".CameraUtil_Cody"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>
