@@ -19,14 +19,14 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
-class ImageLoader {
+class ImageLoader_Closet {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Activity activity;
     private ImageView imageView;
     private String savedImagePath = "";
 
-    public ImageLoader(Activity activity, ImageView imageView) {
+    public ImageLoader_Closet(Activity activity, ImageView imageView) {
         this.activity = activity;
         this.imageView = imageView;
     }
