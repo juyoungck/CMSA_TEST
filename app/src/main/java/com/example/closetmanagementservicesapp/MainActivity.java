@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         basicLocation();
 
         // 임의 데이터 출력을 위한 메서드
-        displayData();
+        displayDataCloset();
 
         // 옷장 위치 스피너 출력
         fillSpinner_c_loc();
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
-    private void displayData() {
+    private void displayDataCloset() {
         // Main_Closet 테이블의 모든 값을 불러옴
         Cursor cursor = db.query("Main_Closet", null, null, null, null, null, null);
 
@@ -320,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < count; i++) {
                 String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
                 String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
+
                 Bitmap bitmap = BitmapFactory.decodeFile(c_img);
 
                 int imgCounter = initialImgCounter + i; // ImageButton의 ID
