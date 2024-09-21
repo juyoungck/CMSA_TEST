@@ -1,5 +1,7 @@
 package com.example.closetmanagementservicesapp;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +17,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +33,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.util.Pair;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,6 +63,11 @@ public class Cody extends AppCompatActivity {
     private int imgViewCounter = 5001;
     private int imgRow = 0;
     private int tagRow = 0;
+    private int Call = 0;
+
+    private List<Integer> imgCounterList;
+    private List<Integer> imgViewCounterList;
+    private List<Integer> tagCounterList;
 
     BottomNavigationView bottomNavigationView;
 
@@ -83,6 +93,7 @@ public class Cody extends AppCompatActivity {
                     bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
                     startActivity(new Intent(Cody.this, MainActivity.class));
                     overridePendingTransition(0, 0);
+                    finish();
                     return true;
                 }
 
@@ -90,71 +101,17 @@ public class Cody extends AppCompatActivity {
             }
         });
 
+        Pair<List<Integer>, List<Integer>> counters = ItemCodyImgBtn(imgCounter);
+        imgCounterList = counters.first;
+        imgViewCounterList = counters.second;
+
+        ItemCodyTag(tagCounter);
+
+        displayDataCody();
+
+        basicLocation();
         // 코디 위치 스피너 출력
         fillSpinner_cod_loc();
-
-        List<Integer> imgCounterList = ItemCodyImgBtn(imgCounter);
-
-        List<Integer> tagCounterList = ItemCodyTag(tagCounter);
-
-
-        /**
-        int initialImgCounter = 3001;
-        int initialTagCounter = 4001;
-        int initialImgViewCounter = 5001;
-
-        int imgCounter = initialImgCounter + i; // ImageButton의 ID
-        int tagCounter = initialTagCounter + i; // TextView의 ID
-        int imgViewCounter = initialImgViewCounter + i;
-
-        ImageButton imageButton = (ImageButton) findViewById(imgCounter);
-        TextView textView = (TextView) findViewById(tagCounter);
-        ImageView imageView = (ImageView) findViewById(imgViewCounter);
-
-        if ((imgCounter - 3000) % 2 == 0) {
-            imgRow++;
-            imgCounter++;
-            List<Integer> imgCounterList = ItemCodyImgBtn(imgCounter);
-            imgCounter += imgCounterList.size();
-        }
-
-        if ((tagCounter - 4000) % 2 == 0) {
-            tagRow++;
-            tagCounter++;
-            List<Integer> tagCounterList = ItemCodyTag(tagCounter);
-            tagCounter += tagCounterList.size();
-        }
-
-        // 내부 이미지뷰(2X4) 코드 ******5001번 부터 시작********
-
-        switch (imgViewCounter - 5000) % 8) {
-            case 1:
-                상의
-                break;
-            case 2:
-                하의
-                break;
-            case 3:
-                신발
-                break;
-            case 4:
-                외투
-                break;
-            case 5:
-                속옷
-                break;
-            case 6:
-                양말
-                break;
-            case 7:
-                악세사리
-                break;
-            case 0:    // 8로 처리
-                가방
-                break;
-        }
-        */
-
 
         // 하단 등록 버튼 이동
         ImageButton btnAdd = (ImageButton) findViewById(R.id.btnAdd);
@@ -271,6 +228,154 @@ public class Cody extends AppCompatActivity {
         });
     }
 
+    private void displayDataCody() {
+        // Main_Closet 테이블의 모든 값을 불러옴
+        Cursor cursor = db.query("Coordy", null, null, null, null, null, null);
+
+        int initialImgCounter = 3001;
+        int initialTagCounter = 4001;
+        int initialImgViewCounter = 5001;
+
+        // 커서 위치 유효성 검사 후 문제가 없으면 해당 코드 실행
+        if (cursor != null && cursor.moveToFirst()) {
+            int count = cursor.getCount();
+
+            GridLayout gridLayout = findViewById(R.id.gl_cody);
+
+            for (int i = 0; i < count; i++) {
+                String cod_name = cursor.getString(cursor.getColumnIndexOrThrow("cod_name"));
+
+                String cod_thumbnail = cursor.getString(cursor.getColumnIndexOrThrow("cod_thumbnail"));
+                String cod_index1 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index1"));
+                String cod_index2 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index2"));
+                String cod_index3 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index3"));
+                String cod_index4 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index4"));
+                String cod_index5 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index5"));
+                String cod_index6 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index6"));
+                String cod_index7 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index7"));
+                String cod_index8 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index8"));
+
+                Bitmap thumbitmap = BitmapFactory.decodeFile(cod_thumbnail);
+                Bitmap bitmap1 = BitmapFactory.decodeFile(cod_index1);
+                Bitmap bitmap2 = BitmapFactory.decodeFile(cod_index2);
+                Bitmap bitmap3 = BitmapFactory.decodeFile(cod_index3);
+                Bitmap bitmap4 = BitmapFactory.decodeFile(cod_index4);
+                Bitmap bitmap5 = BitmapFactory.decodeFile(cod_index5);
+                Bitmap bitmap6 = BitmapFactory.decodeFile(cod_index6);
+                Bitmap bitmap7 = BitmapFactory.decodeFile(cod_index7);
+                Bitmap bitmap8 = BitmapFactory.decodeFile(cod_index8);
+
+
+                int imgCounter = initialImgCounter + i; // ImageButton의 ID
+                int tagCounter = initialTagCounter + i; // TextView의 ID
+                int imgViewCounter = initialImgViewCounter + i;
+
+                ImageButton imageButton = (ImageButton) findViewById(imgCounter);
+                TextView textView = (TextView) findViewById(tagCounter);
+                ImageView imageView = (ImageView) findViewById(imgViewCounter);
+
+
+                // 유효성 검사 후 문제가 없으면 해당 코드 실행 (현재 오류 발생 중, 추후 수정)
+                if (textView != null && imageView != null) {
+                    textView.setText(cod_name);
+                    imageButton.setImageBitmap(thumbitmap);
+
+                    int batchSize = 16;
+                    int imageViewGroupSize = 8;
+                    int batchIndex = 0;
+
+                    for (int j = 0; j < imgViewCounterList.size(); j++) {
+                        // 새로운 배치일 때 batchIndex 갱신
+                        if (j % batchSize == 0 && j != 0) {
+                            batchIndex += batchSize;
+                        }
+
+                        if (Call % 2 == 0 && j >= batchIndex && j < batchIndex + imageViewGroupSize) {
+                            int imgViewId = imgViewCounterList.get(j);
+                            imageView = findViewById(imgViewId);
+
+                            int adjustedId = j % imageViewGroupSize;
+
+                            if (adjustedId == 0) {
+                                imageView.setImageBitmap(bitmap1);
+                            } else if (adjustedId == 1) {
+                                imageView.setImageBitmap(bitmap2);
+                            } else if (adjustedId == 2) {
+                                imageView.setImageBitmap(bitmap3);
+                            } else if (adjustedId == 3) {
+                                imageView.setImageBitmap(bitmap4);
+                            } else if (adjustedId == 4) {
+                                imageView.setImageBitmap(bitmap5);
+                            } else if (adjustedId == 5) {
+                                imageView.setImageBitmap(bitmap6);
+                            } else if (adjustedId == 6) {
+                                imageView.setImageBitmap(bitmap7);
+                            } else if (adjustedId == 7) {
+                                imageView.setImageBitmap(bitmap8);
+                            }
+
+                        } else if (Call % 2 == 1 && j >= batchIndex + imageViewGroupSize && j < batchIndex + batchSize) {
+                            int imgViewId = imgViewCounterList.get(j);
+                            imageView = findViewById(imgViewId);
+                            int adjustedId = j % imageViewGroupSize;
+
+                            if (adjustedId == 0) {
+                                imageView.setImageBitmap(bitmap1);
+                            } else if (adjustedId == 1) {
+                                imageView.setImageBitmap(bitmap2);
+                            } else if (adjustedId == 2) {
+                                imageView.setImageBitmap(bitmap3);
+                            } else if (adjustedId == 3) {
+                                imageView.setImageBitmap(bitmap4);
+                            } else if (adjustedId == 4) {
+                                imageView.setImageBitmap(bitmap5);
+                            } else if (adjustedId == 5) {
+                                imageView.setImageBitmap(bitmap6);
+                            } else if (adjustedId == 6) {
+                                imageView.setImageBitmap(bitmap7);
+                            } else if (adjustedId == 7) {
+                                imageView.setImageBitmap(bitmap8);
+                            }
+
+                        }
+                    }
+
+                    Call++;
+                    if ((imgCounter - 3000) % 2 == 0) {
+                        imgRow++;
+                        imgCounter++;
+                        imgViewCounter += 8;
+                        Pair<List<Integer>, List<Integer>> result = ItemCodyImgBtn(imgCounter);
+
+                        // 새로운 값을 기존 리스트에 추가
+                        imgCounterList.clear();  // 기존 리스트 내용 삭제
+                        imgCounterList.addAll(result.first);  // 새로운 값으로 갱신
+
+                        imgViewCounterList.clear();  // 기존 리스트 내용 삭제
+                        imgViewCounterList.addAll(result.second);  // 새로운 값으로 갱신
+
+                        // 카운터 업데이트
+                        imgCounter += imgCounterList.size();
+                        imgViewCounter += imgViewCounterList.size();
+                    }
+
+                    if ((tagCounter - 4000) % 2 == 0) {
+                        tagRow++;
+                        tagCounter++;
+                        List<Integer> tagCounterList = ItemCodyTag(tagCounter);
+                        tagCounter += tagCounterList.size();
+                    }
+
+                    int finalI = i;
+
+                }
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+    }
+
+
     // 코디 위치 스피너 출력
     private void fillSpinner_cod_loc() {
         Spinner spinner = findViewById(R.id.main_cod_loc);
@@ -288,9 +393,24 @@ public class Cody extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-    private List<Integer> ItemCodyImgBtn(int imgCounter){
+    private void basicLocation() {
+        ContentValues values = new ContentValues();
+        values.put("c_loc", 1);
+        values.put("c_loc_name", "옷장 1");
+        values.put("c_loc_date", "2024-09-16");
+        db.insert("Closet_Location", null, values);
+
+        values = new ContentValues();
+        values.put("cod_loc", 1);
+        values.put("cod_loc_name", "코디 1");
+        values.put("cod_loc_date", "2024-09-16");
+        db.insert("Coordy_Location", null, values);
+    }
+
+    private Pair<List<Integer>, List<Integer>> ItemCodyImgBtn(int imgCounter){
 
         List<Integer> imgCounters = new ArrayList<>();
+        List<Integer> imgViewCounters = new ArrayList<>();
 
         GridLayout gridLayout = findViewById(R.id.gl_cody);
         gridLayout.setPadding(0,-70,0,0);
@@ -313,13 +433,11 @@ public class Cody extends AppCompatActivity {
             // 내부 이미지 뷰(2X4)
             for (int row = 0; row < 4; row++) {
                 for(int gridCol = 0; gridCol < 2; gridCol++) {
-                    // GridLayout 내부에 ImageButton 추가
+
                     ImageView gridImgView = new ImageView(this);
-                    gridImgView.setBackgroundColor(Color.parseColor("#000000"));
-
-                    gridImgView.setPadding(10, 10, 10, 10);
-
+                    gridImgView.setBackgroundColor(Color.parseColor("#efefef"));
                     gridImgView.setId(imgViewCounter);
+                    gridImgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     GridLayout.LayoutParams gridImgViewParams = new GridLayout.LayoutParams();
                     gridImgViewParams.width = 210;
@@ -330,16 +448,18 @@ public class Cody extends AppCompatActivity {
                     gridImgView.setLayoutParams(gridImgViewParams);
 
                     innerGridLayout.addView(gridImgView);
-                    imgCounters.add(imgViewCounter);
+                    imgViewCounters.add(imgViewCounter);
                     imgViewCounter++;
+
                 }
             }
 
-            // 이미지 버튼
+            // 대표 이미지(썸네일)
             ImageButton clothImgbtn = new ImageButton(this);
             clothImgbtn.setBackgroundColor(Color.parseColor("#00ff0000"));
-            clothImgbtn.setPadding(10,10,10,10);
             clothImgbtn.setId(imgCounter);
+            clothImgbtn.setPadding(0,0,0,0);
+            clothImgbtn.setScaleType(ImageView.ScaleType.FIT_XY);
 
             // GridLayout에 레이아웃 매개변수 설정
             GridLayout.LayoutParams paramsImageButton = new GridLayout.LayoutParams();
@@ -357,8 +477,10 @@ public class Cody extends AppCompatActivity {
             imgCounter++;
         }
 
-        return imgCounters;
+        return new Pair<>(imgCounters, imgViewCounters);
     }
+
+
 
     private List<Integer> ItemCodyTag(int tagCounter) {
 
@@ -369,9 +491,10 @@ public class Cody extends AppCompatActivity {
         for (int col = 0; col < 2; col++) {
             // TextView 생성 및 설정
             TextView clothTag = new TextView(this);
-            clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
+            clothTag.setBackgroundColor(Color.parseColor("#ffffff"));
             clothTag.setGravity(Gravity.CENTER);
             clothTag.setId(tagCounter);
+
 
             GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
             paramsTextView.width = 440;
