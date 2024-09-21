@@ -2,16 +2,13 @@ package com.example.closetmanagementservicesapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,18 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
-public class CameraUtil {
+public class CameraUtil_Closet {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Context context;
     private ImageButton imageButton;
     private String savedImagePath = "";
 
-    public CameraUtil(Context context, ImageButton imageButton) {
+    public CameraUtil_Closet(Context context, ImageButton imageButton) {
         this.context = context;
         this.imageButton = imageButton;
     }
@@ -90,7 +84,6 @@ public class CameraUtil {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             Toast.makeText(context, "이미지가 내부 저장소에 저장되었습니다.", Toast.LENGTH_SHORT).show();
-            Log.d("File Save Path", file.getAbsolutePath());
 
             // 저장된 파일의 경로 반환
             return file.getAbsolutePath();
