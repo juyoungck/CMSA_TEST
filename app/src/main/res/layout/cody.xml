@@ -178,8 +178,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="600dp"
             android:id="@+id/sv_main"
             android:fillViewport="true" >
 
@@ -187,7 +186,7 @@
                 android:id="@+id/gl_cody"
                 tools:background="#00ff0000"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" >
+                android:layout_height="match_parent" >
             </GridLayout>
         </ScrollView>
 
@@ -196,18 +195,21 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="top|center"
-            android:layout_marginTop="520dp"
+            android:layout_marginTop="610dp"
             android:paddingBottom="40dp"
+            android:translationZ="500dp"
             android:background="@drawable/addcircle"
-            android:elevation="1dp"/>
-    </FrameLayout>
+            android:elevation="-50dp"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:menu="@menu/main_menu"
-        android:background="#fff"
-        app:itemIconTint="@drawable/navi_icon_color"
-        app:itemTextColor="@drawable/navi_icon_color" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            app:menu="@menu/main_menu"
+            android:background="#fff"
+            app:itemIconTint="@drawable/navi_icon_color"
+            app:itemTextColor="@drawable/navi_icon_color" />
+
+    </FrameLayout>
 </LinearLayout>
