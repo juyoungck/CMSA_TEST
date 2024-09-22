@@ -2,6 +2,7 @@ package com.example.closetmanagementservicesapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -64,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
     private GpsHelper gpsHelper;
 
     private ExcelReader excelReader;
-    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     private GridLayout gridLayout;
 
@@ -300,6 +298,23 @@ public class MainActivity extends AppCompatActivity {
         imageViewIcon = findViewById(R.id.btnWeather);
         WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+
+        SearchView searchView = findViewById(R.id.btnSearch);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // 검색어가 제출되면 실행될 코드 (제출 후 엔터 시)
+                filterDataByQuery(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // 검색어가 변경될 때마다 필터링된 데이터를 보여주는 메소드 호출
+                filterDataByQuery(newText);
+                return false;
+            }
+        });
     }
 
 
@@ -512,6 +527,122 @@ public class MainActivity extends AppCompatActivity {
             }
 
         return tagCounters;
+    }
+    // 쿼리로 데이터를 필터링하는 함수
+    private void filterDataByQuery(String query) {
+        // 검색어가 없으면 전체 데이터를 다시 불러옴
+        String selection = null;
+        String[] selectionArgs = null;
+
+        if (query != null && !query.isEmpty()) {
+            // c_name 컬럼에서 검색어가 포함된 값을 찾음
+            selection = "c_name LIKE ?";
+            selectionArgs = new String[]{"%" + query + "%"};
+        }
+
+        // Main_Closet 테이블에서 필터링된 데이터를 가져옴
+        Cursor cursor = db.query("Main_Closet", null, selection, selectionArgs, null, null, null);
+
+        // 기존에 표시된 데이터를 지우고 새로운 데이터를 보여줌
+        displayFilteredData(cursor);
+    }
+
+    // 필터링된 데이터를 GridLayout에 표시하는 함수
+    private void displayFilteredData(Cursor cursor) {
+        // 초기 ImageButton 및 TextView ID 설정
+        int initialImgCounter = 1001;
+        int initialTagCounter = 2001;
+        int imgRow = 0; // 이미지의 행을 관리하는 변수
+        int tagRow = 0; // 텍스트의 행을 관리하는 변수
+
+        // GridLayout에서 이전에 추가된 항목들을 모두 제거
+        GridLayout gridLayout = findViewById(R.id.gl_main);
+        gridLayout.removeAllViews();
+
+        // 커서 유효성 확인 후 데이터 처리
+        if (cursor != null && cursor.moveToFirst()) {
+            int count = cursor.getCount();
+
+            for (int i = 0; i < count; i++) {
+                // 데이터베이스에서 c_name과 c_img 값 가져오기
+                String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
+                String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
+
+                Bitmap bitmap = BitmapFactory.decodeFile(c_img);
+
+                // ImageButton 및 TextView ID 설정
+                int imgCounter = initialImgCounter + i;
+                int tagCounter = initialTagCounter + i;
+
+                // ImageButton 및 TextView 생성
+                ImageButton imageButton = new ImageButton(this);
+                imageButton.setId(imgCounter);
+                imageButton.setImageBitmap(bitmap);
+
+                TextView textView = new TextView(this);
+                textView.setId(tagCounter);
+                textView.setText(c_name);
+
+                // GridLayout에 레이아웃 매개변수 설정
+                GridLayout.LayoutParams paramsImageButton = new GridLayout.LayoutParams();
+                GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
+
+                paramsImageButton.width = 300; // 버튼의 너비 설정
+                paramsImageButton.height = 300; // 버튼의 높이 설정
+                paramsImageButton.setMargins(30, 45, 30, 0); // 여백 설정
+                paramsImageButton.rowSpec = GridLayout.spec(imgRow * 2); // 2행에 이미지 버튼 위치
+                paramsImageButton.columnSpec = GridLayout.spec(i % 3); // 3개의 열로 정렬
+
+                paramsTextView.width = 300; // 텍스트뷰의 너비 설정
+                paramsTextView.height = 75; // 텍스트뷰의 높이 설정
+                paramsTextView.setMargins(30, 0, 30, 0); // 여백 설정
+                paramsTextView.rowSpec = GridLayout.spec(tagRow * 2 + 1); // 2행 + 1에 텍스트 위치
+                paramsTextView.columnSpec = GridLayout.spec(i % 3); // 3개의 열로 정렬
+
+                // GridLayout에 뷰 추가
+                gridLayout.addView(imageButton, paramsImageButton);
+                gridLayout.addView(textView, paramsTextView);
+
+                // 이미지 버튼 클릭 시 상세 정보를 볼 수 있도록 클릭 리스너 설정
+                int finalI = i; // 람다 표현식 안에서 i를 사용할 수 있도록 final 변수로 변경
+                imageButton.setOnClickListener(view -> {
+                    new Thread(() -> {
+                        Cursor detailCursor = db.query("Main_Closet", null, null, null, null, null, null);
+                        if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
+                            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                            intent.putExtra("c_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_id")));
+                            intent.putExtra("c_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_img")));
+                            intent.putExtra("c_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_loc")));
+                            intent.putExtra("c_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_name")));
+                            intent.putExtra("c_type", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_type")));
+                            intent.putExtra("c_size", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_size")));
+                            intent.putExtra("c_brand", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_brand")));
+                            intent.putExtra("c_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_tag")));
+                            intent.putExtra("c_memo", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_memo")));
+                            intent.putExtra("c_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("c_date")));
+                            intent.putExtra("c_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_stack")));
+
+                            runOnUiThread(() -> {
+                                startActivity(intent);
+                                detailCursor.close();
+                            });
+                        } else if (detailCursor != null) {
+                            detailCursor.close();
+                        }
+                    }).start();
+                });
+
+                // 행(row) 계산: 3개의 항목이 추가될 때마다 다음 행으로 이동
+                if ((imgCounter - 1000) % 3 == 0) {
+                    imgRow++;
+                    tagRow++;
+                }
+
+                // 커서 이동
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
     }
 }
 

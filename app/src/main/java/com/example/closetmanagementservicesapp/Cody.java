@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -64,10 +65,15 @@ public class Cody extends AppCompatActivity {
     private int imgRow = 0;
     private int tagRow = 0;
     private int Call = 0;
-
     private List<Integer> imgCounterList;
     private List<Integer> imgViewCounterList;
     private List<Integer> tagCounterList;
+    String date = "", time = "";
+    String x = "55", y = "127";
+    private GpsHelper gpsHelper;
+    private ExcelReader excelReader;
+    TextView weatherTextView,timeNow;
+    ImageView imageViewIcon;
 
     BottomNavigationView bottomNavigationView;
 
@@ -226,6 +232,67 @@ public class Cody extends AppCompatActivity {
                 tabModify.modifyButton(modifyView);
             }
         });
+
+        //날씨 코드
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("HH:mm", Locale.KOREA);
+        TimeZone KoreaTime = TimeZone.getTimeZone("Asia/Seoul");
+        simpleDateFormat1.setTimeZone(KoreaTime);
+        simpleDateFormat2.setTimeZone(KoreaTime);
+        simpleDateFormat3.setTimeZone(KoreaTime);
+        Date date = new Date();
+        Log.d("시간",simpleDateFormat1.format(date));
+        Log.d("시간",simpleDateFormat2.format(date));
+        Log.d("시간",simpleDateFormat3.format(date));
+
+        String getDate = simpleDateFormat1.format(date);
+        String getTime =  simpleDateFormat2.format(date)+ "00";
+
+        gpsHelper = new GpsHelper(this);
+        excelReader = new ExcelReader(this);
+
+        gpsHelper.initializeGps();
+
+        final Button textview_address = findViewById(R.id.refresh);
+
+        ImageButton ShowLocationButton = findViewById(R.id.btnLocation);
+
+        timeNow = findViewById(R.id.timeNow);
+        morningAfternoon ma = new morningAfternoon(simpleDateFormat3.format(date));
+        String abc = ma.asd();
+        timeNow.setText(abc);
+
+        ShowLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                double[] location = gpsHelper.getCurrentLocation();
+                double latitude = location[0];
+                double longitude = location[1];
+
+                String address = gpsHelper.getCurrentAddress(latitude, longitude);
+                textview_address.setText("수정구 복정동");//textview_address.setText(address);
+
+                String[] local = address.split(" ");
+                String localName = local[3];
+                localName ="복정동"; //임시값
+                String[] gridCoordinates = excelReader.readExcel(localName);
+                String x = gridCoordinates[0];
+                String y = gridCoordinates[1];
+
+                Toast.makeText(Cody.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
+                System.out.println("격자값 x: " + x + ", y: " + y);
+                //날씨 재동기화
+                weatherTextView = findViewById(R.id.weatherDegree);
+                imageViewIcon = findViewById(R.id.btnWeather);
+                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+                wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+            }
+        });
+        weatherTextView = findViewById(R.id.weatherDegree);
+        imageViewIcon = findViewById(R.id.btnWeather);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+        wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
     }
 
     private void displayDataCody() {
