@@ -196,7 +196,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="top|center"
-            android:layout_marginTop="400dp"
+            android:layout_marginTop="450dp"
             android:paddingBottom="40dp"
             android:translationZ="500dp"
             android:background="@drawable/addcircle"

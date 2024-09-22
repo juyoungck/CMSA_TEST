@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -54,6 +56,8 @@ public class DetailActivity extends AppCompatActivity {
         dbHelper = MyApplication.getDbHelper();
         db = dbHelper.getWritableDatabase();
 
+        weatherSelect(); // 태그(계절) 함수 호출
+
         ImageButton detail_c_img = (ImageButton) findViewById(R.id.detail_c_img);
         Spinner detail_c_loc = (Spinner) findViewById(R.id.detail_c_loc);
         EditText detail_c_name = (EditText) findViewById(R.id.detail_c_name);
@@ -83,14 +87,6 @@ public class DetailActivity extends AppCompatActivity {
         detail_c_size.setClickable(false);
 
         Intent intent = getIntent();
-        Bundle b = intent.getExtras();
-        Iterator<String> iter = b.keySet().iterator();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            Object value = b.get(key);
-            Log.d("TAG", "key : "+key+", value : " + value.toString());
-        }
-
         c_id = intent.getIntExtra("c_id", -1);
         String c_img = intent.getStringExtra("c_img");
         int c_loc = intent.getIntExtra("c_loc", 1);
@@ -107,6 +103,7 @@ public class DetailActivity extends AppCompatActivity {
         detail_c_img.setImageBitmap(bitmap);
         detail_c_name.setText(c_name);
         detail_c_brand.setText(c_brand);
+        c_tag_reader(c_tag);
         detail_c_memo.setText(c_memo);
         detail_c_date.setText(c_date);
         detail_c_stack.setText(String.valueOf(c_stack));
@@ -192,7 +189,7 @@ public class DetailActivity extends AppCompatActivity {
                                                 values.put("c_size", c_size);
                                             }
                                             values.put("c_brand", c_brand);
-                                            values.put("c_tag", 1);
+                                            values.put("c_tag", getTag());
                                             values.put("c_memo", c_memo);
                                             db.update("Main_Closet", values, "c_id = ?", new String[]{String.valueOf(c_id)});
 
@@ -380,6 +377,157 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    protected void weatherSelect() {
+        // 정렬 버튼 (계절)
+        CheckBox weatherSelect_spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox weatherSelect_summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox weatherSelect_fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        weatherSelect_spring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_summer.isChecked() && weatherSelect_fall.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(true);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_summer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_fall.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(true);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_fall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_summer.isChecked()
+                            && weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(true);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        weatherSelect_winter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (weatherSelect_spring.isChecked() && weatherSelect_summer.isChecked()
+                            && weatherSelect_fall.isChecked()) {
+                        weatherSelect_communal.setChecked(true);
+                    }
+                } else {
+                    if (weatherSelect_communal.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(true);
+                    }
+                }
+                weatherButtonBase();
+            }
+        });
+
+        // 정렬 버튼 (계절 - 전체 선택)
+        weatherSelect_communal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // 전체 선택 버튼이 선택된 경우
+                    weatherSelect_spring.setChecked(true);
+                    weatherSelect_summer.setChecked(true);
+                    weatherSelect_fall.setChecked(true);
+                    weatherSelect_winter.setChecked(true);
+
+                } else {
+                    if (!weatherSelect_spring.isChecked() || !weatherSelect_summer.isChecked()
+                            || !weatherSelect_fall.isChecked() || !weatherSelect_winter.isChecked()) {
+                        weatherSelect_communal.setChecked(false);
+                    } else {
+                        weatherSelect_spring.setChecked(false);
+                        weatherSelect_summer.setChecked(false);
+                        weatherSelect_fall.setChecked(false);
+                        weatherSelect_winter.setChecked(false);
+                    }
+                    weatherButtonBase();
+                }
+            }
+        });
+    }
+    private void weatherButtonBase (){
+        CheckBox weatherSelect_spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox weatherSelect_summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox weatherSelect_fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
+        if (weatherSelect_spring.isChecked()) {
+            weatherSelect_spring.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_summer.isChecked()) {
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_fall.isChecked()) {
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_winter.isChecked()) {
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+        if (weatherSelect_communal.isChecked()) {
+            weatherSelect_communal.setBackgroundColor(Color.parseColor("#a374db"));
+        } else {
+            weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
+        }
+    }
+
     private void showImageOptionsDialog() {
         String[] options = {"촬영", "파일에서 가져오기"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -425,6 +573,121 @@ public class DetailActivity extends AppCompatActivity {
         }
         if(requestCode==2) {
             imageLoader_modify.loadImageFromResult(requestCode, resultCode, data);
+        }
+    }
+
+    private int getTag() {
+        CheckBox Spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox Summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox Fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox Winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox Com = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        if (Com.isChecked()) {
+            return 15;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 1;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 2;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 3;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 4;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 5;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 6;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 7;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 8;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 9;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 10;
+        } else if (Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 11;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 12;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 13;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 14;
+        }
+
+        return 15;
+    }
+
+    private void c_tag_reader(int tagId) {
+        CheckBox Spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox Summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox Fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox Winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox Com = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        switch (tagId) {
+            case 1:
+                Spring.setChecked(true);
+                break;
+            case 2:
+                Summer.setChecked(true);
+                break;
+            case 3:
+                Fall.setChecked(true);
+                break;
+            case 4:
+                Winter.setChecked(true);
+                break;
+            case 5:
+                Spring.setChecked(true);
+                Summer.setChecked(true);
+                break;
+            case 6:
+                Spring.setChecked(true);
+                Fall.setChecked(true);
+                break;
+            case 7:
+                Spring.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 8:
+                Summer.setChecked(true);
+                Fall.setChecked(true);
+                break;
+            case 9:
+                Summer.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 10:
+                Fall.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 11:
+                Spring.setChecked(true);
+                Summer.setChecked(true);
+                Fall.setChecked(true);
+                break;
+            case 12:
+                Spring.setChecked(true);
+                Summer.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 13:
+                Spring.setChecked(true);
+                Fall.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 14:
+                Summer.setChecked(true);
+                Fall.setChecked(true);
+                Winter.setChecked(true);
+                break;
+            case 15:
+                Com.setChecked(true);
+                break;
+            default:
+                // 아무 것도 체크되지 않음 (모두 false)
+                break;
         }
     }
 }

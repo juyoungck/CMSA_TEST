@@ -41,8 +41,13 @@ package com.example.closetmanagementservicesapp;
         import java.io.File;
         import java.io.FileOutputStream;
         import java.io.IOException;
+        import java.text.DateFormat;
+        import java.text.SimpleDateFormat;
         import java.util.ArrayList;
+        import java.util.Date;
         import java.util.List;
+        import java.util.Locale;
+        import java.util.TimeZone;
 
 public class CodyAdd extends AppCompatActivity {
     private DBHelper dbHelper;
@@ -223,8 +228,8 @@ public class CodyAdd extends AppCompatActivity {
 
                                         values.put("cod_loc", cod_loc);
                                         values.put("cod_name", cod_name);
-                                        values.put("cod_date", "2024-09-16");
-                                        values.put("cod_tag", 1);
+                                        values.put("cod_date", getToday());
+                                        values.put("cod_tag", getTag());
                                         values.put("cod_stack", 0);
 
                                         db.insert("Coordy", null, values);
@@ -256,6 +261,15 @@ public class CodyAdd extends AppCompatActivity {
         weatherSelect(); // 태그(계절) 함수 호출
     }
 
+    private String getToday() {
+        DateFormat Today = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN);
+        TimeZone KoreaTime = TimeZone.getTimeZone("Asia/Seoul");
+        Today.setTimeZone(KoreaTime);
+
+        Date date = new Date();
+
+        return Today.format(date);
+    }
 
     protected void weatherSelect() {
         // 정렬 버튼 (계절)
@@ -406,6 +420,48 @@ public class CodyAdd extends AppCompatActivity {
         } else {
             weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
+    }
+
+    private int getTag() {
+        CheckBox Spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox Summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox Fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox Winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox Com = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        if (Com.isChecked()) {
+            return 15;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 1;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 2;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 3;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 4;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 5;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 6;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 7;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 8;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 9;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 10;
+        } else if (Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 11;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 12;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 13;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 14;
+        }
+
+        return 15;
     }
 
     private void fillSpinner_cod_location() {

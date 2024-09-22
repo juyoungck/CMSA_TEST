@@ -65,6 +65,8 @@ public class Post extends AppCompatActivity {
 
         fillSpinner_location();                                             // 옷장 위치 값 호출
 
+        weatherSelect(); // 태그(계절) 함수 호출
+
         EditText c_name_post = (EditText) findViewById(R.id.c_name_post);   // 옷 이름 호출
 
         EditText c_brand_post = (EditText) findViewById(R.id.c_brand_post); // 옷 브랜드 호출
@@ -201,7 +203,7 @@ public class Post extends AppCompatActivity {
                                         }
 
                                         values.put("c_brand", c_brand);
-                                        values.put("c_tag", 1);
+                                        values.put("c_tag", getTag());
                                         values.put("c_memo", c_memo);
                                         values.put("c_date", getToday());
                                         values.put("c_stack", 0);
@@ -232,7 +234,6 @@ public class Post extends AppCompatActivity {
             }
         });
 
-        weatherSelect(); // 태그(계절) 함수 호출
     }
 
 
@@ -281,7 +282,6 @@ public class Post extends AppCompatActivity {
 
         return Today.format(date);
     }
-
 
     protected void weatherSelect() {
         // 정렬 버튼 (계절)
@@ -432,6 +432,48 @@ public class Post extends AppCompatActivity {
         } else {
             weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
+    }
+
+    private int getTag() {
+        CheckBox Spring = (CheckBox) findViewById(R.id.weatherSelect_spring);
+        CheckBox Summer = (CheckBox) findViewById(R.id.weatherSelect_summer);
+        CheckBox Fall = (CheckBox) findViewById(R.id.weatherSelect_fall);
+        CheckBox Winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
+        CheckBox Com = (CheckBox) findViewById(R.id.weatherSelect_communal);
+
+        if (Com.isChecked()) {
+            return 15;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 1;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 2;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 3;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 4;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && !Winter.isChecked()) {
+            return 5;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 6;
+        } else if (Spring.isChecked() && !Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 7;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 8;
+        } else if (!Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 9;
+        } else if (!Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 10;
+        } else if (Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && !Winter.isChecked()) {
+            return 11;
+        } else if (Spring.isChecked() && Summer.isChecked() && !Fall.isChecked() && Winter.isChecked()) {
+            return 12;
+        } else if (Spring.isChecked() && !Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 13;
+        } else if (!Spring.isChecked() && Summer.isChecked() && Fall.isChecked() && Winter.isChecked()) {
+            return 14;
+        }
+
+        return 15;
     }
 
     private void CloseButton() {
