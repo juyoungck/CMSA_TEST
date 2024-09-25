@@ -183,7 +183,7 @@ public class CodyAdd extends AppCompatActivity {
                                         if (thumb.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) thumb.getDrawable()).getBitmap() != null) {
                                             String modifyFileName = CodyFileName;
                                             modifyFileName = "thumb_" + CodyFileName;
-                                            values.put("cod_thumbnail", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
+                                            values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
                                         if (index1.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index1.getDrawable()).getBitmap() != null) {
                                             String modifyFileName = CodyFileName;

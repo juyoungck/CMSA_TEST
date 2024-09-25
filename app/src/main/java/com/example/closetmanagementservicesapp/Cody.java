@@ -312,7 +312,7 @@ public class Cody extends AppCompatActivity {
             for (int i = 0; i < count; i++) {
                 String cod_name = cursor.getString(cursor.getColumnIndexOrThrow("cod_name"));
 
-                String cod_thumbnail = cursor.getString(cursor.getColumnIndexOrThrow("cod_thumbnail"));
+                String cod_img = cursor.getString(cursor.getColumnIndexOrThrow("cod_img"));
                 String cod_index1 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index1"));
                 String cod_index2 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index2"));
                 String cod_index3 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index3"));
@@ -322,7 +322,7 @@ public class Cody extends AppCompatActivity {
                 String cod_index7 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index7"));
                 String cod_index8 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index8"));
 
-                Bitmap thumbitmap = BitmapFactory.decodeFile(cod_thumbnail);
+                Bitmap thumbitmap = BitmapFactory.decodeFile(cod_img);
                 Bitmap bitmap1 = BitmapFactory.decodeFile(cod_index1);
                 Bitmap bitmap2 = BitmapFactory.decodeFile(cod_index2);
                 Bitmap bitmap3 = BitmapFactory.decodeFile(cod_index3);
