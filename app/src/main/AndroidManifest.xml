@@ -40,6 +40,7 @@
         <activity android:name=".Settings"/>
         <activity android:name=".Cody" />
         <activity android:name=".SettingsNotice" />
+        <activity android:name=".SettingsService" />
         <activity android:name=".DetailActivity"/>
         <activity
             android:name=".CameraUtil_Cody"

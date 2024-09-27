@@ -36,6 +36,15 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // 고객센터
+        Button btnService = (Button) findViewById(R.id.btnService);
+        btnService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Settings.this, SettingsService.class);
+                startActivity(intent);
+            }
+        });
 
         // 버전 정보
         Button btnVersion = (Button) findViewById(R.id.btnVersion);
