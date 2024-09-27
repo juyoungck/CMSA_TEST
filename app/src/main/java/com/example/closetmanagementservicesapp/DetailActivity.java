@@ -73,7 +73,6 @@ public class DetailActivity extends AppCompatActivity {
         CheckBox weatherSelectcommunal= findViewById(R.id.weatherSelect_communal);
         EditText detail_c_memo = (EditText) findViewById(R.id.detail_c_memo);
         EditText detail_c_date = (EditText) findViewById(R.id.detail_c_date);
-        EditText detail_c_stack = (EditText) findViewById(R.id.detail_c_stack);
         Button detailModifyButton = findViewById(R.id.detail_Modify);
         Button deleteButton = findViewById(R.id.detail_delete);
 
@@ -106,14 +105,11 @@ public class DetailActivity extends AppCompatActivity {
         c_tag_reader(c_tag);
         detail_c_memo.setText(c_memo);
         detail_c_date.setText(c_date);
-        detail_c_stack.setText(String.valueOf(c_stack));
 
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_detail);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

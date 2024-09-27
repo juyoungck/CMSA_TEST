@@ -1,12 +1,8 @@
 package com.example.closetmanagementservicesapp;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,38 +12,32 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.core.util.Pair;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.view.View;
 import android.widget.Toast;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,7 +105,6 @@ public class Cody extends AppCompatActivity {
 
         displayDataCody();
 
-        basicLocation();
         // 코디 위치 스피너 출력
         fillSpinner_cod_loc();
 
@@ -179,7 +168,7 @@ public class Cody extends AppCompatActivity {
         btnSort.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Cody.this);
-                View tabView = LayoutInflater.from(Cody.this).inflate(R.layout.tab_sort, null);
+                View tabView = LayoutInflater.from(Cody.this).inflate(R.layout.tab_sort_cody, null);
 
                 bottomSheetDialog.setContentView(tabView);
                 bottomSheetDialog.show();
@@ -194,10 +183,7 @@ public class Cody extends AppCompatActivity {
                 });
 
                 // 정렬 기능 호출 (TabSort 클래스)
-                TabSort tabsort = new TabSort();
-
-                // 정렬 (옷 종류)
-                tabsort.clothesSelect(tabView);
+                TabSort_Cody tabsort = new TabSort_Cody();
 
                 // 정렬 (날씨)
                 tabsort.weatherSelect(tabView);
@@ -458,20 +444,6 @@ public class Cody extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-    }
-
-    private void basicLocation() {
-        ContentValues values = new ContentValues();
-        values.put("c_loc", 1);
-        values.put("c_loc_name", "옷장 1");
-        values.put("c_loc_date", "2024-09-16");
-        db.insert("Closet_Location", null, values);
-
-        values = new ContentValues();
-        values.put("cod_loc", 1);
-        values.put("cod_loc_name", "코디 1");
-        values.put("cod_loc_date", "2024-09-16");
-        db.insert("Coordy_Location", null, values);
     }
 
     private Pair<List<Integer>, List<Integer>> ItemCodyImgBtn(int imgCounter){

@@ -98,7 +98,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:background="#aaa"/>
             <Button
-                android:id="@+id/btnCsr"
+                android:id="@+id/btnService"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:background="#00ff0000"

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -16,15 +15,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -40,7 +36,6 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -72,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
     private int tagCounter = 2001;
     private int imgRow = 0;
     private int tagRow = 0;
+    static Boolean BasicLocationLoad = true;
+    static Boolean FilterDataLoad = false;
+    static Boolean ClickSearchView = false;
+    static ArrayList<Integer> st_sort_c_id = null;
+    static String orderBy_set = null;
+    static String search_c_name = null;
 
     BottomNavigationView bottomNavigationView;
 
@@ -89,6 +90,28 @@ public class MainActivity extends AppCompatActivity {
         gridLayout = findViewById(R.id.gl_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        // 중앙 이미지 레이아웃과 이미지 호출
+        List<Integer> imgCounterList = ItemAddImg(imgCounter);
+
+        // 중앙 태그 레이아웃과 태그 호출
+        List<Integer> tagCounterList = ItemAddTag(tagCounter);
+
+        // 옷장 위치 스피너 출력
+        fillSpinner_c_loc();
+
+        // 기본 옷장, 코디 위치 추가
+        basicLocation(BasicLocationLoad);
+
+        if (ClickSearchView) {
+
+        }
+
+        if (!FilterDataLoad) {
+            displayDataCloset();
+        } else if (FilterDataLoad) {
+            filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -165,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         btnSort.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this);
-                View tabView = LayoutInflater.from(MainActivity.this).inflate(R.layout.tab_sort, null);
+                View tabView = LayoutInflater.from(MainActivity.this).inflate(R.layout.tab_sort_closet, null);
 
                 bottomSheetDialog.setContentView(tabView);
                 bottomSheetDialog.show();
@@ -180,13 +203,19 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 // 정렬 기능 호출 (TabSort 클래스)
-                TabSort tabsort = new TabSort();
+                TabSort_Closet tabsort = new TabSort_Closet(getApplicationContext(), new TabSortCallback() {
+                    @Override
+                    public void onSortResult(ArrayList<Integer> sort_c_id, String orderBy) {
+                        // 데이터 출력을 위한 메서드
+                        st_sort_c_id = sort_c_id;
+                        orderBy_set = orderBy;
+                        FilterDataLoad = true;
+                        filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name);
+                    }
+                });
 
-                // 정렬 (옷 종류)
-                tabsort.clothesSelect(tabView);
-
-                // 정렬 (날씨)
-                tabsort.weatherSelect(tabView);
+                // 정렬 확인 버튼
+                tabsort.sortApply(tabView);
             }
         });
 
@@ -218,22 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 tabModify.modifyButton(modifyView);
             }
         });
-
-        // 중앙 이미지 레이아웃과 이미지 호출
-        List<Integer> imgCounterList = ItemAddImg(imgCounter);
-
-        // 중앙 태그 레이아웃과 태그 호출
-        List<Integer> tagCounterList = ItemAddTag(tagCounter);
-
-        // 기본 옷장, 코디 위치 추가
-        basicLocation();
-
-        // 임의 데이터 출력을 위한 메서드
-        displayDataCloset();
-
-        // 옷장 위치 스피너 출력
-        fillSpinner_c_loc();
-
 
         //날씨, gps 코드
         /*long now = System.currentTimeMillis();
@@ -304,14 +317,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // 검색어가 제출되면 실행될 코드 (제출 후 엔터 시)
-                filterDataByQuery(query);
+                search_c_name = query;
+                FilterDataLoad = true;
+                filterDataByQuery(st_sort_c_id, orderBy_set, query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 // 검색어가 변경될 때마다 필터링된 데이터를 보여주는 메소드 호출
-                filterDataByQuery(newText);
+                Log.d("SearchView", newText);
+                search_c_name = newText;
+                FilterDataLoad = true;
+                filterDataByQuery(st_sort_c_id, orderBy_set, newText);
                 return false;
             }
         });
@@ -335,7 +353,6 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < count; i++) {
                 String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
                 String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
-
                 Bitmap bitmap = BitmapFactory.decodeFile(c_img);
 
                 int imgCounter = initialImgCounter + i; // ImageButton의 ID
@@ -430,18 +447,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void basicLocation() {
-        ContentValues values = new ContentValues();
-        values.put("c_loc", 1);
-        values.put("c_loc_name", "옷장 1");
-        values.put("c_loc_date", getToday());
-        db.insert("Closet_Location", null, values);
+    private void basicLocation(boolean basicLocationLoad) {
+        if (basicLocationLoad) {
+            ContentValues values = new ContentValues();
+            values.put("c_loc", 1);
+            values.put("c_loc_name", "옷장 1");
+            values.put("c_loc_date", getToday());
+            db.insert("Closet_Location", null, values);
 
-        values = new ContentValues();
-        values.put("cod_loc", 1);
-        values.put("cod_loc_name", "코디 1");
-        values.put("cod_loc_date", getToday());
-        db.insert("Coordy_Location", null, values);
+            values = new ContentValues();
+            values.put("cod_loc", 1);
+            values.put("cod_loc_name", "코디 1");
+            values.put("cod_loc_date", getToday());
+            db.insert("Coordy_Location", null, values);
+
+            BasicLocationLoad = false;
+        }
     }
 
     private String getToday() {
@@ -528,27 +549,72 @@ public class MainActivity extends AppCompatActivity {
 
         return tagCounters;
     }
+
     // 쿼리로 데이터를 필터링하는 함수
-    private void filterDataByQuery(String query) {
+    private void filterDataByQuery(ArrayList<Integer> sort_c_id, String orderBy, String search_c_name) {
         // 검색어가 없으면 전체 데이터를 다시 불러옴
         String selection = null;
         String[] selectionArgs = null;
+        StringBuilder c_id_builder = new StringBuilder();
 
-        if (query != null && !query.isEmpty()) {
-            // c_name 컬럼에서 검색어가 포함된 값을 찾음
-            selection = "c_name LIKE ?";
-            selectionArgs = new String[]{"%" + query + "%"};
+
+        if (search_c_name != null && !search_c_name.isEmpty()) {
+            if (sort_c_id != null && !sort_c_id.isEmpty()) {
+                selectionArgs = new String[sort_c_id.size() + 1];
+
+                c_id_builder.append("c_id IN (");
+                for (int i = 0; i < sort_c_id.size(); i++) {
+                    c_id_builder.append("?");
+                    if (i < sort_c_id.size() - 1) {
+                        c_id_builder.append(", ");
+                    }
+                }
+                c_id_builder.append(") AND c_name LIKE ?");
+
+                for (int i = 0; i < sort_c_id.size(); i++) {
+                    selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+                }
+                selection = c_id_builder.toString();
+                selectionArgs[sort_c_id.size()] = "%" + search_c_name + "%";
+            } else {
+                selection = "c_name LIKE ?";
+                selectionArgs = new String[]{"%" + search_c_name + "%"};
+            }
+        } else if (sort_c_id != null && !sort_c_id.isEmpty()) {
+            selectionArgs = new String[sort_c_id.size()];
+
+            c_id_builder.append("c_id IN (");
+            for (int i = 0; i < sort_c_id.size(); i++) {
+                c_id_builder.append("?");
+                if (i < sort_c_id.size() - 1) {
+                    c_id_builder.append(", ");
+                }
+            }
+            c_id_builder.append(")");
+
+            selection = c_id_builder.toString();
+            for (int i = 0; i < sort_c_id.size(); i++) {
+                selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+            }
         }
 
         // Main_Closet 테이블에서 필터링된 데이터를 가져옴
-        Cursor cursor = db.query("Main_Closet", null, selection, selectionArgs, null, null, null);
+        Cursor cursor = db.query("Main_Closet", null, selection, selectionArgs, null, null, orderBy);
+
+        ArrayList<Integer> filter_c_id = new ArrayList<>();
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int c_id = cursor.getInt(cursor.getColumnIndexOrThrow("c_id"));
+                filter_c_id.add(c_id);
+            } while (cursor.moveToNext());
+        }
 
         // 기존에 표시된 데이터를 지우고 새로운 데이터를 보여줌
-        displayFilteredData(cursor);
+        displayFilteredData(cursor, filter_c_id);
     }
 
     // 필터링된 데이터를 GridLayout에 표시하는 함수
-    private void displayFilteredData(Cursor cursor) {
+    private void displayFilteredData(Cursor cursor, ArrayList<Integer> filter_c_id) {
         // 초기 ImageButton 및 TextView ID 설정
         int initialImgCounter = 1001;
         int initialTagCounter = 2001;
@@ -605,9 +671,29 @@ public class MainActivity extends AppCompatActivity {
 
                 // 이미지 버튼 클릭 시 상세 정보를 볼 수 있도록 클릭 리스너 설정
                 int finalI = i; // 람다 표현식 안에서 i를 사용할 수 있도록 final 변수로 변경
+
+                StringBuilder filter_builder = new StringBuilder();
+                filter_builder.append("c_id IN (");
+
+                for (int j = 0; j < filter_c_id.size();j++) {
+                    filter_builder.append("?");
+                    if (j < filter_c_id.size() - 1) {
+                        filter_builder.append(", ");
+                    }
+                }
+                filter_builder.append(")");
+
+                String selection = filter_builder.toString();
+                String[] selectionArgs = new String[filter_c_id.size()];
+
+                for (int j = 0; j < filter_c_id.size(); j++) {
+                    selectionArgs[j] = String.valueOf(filter_c_id.get(j));
+                }
+
+                Log.d("clothes_builder", String.valueOf(i));
                 imageButton.setOnClickListener(view -> {
                     new Thread(() -> {
-                        Cursor detailCursor = db.query("Main_Closet", null, null, null, null, null, null);
+                        Cursor detailCursor = db.query("Main_Closet", null, selection, selectionArgs, null, null, null);
                         if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                             intent.putExtra("c_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("c_id")));

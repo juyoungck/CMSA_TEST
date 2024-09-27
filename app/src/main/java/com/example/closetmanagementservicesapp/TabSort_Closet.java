@@ -1,7 +1,13 @@
 package com.example.closetmanagementservicesapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.view.View;
@@ -9,7 +15,197 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TabSort extends AppCompatActivity {
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class TabSort_Closet extends AppCompatActivity {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+    private ArrayList<Integer> sort_c_id = new ArrayList<>();
+    private Context context;
+    private TabSortCallback callback;
+
+    public TabSort_Closet(Context context, TabSortCallback callback) {
+        this.context = context;
+        this.callback = callback;
+    }
+
+    public void sortApply(View view) {
+        dbHelper = MyApplication.getDbHelper();
+        db = dbHelper.getWritableDatabase();
+
+        clothesSelect(view);
+        weatherSelect(view);
+        weatherButtonBase(view);
+
+        Button tag_refresh = (Button) view.findViewById(R.id.tag_refresh);
+
+        CheckBox clothesSelect_all = (CheckBox) view.findViewById(R.id.clothesSelect_all);
+        CheckBox clothesSelect_all_clothes = (CheckBox) view.findViewById(R.id.clothesSelect_all_clothes);
+        CheckBox clothesSelect_all_access = (CheckBox) view.findViewById(R.id.clothesSelect_all_access);
+        CheckBox clothesSelect_all_etc = (CheckBox) view.findViewById(R.id.clothesSelect_all_etc);
+        CheckBox clothesSelect_top = (CheckBox) view.findViewById(R.id.clothesSelect_top);
+        CheckBox clothesSelect_bottom = (CheckBox) view.findViewById(R.id.clothesSelect_bottom);
+        CheckBox clothesSelect_outer = (CheckBox) view.findViewById(R.id.clothesSelect_outer);
+        CheckBox clothesSelect_shoes = (CheckBox) view.findViewById(R.id.clothesSelect_shoes);
+        CheckBox clothesSelect_under = (CheckBox) view.findViewById(R.id.clothesSelect_under);
+        CheckBox clothesSelect_socks = (CheckBox) view.findViewById(R.id.clothesSelect_socks);
+        CheckBox clothesSelect_hat = (CheckBox) view.findViewById(R.id.clothesSelect_hat);
+        CheckBox clothesSelect_access = (CheckBox) view.findViewById(R.id.clothesSelect_access);
+        CheckBox clothesSelect_bag = (CheckBox) view.findViewById(R.id.clothesSelect_bag);
+        CheckBox clothesSelect_set = (CheckBox) view.findViewById(R.id.clothesSelect_set);
+        CheckBox clothesSelect_etc = (CheckBox) view.findViewById(R.id.clothesSelect_etc);
+        CheckBox clothesSelect_input = (CheckBox) view.findViewById(R.id.clothesSelect_input);
+
+        CheckBox Spring = (CheckBox) view.findViewById(R.id.weatherSelect_spring);
+        CheckBox Summer = (CheckBox) view.findViewById(R.id.weatherSelect_summer);
+        CheckBox Fall = (CheckBox) view.findViewById(R.id.weatherSelect_fall);
+        CheckBox Winter = (CheckBox) view.findViewById(R.id.weatherSelect_winter);
+        CheckBox Com = (CheckBox) view.findViewById(R.id.weatherSelect_communal);
+
+        CheckBox sortSelect_name = (CheckBox) view.findViewById(R.id.sortSelect_name);
+        CheckBox sortSelect_asc = (CheckBox) view.findViewById(R.id.sortSelect_asc);
+
+        Button sort_apply = (Button) view.findViewById(R.id.sort_apply);
+
+        sort_apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> clothesArgsList = new ArrayList<>();
+                ArrayList<String> clothesInputArgsList = new ArrayList<>();
+                Set<String> tagList = new HashSet<>();
+
+                // 의류 카테고리 체크박스 상태 확인
+                if (clothesSelect_top.isChecked()) { clothesArgsList.add("상의"); }
+                if (clothesSelect_bottom.isChecked()) { clothesArgsList.add("하의"); }
+                if (clothesSelect_outer.isChecked()) { clothesArgsList.add("아우터"); }
+                if (clothesSelect_shoes.isChecked()) { clothesArgsList.add("신발"); }
+                if (clothesSelect_under.isChecked()) { clothesArgsList.add("속옷"); }
+                if (clothesSelect_socks.isChecked()) { clothesArgsList.add("양말"); }
+
+                // 악세사리 카테고리 체크박스 상태 확인
+                if (clothesSelect_hat.isChecked()) { clothesArgsList.add("모자"); }
+                if (clothesSelect_access.isChecked()) { clothesArgsList.add("악세사리"); }
+                if (clothesSelect_bag.isChecked()) { clothesArgsList.add("가방"); }
+
+                // 기타 카테고리 체크박스 상태 확인
+                if (clothesSelect_set.isChecked()) { clothesArgsList.add("세트"); }
+                if (clothesSelect_etc.isChecked()) { clothesArgsList.add("기타"); }
+
+                if (clothesSelect_input.isChecked()) {
+                    if (!clothesSelect_top.isChecked()) { clothesInputArgsList.add("상의"); }
+                    if (!clothesSelect_bottom.isChecked()) { clothesInputArgsList.add("하의"); }
+                    if (!clothesSelect_outer.isChecked()) { clothesInputArgsList.add("아우터"); }
+                    if (!clothesSelect_shoes.isChecked()) { clothesInputArgsList.add("신발"); }
+                    if (!clothesSelect_under.isChecked()) { clothesInputArgsList.add("속옷"); }
+                    if (!clothesSelect_socks.isChecked()) { clothesInputArgsList.add("양말"); }
+                    if (!clothesSelect_hat.isChecked()) { clothesInputArgsList.add("모자"); }
+                    if (!clothesSelect_access.isChecked()) { clothesInputArgsList.add("악세사리"); }
+                    if (!clothesSelect_bag.isChecked()) { clothesInputArgsList.add("가방"); }
+                    if (!clothesSelect_set.isChecked()) { clothesInputArgsList.add("세트"); }
+                    if (!clothesSelect_etc.isChecked()) { clothesInputArgsList.add("기타"); }
+                }
+
+                // 정확한 검색 체크박스 상태 확인
+                if (Com.isChecked()) { tagList.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")); }
+                else {
+                    if (Spring.isChecked()) { tagList.addAll(Arrays.asList("1", "5", "6", "7", "11", "12", "13", "15")); }
+                    if (Summer.isChecked()) { tagList.addAll(Arrays.asList("2", "5", "8", "9", "11", "12", "14", "15")); }
+                    if (Fall.isChecked()) { tagList.addAll(Arrays.asList("3", "6", "8", "10", "11", "13", "14", "15")); }
+                    if (Winter.isChecked()) { tagList.addAll(Arrays.asList("4", "7", "9", "10", "12", "13", "14", "15")); }
+                }
+                ArrayList<String> tagArgs = new ArrayList<>(tagList);
+
+
+                String orderBy = "";
+                if (sortSelect_name.isChecked()) {
+                    orderBy = "c_name";
+                } else if (!sortSelect_name.isChecked()){
+                    orderBy = "c_date";
+                }
+
+                if (sortSelect_asc.isChecked()) {
+                    orderBy += " DESC";
+                } else if (!sortSelect_asc.isChecked()) {
+                    orderBy += " ASC";
+                }
+
+                if (!clothesArgsList.isEmpty() && !tagArgs.isEmpty()) {
+                    StringBuilder clothes_builder = new StringBuilder();
+                    if  (!clothesSelect_input.isChecked()) {
+                        clothes_builder.append("c_type IN (");
+                        for (int i = 0; i < clothesArgsList.size(); i++) {
+                            clothes_builder.append("?");
+                            if (i < clothesArgsList.size() - 1) {
+                                clothes_builder.append(", ");
+                            }
+                        }
+                        clothes_builder.append(") AND c_tag IN (");
+                    } else {
+                        clothes_builder.append("(c_type IN (");
+                        for (int i = 0; i < clothesArgsList.size(); i++) {
+                            clothes_builder.append("?");
+                            if (i < clothesArgsList.size() - 1) {
+                                clothes_builder.append(", ");
+                            }
+                        }
+                        clothes_builder.append(") OR c_type NOT IN (");
+
+                        for (int i = 0; i < clothesInputArgsList.size(); i++) {
+                            clothes_builder.append("?");
+                            if (i < clothesInputArgsList.size() - 1) {
+                                clothes_builder.append(", ");
+                            }
+                        }
+                        clothes_builder.append(")) AND c_tag IN (");
+                    }
+
+                    for (int i = 0; i < tagArgs.size(); i++) {
+                        clothes_builder.append("?");
+                        if (i < tagArgs.size() - 1) {
+                            clothes_builder.append(", ");
+                        }
+                    }
+                    clothes_builder.append(")");
+
+                    ArrayList<String> args = new ArrayList<>(clothesArgsList);
+                    args.addAll(clothesInputArgsList);
+                    args.addAll(tagArgs);
+
+                    Cursor cursor = db.query("Main_Closet", new String[]{"c_id"}, clothes_builder.toString(), args.toArray(new String[0]), null, null, orderBy);
+
+                    if (cursor != null && cursor.moveToFirst()) {
+                        sort_c_id.clear();
+
+                        do {
+                            int c_id = cursor.getInt(cursor.getColumnIndexOrThrow("c_id"));
+                            sort_c_id.add(c_id);
+                        } while (cursor.moveToNext());
+                        cursor.close();
+                    }
+                }
+
+                if (callback != null) {
+                    callback.onSortResult(sort_c_id, orderBy);
+                }
+            }
+        });
+
+        tag_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesSelect_all.setChecked(true);
+                Com.setChecked(true);
+                sortSelect_name.setChecked(false);
+                sortSelect_asc.setChecked(false);
+            }
+        });
+    }
 
     // 옷 선택
     protected void clothesSelect(View view) {
@@ -535,10 +731,10 @@ public class TabSort extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(sortSelect_name.isChecked()) {
                     sortSelect_name.setBackgroundColor(Color.parseColor("#ced4da"));
-                    sortSelect_name.setText("날짜순정렬");
+                    sortSelect_name.setText("이름순정렬");
                 } else {
                     sortSelect_name.setBackgroundColor(Color.parseColor("#e9ecef"));
-                    sortSelect_name.setText("이름순정렬");
+                    sortSelect_name.setText("날짜순정렬");
                 }
             }
         });

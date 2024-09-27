@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="정렬"
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/tabsortClose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:padding="50dp"
+            android:src="@drawable/xmark"
+            android:background="#00ff0000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="50dp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="태그"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="35dp" />
+        <CheckBox
+            android:id="@+id/tag_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:text="정확한 검색" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center">
+
+        <CheckBox
+            android:id="@+id/weatherSelect_spring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="봄"
+            android:textAlignment="center"
+            android:background="#f1f3f5" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:text="여름"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_summer"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="가을"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_fall" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="겨울"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_winter" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="전체"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#f1f3f5"
+            android:id="@+id/weatherSelect_communal"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center">
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="이름순정렬"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#e9ecef"
+            android:id="@+id/sortSelect_name"/>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="↑ 오름차순"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:background="#e9ecef"
+            android:id="@+id/sortSelect_asc"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"/>
+        <Button
+            android:id="@+id/sort_apply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text="적용" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+</LinearLayout>

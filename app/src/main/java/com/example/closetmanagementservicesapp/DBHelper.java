@@ -48,14 +48,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "cod_tag INTEGER NOT NULL, "
                 + "cod_date TEXT NOT NULL, "
                 + "cod_stack INTEGER NOT NULL, "
-                + "cod_index1 TEXT, "
-                + "cod_index2 TEXT, "
-                + "cod_index3 TEXT, "
-                + "cod_index4 TEXT, "
-                + "cod_index5 TEXT, "
-                + "cod_index6 TEXT, "
-                + "cod_index7 TEXT, "
-                + "cod_index8 TEXT, "
+                + "cod_index1 INTEGER, "
+                + "cod_index2 INTEGER, "
+                + "cod_index3 INTEGER, "
+                + "cod_index4 INTEGER, "
+                + "cod_index5 INTEGER, "
+                + "cod_index6 INTEGER, "
+                + "cod_index7 INTEGER, "
+                + "cod_index8 INTEGER, "
                 + "FOREIGN KEY(cod_loc) REFERENCES Coordy_Location(cod_loc))";
 
         // 옷 정보 테이블
