@@ -24,4 +24,8 @@ public class SettingsService extends AppCompatActivity {
             }
         });
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> da3fdc5afd5ce856b9cbd83b5294e9860c3f2560
