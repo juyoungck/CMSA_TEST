@@ -270,13 +270,5 @@
             android:text="날짜"
             android:textSize="18dp"
             android:layout_marginBottom="8dp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_c_stack"
-            android:enabled="false"
-            android:text="스택"
-            android:textSize="18dp"
-            android:layout_marginBottom="8dp"/>
     </LinearLayout>
 </ScrollView>
