@@ -5,6 +5,7 @@ package com.example.closetmanagementservicesapp;
         import android.annotation.SuppressLint;
         import android.app.ActivityManager;
         import android.app.AlertDialog;
+        import android.app.Dialog;
         import android.content.ContentValues;
         import android.content.Context;
         import android.content.DialogInterface;
@@ -21,14 +22,22 @@ package com.example.closetmanagementservicesapp;
         import android.net.Uri;
         import android.os.Bundle;
         import android.util.Log;
+        import android.view.Gravity;
+        import android.view.LayoutInflater;
         import android.view.View;
+        import android.view.ViewGroup;
+        import android.view.WindowManager;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.CheckBox;
         import android.widget.CompoundButton;
         import android.widget.EditText;
+        import android.widget.FrameLayout;
+        import android.widget.GridLayout;
         import android.widget.ImageButton;
+        import android.widget.LinearLayout;
         import android.widget.Spinner;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import androidx.annotation.Nullable;
@@ -53,15 +62,18 @@ public class CodyAdd extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private List<Integer> cod_loc_value;
-    private CameraUtil_Cody[] cameraUtils = new CameraUtil_Cody[9];
-    private ImageLoader_Cody[] imageLoaders = new ImageLoader_Cody[9];
+    private CameraUtil_Cody cameraUtil;
+    private ImageLoader_Cody imageLoader;
     private static final int CAMERA_REQUEST_CODE = 1;
     private static int selectedButton = -1;
+    private GridLayout gridLayout;
 
+    private int imgCounter = 8001;
+    private int tagCounter = 9001;
+    private int imgRow = 0;
+    private int tagRow = 0;
     private ImageButton[] detailCodIndices;
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +87,11 @@ public class CodyAdd extends AppCompatActivity {
 
         EditText codyadd_title = (EditText) findViewById(R.id.codyadd_title);
 
+        ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
+
+        thumb.setOnClickListener(v -> showImageOptionsDialog());
+
         detailCodIndices = new ImageButton[]{
-                findViewById(R.id.add_cod_thumb),
                 findViewById(R.id.detail_cod_index1),
                 findViewById(R.id.detail_cod_index2),
                 findViewById(R.id.detail_cod_index3),
@@ -88,37 +103,138 @@ public class CodyAdd extends AppCompatActivity {
         };
 
 
-
-        // 카메라 유틸리티 및 이미지 로더 초기화
-        cameraUtils = new CameraUtil_Cody[9];
-        imageLoaders = new ImageLoader_Cody[9];
-
-        for (int i = 0; i < 9; i++) {
-            cameraUtils[i] = new CameraUtil_Cody(this, detailCodIndices[i]);
-            imageLoaders[i] = new ImageLoader_Cody(this, detailCodIndices[i]);
-
+        for (int i = 0; i < 8; i++) {
             final int index = i;
             detailCodIndices[i].setOnClickListener(v -> {
                 selectedButton = index;
-                showImageOptionsDialog(index);
+                Dialog dialog = new Dialog(CodyAdd.this);
+                View addView = LayoutInflater.from(CodyAdd.this).inflate(R.layout.cody_addmenu, null);
 
+                dialog.setContentView(addView);
+                dialog.show();
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width=WindowManager.LayoutParams.WRAP_CONTENT;
+                params.height=1200;
+                dialog.getWindow().setAttributes(params);
+
+                gridLayout = addView.findViewById(R.id.gl_add);
+
+                List<Integer> imgCounterList = CodyAddImg(imgCounter);
+
+                List<Integer> tagCounterList = CodyAddTag(tagCounter);
+
+                Cursor cursor = db.query("Main_Closet", null, null, null, null, null, null);
+
+                int initialImgCounter = 8001;
+                int initialTagCounter = 9001;
+
+                // 커서 위치 유효성 검사 후 문제가 없으면 해당 코드 실행
+                if (cursor != null && cursor.moveToFirst()) {
+                    int count = cursor.getCount();
+
+                    for (int j = 0; j < count; j++) {
+                        String c_name = cursor.getString(cursor.getColumnIndexOrThrow("c_name"));
+                        String c_img = cursor.getString(cursor.getColumnIndexOrThrow("c_img"));
+                        int c_id = cursor.getInt(cursor.getColumnIndexOrThrow("c_id"));
+
+                        Bitmap bitmap = BitmapFactory.decodeFile(c_img);
+
+                        int imgCounter = initialImgCounter + j; // ImageButton의 ID
+                        int tagCounter = initialTagCounter + j; // TextView의 ID
+
+                        ImageButton imageButton = (ImageButton) addView.findViewById(imgCounter);
+                        TextView textView = (TextView) addView.findViewById(tagCounter);
+
+                        // 유효성 검사 후 문제가 없으면 해당 코드 실행 (현재 오류 발생 중, 추후 수정)
+                        if (textView != null && imageButton != null) {
+                            textView.setText(c_name);
+
+                            imageButton.setImageBitmap(bitmap);
+                            imageButton.setTag(c_id);
+
+                            if ((imgCounter - 8000) % 3 == 0) {
+                                imgRow++;
+                                imgCounter++;
+                                imgCounterList = CodyAddImg(imgCounter);
+                                imgCounter += imgCounterList.size();
+                            }
+
+                            if ((tagCounter - 9000) % 3 == 0) {
+                                tagRow++;
+                                tagCounter++;
+                                tagCounterList = CodyAddTag(tagCounter);
+                                tagCounter += tagCounterList.size();
+                            }
+
+                            int finalI = j;
+
+                            int finalcId = c_id;
+                            imageButton.setOnClickListener(view -> {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(addView.getContext());
+                                builder.setTitle("옷 등록")        // 제목 설정
+                                        .setMessage("해당 옷으로 등록하시겠습니까?")        // 메세지 설정
+                                        .setCancelable(false)                               // 뒤로 버튼 클릭시 취소 가능 설정
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialogInterface, int whichButton) {
+
+                                                Bitmap bitmap = BitmapFactory.decodeFile(c_img);
+                                                if (bitmap != null && selectedButton != -1) {
+                                                    // 선택된 이미지 버튼에 비트맵 설정
+                                                    detailCodIndices[selectedButton].setImageBitmap(bitmap);
+
+
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "이미지를 설정할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                Toast.makeText(getApplicationContext(), "옷 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                                dialogInterface.dismiss();
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                            }
+                                        });
+                                builder.show(); // 알림창 띄우기
+                            });
+                        }
+                        cursor.moveToNext();
+                    }
+                    cursor.close();
+                }
+
+                fillSpinner_cod_location();
+
+                ImageButton addClose = addView.findViewById(R.id.addClose);
+                addClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
             });
         }
 
+
+        cameraUtil = new CameraUtil_Cody(this, thumb); //화면, 이미지뷰
         Intent intent = getIntent();
         byte[] byteArray = intent.getByteArrayExtra("imageData");
         if (byteArray != null && byteArray.length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            if (bitmap != null && selectedButton != -1) { // selectedButton이 유효한 값일 때만 실행
-                detailCodIndices[selectedButton].setImageBitmap(bitmap);
+            if (bitmap != null) {
+                thumb.setImageBitmap(bitmap);
             }
         }
+        imageLoader = new ImageLoader_Cody(this, thumb);
+        intent = getIntent();
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             Drawable drawable = detailCodIndices[i].getDrawable();
             boolean hasImage = drawable instanceof BitmapDrawable && ((BitmapDrawable) drawable).getBitmap() != null;
         }
-
 
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_codyadd);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -148,20 +264,30 @@ public class CodyAdd extends AppCompatActivity {
                     cId++;
                     cursor.close();
                 }
-                String fileNameCheck = cId + ".png";
+
+                boolean hasImage = false;
+
+                // 8개의 이미지 버튼을 체크
+                for (int i = 0; i < detailCodIndices.length; i++) {
+                    Drawable drawable = detailCodIndices[i].getDrawable();
+                    if (drawable instanceof BitmapDrawable && ((BitmapDrawable) drawable).getBitmap() != null) {
+                        hasImage = true; // 비트맵이 존재하는 경우
+                        break; // 하나라도 이미지가 있으면 반복문 종료
+                    }
+                }
 
                 int selectedLocIndex = ((Spinner) findViewById(R.id.cody_location)).getSelectedItemPosition();
                 Integer cod_loc = cod_loc_value.get(selectedLocIndex);
                 String cod_name = codyadd_title.getText().toString();
 
-                if (CodyFileName == null || CodyFileName.isEmpty()) {
+                if (!hasImage) {
                     Toast.makeText(getApplicationContext(), "사진 파일이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 } else if (cod_name.equals("")) {
                     Toast.makeText(getApplicationContext(), "코디 이름이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CodyAdd.this);
                     builder.setTitle("코디 등록")        // 제목 설정
-                            .setMessage("해당 설정으로 옷을 등록하시겠습니까?")        // 메세지 설정
+                            .setMessage("해당 설정으로 코디를 등록하시겠습니까?")        // 메세지 설정
                             .setCancelable(false)                               // 뒤로 버튼 클릭시 취소 가능 설정
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -179,51 +305,13 @@ public class CodyAdd extends AppCompatActivity {
                                         ImageButton index7 = (ImageButton) findViewById(R.id.detail_cod_index7);
                                         ImageButton index8 = (ImageButton) findViewById(R.id.detail_cod_index8);
 
-
                                         if (thumb.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) thumb.getDrawable()).getBitmap() != null) {
                                             String modifyFileName = CodyFileName;
                                             modifyFileName = "thumb_" + CodyFileName;
                                             values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
-                                        if (index1.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index1.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index1_" + CodyFileName;
-                                            values.put("cod_index1", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
-                                        if (index2.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index2.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index2_" + CodyFileName;
-                                            values.put("cod_index2", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
-                                        if (index3.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index3.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index3_" + CodyFileName;
-                                            values.put("cod_index3", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
-
-                                        if (index4.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index4.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index4_" + CodyFileName;
-                                            values.put("cod_index4", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
-
-                                        if (index5.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index5.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index5_" + CodyFileName;
-                                            values.put("cod_index5", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
-
-                                        if (index6.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index6.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index6_" + CodyFileName;
-                                            values.put("cod_index6", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
-
-                                        if (index7.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index7.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index7_" + CodyFileName;
-                                            values.put("cod_index7", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
-
-                                        if (index8.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) index8.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "index8_" + CodyFileName;
-                                            values.put("cod_index8", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
 
                                         values.put("cod_loc", cod_loc);
@@ -240,7 +328,7 @@ public class CodyAdd extends AppCompatActivity {
                                         db.endTransaction();
                                     }
 
-                                    Toast.makeText(getApplicationContext(), "옷 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "코디 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CodyAdd.this, Cody.class);
                                     startActivity(intent);
                                     finish();
@@ -482,7 +570,7 @@ public class CodyAdd extends AppCompatActivity {
         cod_loc.setAdapter(adapter);
     }
 
-    private void showImageOptionsDialog(int index) {
+    private void showImageOptionsDialog() {
         String[] options = {"촬영", "파일에서 가져오기"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("옵션 선택")
@@ -490,21 +578,21 @@ public class CodyAdd extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            requestCameraPermission(index);
+                            requestCameraPermission();
 
                         } else if (which == 1) {
-                            imageLoaders[index].selectImage();
+                            imageLoader.selectImage();
                         }
                     }
                 });
         builder.show();
     }
 
-    private void requestCameraPermission(int index) {
+    private void requestCameraPermission() {
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                cameraUtils[index].openCameraForResult(CAMERA_REQUEST_CODE);
+                cameraUtil.openCameraForResult(CAMERA_REQUEST_CODE);
 
             }
 
@@ -523,14 +611,12 @@ public class CodyAdd extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (selectedButton >= 0) {
-                if (requestCode == CAMERA_REQUEST_CODE) {
-                    cameraUtils[selectedButton].handleCameraResult(requestCode, resultCode, data);
-                } else if (requestCode == 2) {
-                    imageLoaders[selectedButton].loadImageFromResult(requestCode, resultCode, data);
-                }
-            }
+        if(requestCode==1) {
+            System.out.println("되는듯");
+            cameraUtil.handleCameraResult(requestCode, resultCode, data);
+        }
+        if(requestCode==2) {
+            imageLoader.loadImageFromResult(requestCode, resultCode, data);
         }
     }
 
@@ -538,7 +624,6 @@ public class CodyAdd extends AppCompatActivity {
         super.onNewIntent(intent);
         // 새로운 Intent 데이터 처리 (FLAG_ACTIVITY_REORDER_TO_FRONT로 인해 액티비티가 다시 호출될 때)
         setIntent(intent);
-        handleIncomingIntent(intent);
     }
 
     private void handleIncomingIntent(Intent intent) {
@@ -547,13 +632,83 @@ public class CodyAdd extends AppCompatActivity {
             if (byteArray != null && byteArray.length > 0) {
                 Bitmap newBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
+                ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
+
                 if (newBitmap != null && selectedButton != -1) { // selectedButton이 유효한 값일 때만 실행
                     // 선택된 버튼에 이미지를 설정
                     detailCodIndices[selectedButton].setImageBitmap(newBitmap);
                 }
+                thumb.setImageBitmap(newBitmap);
             }
         }
     }
 
+    public List<Integer> CodyAddImg(int imgCounter){
+
+        List<Integer> imgCounters = new ArrayList<>();
+
+        gridLayout.setRowCount(50);
+        gridLayout.setColumnCount(3);
+
+        for (int col = 0; col < 3; col++) {
+            // ImageButton
+            ImageButton clothImgbtn = new ImageButton(this);
+            clothImgbtn.setBackgroundColor(Color.parseColor("#00ff0000"));
+            clothImgbtn.setPadding(150, 150, 150, 150);
+            clothImgbtn.setId(imgCounter);
+
+            // GridLayout에 레이아웃 매개변수 설정
+            GridLayout.LayoutParams paramsImageButton = new GridLayout.LayoutParams();
+            paramsImageButton.width = 275;
+            paramsImageButton.height = 300;
+            paramsImageButton.setMargins(30, 45, 30, 0);
+            paramsImageButton.rowSpec = GridLayout.spec(imgRow * 2);
+            paramsImageButton.columnSpec = GridLayout.spec(col);
+            clothImgbtn.setLayoutParams(paramsImageButton);
+
+            // GridLayout에 뷰 추가
+            gridLayout.addView(clothImgbtn);
+            imgCounters.add(imgCounter);
+            imgCounter++;
+        }
+
+
+        return imgCounters;
+    }
+
+    public List<Integer> CodyAddTag(int tagCounter) {
+
+        List<Integer> tagCounters = new ArrayList<>();
+
+        gridLayout.setRowCount(50);
+        gridLayout.setColumnCount(3);
+
+
+        for (int col = 0; col < 3; col++) {
+
+            // TextView 생성 및 설정
+            TextView clothTag = new TextView(this);
+            clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
+            clothTag.setGravity(Gravity.CENTER);
+            clothTag.setId(tagCounter);
+
+            GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
+            paramsTextView.width = 275;
+            paramsTextView.height = 75;
+            paramsTextView.setMargins(30, 0, 30, 0);
+            paramsTextView.rowSpec = GridLayout.spec(tagRow * 2 + 1);
+            paramsTextView.columnSpec = GridLayout.spec(col);
+            clothTag.setLayoutParams(paramsTextView);
+
+            // GridLayout에 뷰 추가
+            gridLayout.addView(clothTag);
+            tagCounters.add(tagCounter);
+            tagCounter++;
+        }
+
+        return tagCounters;
+    }
 
 }
+
+
