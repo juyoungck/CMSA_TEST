@@ -297,26 +297,40 @@ public class Cody extends AppCompatActivity {
 
             for (int i = 0; i < count; i++) {
                 String cod_name = cursor.getString(cursor.getColumnIndexOrThrow("cod_name"));
-
                 String cod_img = cursor.getString(cursor.getColumnIndexOrThrow("cod_img"));
-                String cod_index1 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index1"));
-                String cod_index2 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index2"));
-                String cod_index3 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index3"));
-                String cod_index4 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index4"));
-                String cod_index5 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index5"));
-                String cod_index6 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index6"));
-                String cod_index7 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index7"));
-                String cod_index8 = cursor.getString(cursor.getColumnIndexOrThrow("cod_index8"));
 
-                Bitmap thumbitmap = BitmapFactory.decodeFile(cod_img);
-                Bitmap bitmap1 = BitmapFactory.decodeFile(cod_index1);
-                Bitmap bitmap2 = BitmapFactory.decodeFile(cod_index2);
-                Bitmap bitmap3 = BitmapFactory.decodeFile(cod_index3);
-                Bitmap bitmap4 = BitmapFactory.decodeFile(cod_index4);
-                Bitmap bitmap5 = BitmapFactory.decodeFile(cod_index5);
-                Bitmap bitmap6 = BitmapFactory.decodeFile(cod_index6);
-                Bitmap bitmap7 = BitmapFactory.decodeFile(cod_index7);
-                Bitmap bitmap8 = BitmapFactory.decodeFile(cod_index8);
+                Bitmap thumbBitmap = BitmapFactory.decodeFile(cod_img);
+
+
+                Integer[] cod_indices = new Integer[8];
+                for (int idx = 0; idx < 8; idx++) {
+                    String columnName = "cod_index" + (idx + 1);
+                    if (!cursor.isNull(cursor.getColumnIndex(columnName))) {
+                        cod_indices[idx] = cursor.getInt(cursor.getColumnIndex(columnName));
+                    } else {
+                        cod_indices[idx] = null;
+                    }
+                }
+
+                // 각 cod_index에 해당하는 c_img 경로를 가져와 비트맵 생성
+                Bitmap[] bitmaps = new Bitmap[8];
+                for (int j = 0; j < 8; j++) {
+                    if (cod_indices[j] != null) {
+                        // Main_Closet에서 c_id로 c_img 경로 가져오기
+                        Cursor closetCursor = db.query("Main_Closet", new String[]{"c_img"},
+                                "c_id=?", new String[]{String.valueOf(cod_indices[j])}, null, null, null);
+                        if (closetCursor != null && closetCursor.moveToFirst()) {
+                            String c_img = closetCursor.getString(closetCursor.getColumnIndexOrThrow("c_img"));
+                            Bitmap bitmap = BitmapFactory.decodeFile(c_img);
+                            bitmaps[j] = bitmap;
+                            closetCursor.close();
+                        } else {
+                            bitmaps[j] = null;
+                        }
+                    } else {
+                        bitmaps[j] = null;
+                    }
+                }
 
 
                 int imgCounter = initialImgCounter + i; // ImageButton의 ID
@@ -329,71 +343,58 @@ public class Cody extends AppCompatActivity {
 
 
                 // 유효성 검사 후 문제가 없으면 해당 코드 실행 (현재 오류 발생 중, 추후 수정)
-                if (textView != null && imageView != null) {
+                if (textView != null && imageButton != null) {
                     textView.setText(cod_name);
-                    imageButton.setImageBitmap(thumbitmap);
+                    imageButton.setImageBitmap(thumbBitmap);
 
-                    int batchSize = 16;
-                    int imageViewGroupSize = 8;
-                    int batchIndex = 0;
+                    if (textView != null && imageView != null) {
+                        textView.setText(cod_name);
+                        imageButton.setImageBitmap(thumbBitmap);
 
-                    for (int j = 0; j < imgViewCounterList.size(); j++) {
-                        // 새로운 배치일 때 batchIndex 갱신
-                        if (j % batchSize == 0 && j != 0) {
-                            batchIndex += batchSize;
+                        int totalImages = bitmaps.length; // 전체 이미지 수
+                        int batchSize = 8; // 한 번에 처리할 이미지 수
+
+                        for (int batchStart = 0; batchStart < totalImages; batchStart += batchSize) {
+                            // 각 배치마다 8개의 이미지를 처리
+                            for (int j = 0; j < batchSize; j++) {
+                                int index = batchStart + j;
+                                if (index >= totalImages) {
+                                    break; // 인덱스가 총 이미지 수를 넘으면 종료
+                                }
+                                int imgViewId = imgViewCounter + index + ((batchSize - 1) * Call);
+                                imageView = (ImageView) findViewById(imgViewId);
+                                if (imageView != null) {
+                                    if (bitmaps[index] != null) {
+                                        imageView.setImageBitmap(bitmaps[index]);
+
+                                        // cod_id 값을 태그로 저장 (codIdValues는 cod_id 배열)
+                                        imageView.setTag(cod_indices[index]);
+
+                                        // 클릭 리스너 설정
+                                        imageView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                int cod_id = (int) v.getTag();
+
+                                                // DetailCody 액티비티로 이동
+                                                Intent intent = new Intent(Cody.this, DetailCody.class);
+                                                intent.putExtra("cod_id", cod_id);
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                                        Log.d("ImageAssignment", "ImageView ID: " + imgViewId + ", Bitmap Index: " + index);
+                                    } else {
+                                        imageView.setImageBitmap(null); // 이미지가 없으면 빈 이미지로 설정
+                                    }
+                                }
+                            }
                         }
 
-                        if (Call % 2 == 0 && j >= batchIndex && j < batchIndex + imageViewGroupSize) {
-                            int imgViewId = imgViewCounterList.get(j);
-                            imageView = findViewById(imgViewId);
-
-                            int adjustedId = j % imageViewGroupSize;
-
-                            if (adjustedId == 0) {
-                                imageView.setImageBitmap(bitmap1);
-                            } else if (adjustedId == 1) {
-                                imageView.setImageBitmap(bitmap2);
-                            } else if (adjustedId == 2) {
-                                imageView.setImageBitmap(bitmap3);
-                            } else if (adjustedId == 3) {
-                                imageView.setImageBitmap(bitmap4);
-                            } else if (adjustedId == 4) {
-                                imageView.setImageBitmap(bitmap5);
-                            } else if (adjustedId == 5) {
-                                imageView.setImageBitmap(bitmap6);
-                            } else if (adjustedId == 6) {
-                                imageView.setImageBitmap(bitmap7);
-                            } else if (adjustedId == 7) {
-                                imageView.setImageBitmap(bitmap8);
-                            }
-
-                        } else if (Call % 2 == 1 && j >= batchIndex + imageViewGroupSize && j < batchIndex + batchSize) {
-                            int imgViewId = imgViewCounterList.get(j);
-                            imageView = findViewById(imgViewId);
-                            int adjustedId = j % imageViewGroupSize;
-
-                            if (adjustedId == 0) {
-                                imageView.setImageBitmap(bitmap1);
-                            } else if (adjustedId == 1) {
-                                imageView.setImageBitmap(bitmap2);
-                            } else if (adjustedId == 2) {
-                                imageView.setImageBitmap(bitmap3);
-                            } else if (adjustedId == 3) {
-                                imageView.setImageBitmap(bitmap4);
-                            } else if (adjustedId == 4) {
-                                imageView.setImageBitmap(bitmap5);
-                            } else if (adjustedId == 5) {
-                                imageView.setImageBitmap(bitmap6);
-                            } else if (adjustedId == 6) {
-                                imageView.setImageBitmap(bitmap7);
-                            } else if (adjustedId == 7) {
-                                imageView.setImageBitmap(bitmap8);
-                            }
-
-                        }
+                        Call++; // 실행 횟수 증가
                     }
 
-                    Call++;
+
                     if ((imgCounter - 3000) % 2 == 0) {
                         imgRow++;
                         imgCounter++;
@@ -420,6 +421,39 @@ public class Cody extends AppCompatActivity {
                     }
 
                     int finalI = i;
+
+                    imageButton.setOnClickListener(view -> {
+                        new Thread(() -> {
+                            Cursor detailCursor = db.query("Coordy", null, null, null, null, null, null);
+                            if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
+                                Intent intent = new Intent(Cody.this, DetailCody.class);
+                                intent.putExtra("cod_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_id")));
+                                intent.putExtra("cod_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_img")));
+                                intent.putExtra("cod_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_loc")));
+                                intent.putExtra("cod_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_name")));
+                                intent.putExtra("cod_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_tag")));
+                                intent.putExtra("cod_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_date")));
+                                intent.putExtra("cod_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_stack")));
+
+                                intent.putExtra("cod_index1", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index1")));
+                                intent.putExtra("cod_index2", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index2")));
+                                intent.putExtra("cod_index3", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index3")));
+                                intent.putExtra("cod_index4", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index4")));
+                                intent.putExtra("cod_index5", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index5")));
+                                intent.putExtra("cod_index6", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index6")));
+                                intent.putExtra("cod_index7", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index7")));
+                                intent.putExtra("cod_index8", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index8")));
+
+                                // 커서 닫기 및 인텐트 실행은 UI 스레드에서 실행
+                                runOnUiThread(() -> {
+                                    startActivity(intent);
+                                    detailCursor.close(); // 사용 후 커서 닫기
+                                });
+                            } else if (detailCursor != null) {
+                                detailCursor.close(); // 커서가 유효하지 않을 경우에도 닫기
+                            }
+                        }).start();
+                    });
 
                 }
                 cursor.moveToNext();
