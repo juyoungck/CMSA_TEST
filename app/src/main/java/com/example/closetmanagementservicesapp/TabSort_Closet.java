@@ -239,12 +239,12 @@ public class TabSort_Closet extends AppCompatActivity {
                     if (clothesSelect_all_clothes.isChecked())
                     {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(true);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_under.setChecked(false);
-                        clothesSelect_socks.setChecked(false);
+                        clothesSelect_top.setChecked(false);
+                        clothesSelect_bottom.setChecked(true);
+                        clothesSelect_outer.setChecked(true);
+                        clothesSelect_shoes.setChecked(true);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -263,12 +263,12 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_clothes.isChecked()) {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(true);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_under.setChecked(false);
-                        clothesSelect_socks.setChecked(false);
+                        clothesSelect_top.setChecked(true);
+                        clothesSelect_bottom.setChecked(false);
+                        clothesSelect_outer.setChecked(true);
+                        clothesSelect_shoes.setChecked(true);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -287,12 +287,12 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_clothes.isChecked()) {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(true);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_under.setChecked(false);
-                        clothesSelect_socks.setChecked(false);
+                        clothesSelect_top.setChecked(true);
+                        clothesSelect_bottom.setChecked(true);
+                        clothesSelect_outer.setChecked(false);
+                        clothesSelect_shoes.setChecked(true);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -310,12 +310,12 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_clothes.isChecked()) {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(true);
-                        clothesSelect_under.setChecked(false);
-                        clothesSelect_socks.setChecked(false);
+                        clothesSelect_top.setChecked(true);
+                        clothesSelect_bottom.setChecked(true);
+                        clothesSelect_outer.setChecked(true);
+                        clothesSelect_shoes.setChecked(false);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -334,12 +334,12 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_clothes.isChecked()) {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_under.setChecked(true);
-                        clothesSelect_socks.setChecked(false);
+                        clothesSelect_top.setChecked(true);
+                        clothesSelect_bottom.setChecked(true);
+                        clothesSelect_outer.setChecked(true);
+                        clothesSelect_shoes.setChecked(true);
+                        clothesSelect_under.setChecked(false);
+                        clothesSelect_socks.setChecked(true);
                     }
                 }
             }
@@ -358,12 +358,12 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_clothes.isChecked()) {
                         clothesSelect_all_clothes.setChecked(false);
-                        clothesSelect_top.setChecked(false);
-                        clothesSelect_bottom.setChecked(false);
-                        clothesSelect_outer.setChecked(false);
-                        clothesSelect_shoes.setChecked(false);
-                        clothesSelect_under.setChecked(false);
-                        clothesSelect_socks.setChecked(true);
+                        clothesSelect_top.setChecked(true);
+                        clothesSelect_bottom.setChecked(true);
+                        clothesSelect_outer.setChecked(true);
+                        clothesSelect_shoes.setChecked(true);
+                        clothesSelect_under.setChecked(true);
+                        clothesSelect_socks.setChecked(false);
                     }
                 }
             }
@@ -380,9 +380,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_access.isChecked()) {
                         clothesSelect_all_access.setChecked(false);
-                        clothesSelect_hat.setChecked(true);
-                        clothesSelect_access.setChecked(false);
-                        clothesSelect_bag.setChecked(false);
+                        clothesSelect_hat.setChecked(false);
+                        clothesSelect_access.setChecked(true);
+                        clothesSelect_bag.setChecked(true);
                     }
                 }
             }
@@ -399,9 +399,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_access.isChecked()) {
                         clothesSelect_all_access.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_access.setChecked(true);
-                        clothesSelect_bag.setChecked(false);
+                        clothesSelect_hat.setChecked(true);
+                        clothesSelect_access.setChecked(false);
+                        clothesSelect_bag.setChecked(true);
                     }
                 }
             }
@@ -419,9 +419,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_access.isChecked()) {
                         clothesSelect_all_access.setChecked(false);
-                        clothesSelect_hat.setChecked(false);
-                        clothesSelect_access.setChecked(false);
-                        clothesSelect_bag.setChecked(true);
+                        clothesSelect_hat.setChecked(true);
+                        clothesSelect_access.setChecked(true);
+                        clothesSelect_bag.setChecked(false);
                     }
                 }
             }
@@ -438,9 +438,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_etc.isChecked()) {
                         clothesSelect_all_etc.setChecked(false);
-                        clothesSelect_set.setChecked(true);
-                        clothesSelect_etc.setChecked(false);
-                        clothesSelect_input.setChecked(false);
+                        clothesSelect_set.setChecked(false);
+                        clothesSelect_etc.setChecked(true);
+                        clothesSelect_input.setChecked(true);
                     }
                 }
             }
@@ -457,9 +457,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_etc.isChecked()) {
                         clothesSelect_all_etc.setChecked(false);
-                        clothesSelect_set.setChecked(false);
-                        clothesSelect_etc.setChecked(true);
-                        clothesSelect_input.setChecked(false);
+                        clothesSelect_set.setChecked(true);
+                        clothesSelect_etc.setChecked(false);
+                        clothesSelect_input.setChecked(true);
                     }
                 }
             }
@@ -476,9 +476,9 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if (clothesSelect_all_etc.isChecked()) {
                         clothesSelect_all_etc.setChecked(false);
-                        clothesSelect_set.setChecked(false);
-                        clothesSelect_etc.setChecked(false);
-                        clothesSelect_input.setChecked(true);
+                        clothesSelect_set.setChecked(true);
+                        clothesSelect_etc.setChecked(true);
+                        clothesSelect_input.setChecked(false);
                     }
                 }
             }
@@ -502,7 +502,12 @@ public class TabSort_Closet extends AppCompatActivity {
                     if (!clothesSelect_top.isChecked() || !clothesSelect_bottom.isChecked()
                             || !clothesSelect_outer.isChecked() || !clothesSelect_shoes.isChecked()
                             || !clothesSelect_under.isChecked() || !clothesSelect_socks.isChecked()) {
+                        clothesSelect_all_access.setChecked(false);
+                        clothesSelect_all.setChecked(false);
                         clothesSelect_all_clothes.setChecked(false);
+                        clothesSelect_all_access.setChecked(false);
+                        clothesSelect_all_etc.setChecked(false);
+
                     } else {
                         clothesSelect_top.setChecked(false);
                         clothesSelect_bottom.setChecked(false);
@@ -534,6 +539,10 @@ public class TabSort_Closet extends AppCompatActivity {
                     if (!clothesSelect_hat.isChecked() || !clothesSelect_access.isChecked()
                             || !clothesSelect_bag.isChecked()) {
                         clothesSelect_all_access.setChecked(false);
+                        clothesSelect_all.setChecked(false);
+                        clothesSelect_all_clothes.setChecked(false);
+                        clothesSelect_all_access.setChecked(false);
+                        clothesSelect_all_etc.setChecked(false);
                     } else {
                         clothesSelect_hat.setChecked(false);
                         clothesSelect_access.setChecked(false);
@@ -561,6 +570,10 @@ public class TabSort_Closet extends AppCompatActivity {
                 } else {
                     if ( !clothesSelect_set.isChecked() || !clothesSelect_etc.isChecked()
                             || !clothesSelect_input.isChecked()) {
+                        clothesSelect_all_etc.setChecked(false);
+                        clothesSelect_all.setChecked(false);
+                        clothesSelect_all_clothes.setChecked(false);
+                        clothesSelect_all_access.setChecked(false);
                         clothesSelect_all_etc.setChecked(false);
                     } else {
                         clothesSelect_set.setChecked(false);
