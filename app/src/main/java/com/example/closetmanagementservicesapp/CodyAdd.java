@@ -183,6 +183,7 @@ public class CodyAdd extends AppCompatActivity {
                                                     // 선택된 이미지 버튼에 비트맵 설정
                                                     detailCodIndices[selectedButton].setImageBitmap(bitmap);
 
+                                                    detailCodIndices[selectedButton].setTag(c_id);
 
                                                 } else {
                                                     Toast.makeText(getApplicationContext(), "이미지를 설정할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -267,6 +268,26 @@ public class CodyAdd extends AppCompatActivity {
 
                 boolean hasImage = false;
 
+                int[] cIdArray = new int[8];
+
+                for (int i = 0; i < detailCodIndices.length; i++) {
+                    Drawable drawable = detailCodIndices[i].getDrawable();
+                    if (drawable instanceof BitmapDrawable && ((BitmapDrawable) drawable).getBitmap() != null) {
+                        hasImage = true; // 이미지가 존재함
+                        Object tag = detailCodIndices[i].getTag();
+                        if (tag != null) {
+                            int c_id = (int) tag;
+                            cIdArray[i] = c_id; // 해당 위치에 c_id 저장
+                        } else {
+                            // c_id가 설정되지 않은 경우 처리
+                            Toast.makeText(getApplicationContext(), "선택된 옷의 ID를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } else {
+                        cIdArray[i] = -1; // 이미지가 없는 경우 -1 또는 0 등으로 설정
+                    }
+                }
+
                 // 8개의 이미지 버튼을 체크
                 for (int i = 0; i < detailCodIndices.length; i++) {
                     Drawable drawable = detailCodIndices[i].getDrawable();
@@ -296,23 +317,21 @@ public class CodyAdd extends AppCompatActivity {
                                         ContentValues values = new ContentValues();
 
                                         ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
-                                        ImageButton index1 = (ImageButton) findViewById(R.id.detail_cod_index1);
-                                        ImageButton index2 = (ImageButton) findViewById(R.id.detail_cod_index2);
-                                        ImageButton index3 = (ImageButton) findViewById(R.id.detail_cod_index3);
-                                        ImageButton index4 = (ImageButton) findViewById(R.id.detail_cod_index4);
-                                        ImageButton index5 = (ImageButton) findViewById(R.id.detail_cod_index5);
-                                        ImageButton index6 = (ImageButton) findViewById(R.id.detail_cod_index6);
-                                        ImageButton index7 = (ImageButton) findViewById(R.id.detail_cod_index7);
-                                        ImageButton index8 = (ImageButton) findViewById(R.id.detail_cod_index8);
+
 
                                         if (thumb.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) thumb.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = CodyFileName;
-                                            modifyFileName = "thumb_" + CodyFileName;
+                                            String modifyFileName = "thumb_" + CodyFileName;
                                             values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
 
-
-
-
+                                        values.put("cod_index1", cIdArray[0] != -1 ? cIdArray[0] : null);
+                                        values.put("cod_index2", cIdArray[1] != -1 ? cIdArray[1] : null);
+                                        values.put("cod_index3", cIdArray[2] != -1 ? cIdArray[2] : null);
+                                        Log.d("DetailCody", "cod_index3 value: " + (cIdArray[2] != -1 ? cIdArray[2] : "null"));
+                                        values.put("cod_index4", cIdArray[3] != -1 ? cIdArray[3] : null);
+                                        values.put("cod_index5", cIdArray[4] != -1 ? cIdArray[4] : null);
+                                        values.put("cod_index6", cIdArray[5] != -1 ? cIdArray[5] : null);
+                                        values.put("cod_index7", cIdArray[6] != -1 ? cIdArray[6] : null);
+                                        values.put("cod_index8", cIdArray[7] != -1 ? cIdArray[7] : null);
 
                                         values.put("cod_loc", cod_loc);
                                         values.put("cod_name", cod_name);
@@ -327,6 +346,8 @@ public class CodyAdd extends AppCompatActivity {
                                     } finally {
                                         db.endTransaction();
                                     }
+
+
 
                                     Toast.makeText(getApplicationContext(), "코디 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CodyAdd.this, Cody.class);
