@@ -50,7 +50,7 @@ public class CameraUtil_Cody extends AppCompatActivity{
             if (bitmap != null) {
                 Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
                 Cursor cursor = db.rawQuery("SELECT MAX(cod_id) FROM Coordy", null);
-                int cId = 1000;
+                int cId = 0;
 
                 if (cursor != null && cursor.moveToFirst()) {
                     cId = cursor.getInt(0);
@@ -103,6 +103,5 @@ public class CameraUtil_Cody extends AppCompatActivity{
     private Bitmap resizeBitmap(Bitmap originalBitmap, int width, int height) {
         return Bitmap.createScaledBitmap(originalBitmap, width, height, true);
     }
-
 
 }
