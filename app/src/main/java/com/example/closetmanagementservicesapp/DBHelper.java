@@ -43,11 +43,11 @@ public class DBHelper extends SQLiteOpenHelper {
         String Coordy_TABLE = "CREATE TABLE Coordy ("
                 + "cod_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "cod_loc INTEGER NOT NULL, "
-                + "cod_img TEXT NOT NULL, "
                 + "cod_name TEXT NOT NULL, "
                 + "cod_tag INTEGER NOT NULL, "
                 + "cod_date TEXT NOT NULL, "
                 + "cod_stack INTEGER NOT NULL, "
+                + "cod_img TEXT, "
                 + "cod_index1 INTEGER, "
                 + "cod_index2 INTEGER, "
                 + "cod_index3 INTEGER, "
@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "SELECT cod_loc, cod_loc_name, cod_loc_date FROM Coordy_Location_backup;");
 
         db.execSQL("INSERT INTO Coordy (cod_id, cod_loc, cod_name, cod_tag, cod_date, cod_stack, "
-                + "cod_thumbnail, cod_index1, cod_index2, cod_index3, cod_index4, cod_index5, cod_index6, cod_index7, cod_index8) "
+                + "cod_img, cod_index1, cod_index2, cod_index3, cod_index4, cod_index5, cod_index6, cod_index7, cod_index8) "
                 + "SELECT cod_id, cod_loc, cod_name, cod_tag, cod_date, cod_stack, "
                 + "cod_index1, cod_index2, cod_index3, cod_index4, cod_index5, cod_index6, cod_index7, cod_index8 "
                 + "FROM Coordy_backup;");
