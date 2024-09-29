@@ -86,10 +86,10 @@ public class WeatherData {
                         imageViewIcon.setImageResource(R.drawable.snow);
                         break;
                     case "눈":
-                        imageViewIcon.setImageResource(R.drawable.rain);
+                        imageViewIcon.setImageResource(R.drawable.snow);
                         break;
                     case "소나기":
-                        imageViewIcon.setImageResource(R.drawable.snow);
+                        imageViewIcon.setImageResource(R.drawable.rain);
                         break;
                     default:
                         break;
