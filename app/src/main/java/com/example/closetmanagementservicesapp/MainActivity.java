@@ -37,9 +37,11 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.sql.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -303,13 +305,13 @@ public class MainActivity extends AppCompatActivity {
                 //날씨 재동기화
                 weatherTextView = findViewById(R.id.weatherDegree);
                 imageViewIcon = findViewById(R.id.btnWeather);
-                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
                 wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
             }
         });
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
-        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
 
         SearchView searchView = findViewById(R.id.btnSearch);
@@ -334,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
     private void displayDataCloset() {

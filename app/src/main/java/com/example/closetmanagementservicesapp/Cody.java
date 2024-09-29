@@ -3,9 +3,11 @@ package com.example.closetmanagementservicesapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,12 +42,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
 import java.util.TimeZone;
 
-public class Cody extends AppCompatActivity {
+public class Cody extends AppCompatActivity implements WeatherDataCallback {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private GridLayout gridLayout;
@@ -64,6 +70,9 @@ public class Cody extends AppCompatActivity {
     private ExcelReader excelReader;
     TextView weatherTextView,timeNow;
     ImageView imageViewIcon;
+    static String sky = "";
+    static String sky_state = "";
+    static float temp = 0;
 
     BottomNavigationView bottomNavigationView;
 
@@ -271,14 +280,130 @@ public class Cody extends AppCompatActivity {
                 //날씨 재동기화
                 weatherTextView = findViewById(R.id.weatherDegree);
                 imageViewIcon = findViewById(R.id.btnWeather);
-                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, Cody.this);
                 wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
             }
         });
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
-        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, this);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+
+        // 코디 추천 버튼
+        ImageButton cod_rec = (ImageButton) findViewById(R.id.cod_rec);
+        cod_rec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> tagArgs = getTagArgs();
+
+                StringBuilder tags_builder = new StringBuilder();
+                tags_builder.append("cod_tag IN (");
+                for (int i = 0; i < tagArgs.size(); i++) {
+                    tags_builder.append("?");
+                    if (i < tagArgs.size() - 1) {
+                        tags_builder.append(", ");
+                    }
+                }
+                tags_builder.append(")");
+
+                Log.d("tagArgs", tags_builder.toString());
+                Log.d("tagArgs", String.valueOf(tagArgs));
+
+                Cursor cursor = db.query("Coordy", new String[]{"cod_id", "cod_name"}, tags_builder.toString(), tagArgs.toArray(new String[0]), null, null, null);
+                ArrayList<Integer> codIdList = new ArrayList<>();
+                ArrayList<String> codNameList = new ArrayList<>();
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        int codId = cursor.getInt(cursor.getColumnIndex("cod_id"));
+                        String codName = cursor.getString(cursor.getColumnIndex("cod_name"));
+                        codIdList.add(codId);
+                        codNameList.add(codName);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                if (!codIdList.isEmpty()) {
+                    Random rand = new Random();
+                    int randIndex = rand.nextInt(codIdList.size());
+                    int randCodId = codIdList.get(randIndex);
+                    String randCodName = codNameList.get(randIndex);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Cody.this);
+                    builder.setTitle("오늘의 추천 코디");
+                    builder.setMessage("추천 코디는 '" + randCodName + "' 코디입니다!\n해당 코디를 보러 가시겠습니까?");
+
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            new Thread(() -> {
+                                Cursor detailCursor = db.query("Coordy", null, "cod_id = ?", new String[]{String.valueOf(randCodId)}, null, null, null);
+
+                                if(detailCursor !=null && detailCursor.moveToFirst()) {
+                                    Intent intent = new Intent(Cody.this, DetailCody.class);
+                                    intent.putExtra("cod_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_id")));
+                                    intent.putExtra("cod_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_img")));
+                                    intent.putExtra("cod_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_loc")));
+                                    intent.putExtra("cod_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_name")));
+                                    intent.putExtra("cod_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_tag")));
+                                    intent.putExtra("cod_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_date")));
+                                    intent.putExtra("cod_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_stack")));
+
+                                    intent.putExtra("cod_index1", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index1")));
+                                    intent.putExtra("cod_index2", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index2")));
+                                    intent.putExtra("cod_index3", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index3")));
+                                    intent.putExtra("cod_index4", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index4")));
+                                    intent.putExtra("cod_index5", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index5")));
+                                    intent.putExtra("cod_index6", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index6")));
+                                    intent.putExtra("cod_index7", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index7")));
+                                    intent.putExtra("cod_index8", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index8")));
+
+                                    // 커서 닫기 및 인텐트 실행은 UI 스레드에서 실행
+                                    runOnUiThread(() -> {
+                                        startActivity(intent);
+                                        detailCursor.close(); // 사용 후 커서 닫기
+                                    });
+                                } else if (detailCursor != null) {
+                                    detailCursor.close();
+                                }
+                            }).start();
+                        }
+                    });
+
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Cody.this);
+                    builder.setTitle("코디 추천 불가");
+                    builder.setMessage("현재 날씨에 적합한 추천 코디가 없습니다.\n더 많은 코디를 등록해 보세요!\n");
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();  // 다이얼로그 닫기
+                        }
+                    });
+
+                    // 다이얼로그 보여주기
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onWeatherDataResult(String sky_date, String sky_state_date, float temp_date) {
+        sky = sky_date;
+        sky_state = sky_state_date;
+        temp = temp_date;
+        Log.d("MainActivity", "날씨 상태: " + sky + ", 강수 상태: " + sky_state + ", 온도: " + temp);
     }
 
     private void displayDataCody() {
@@ -584,5 +709,35 @@ public class Cody extends AppCompatActivity {
         }
 
         return tagCounters;
+    }
+
+    private ArrayList<String> getTagArgs() {
+        ArrayList<String> tagList = new ArrayList<>();
+
+        if (sky.equals("맑음") && sky_state.equals("없음")) {
+            temp -= 0.0;
+        } else if ((!sky.equals("맑음") && sky_state.equals("없음")) || (sky.equals("맑음") && (sky_state.equals("비") || sky_state.equals("소나기")))) {
+            temp -= 0.5;
+        } else if ((!sky.equals("맑음") && sky_state.equals("소나기"))) {
+            temp -= 1.0;
+        } else if ((!sky.equals("맑음") && sky_state.equals("비")) || (sky.equals("맑음") && (sky_state.equals("비/눈") || sky_state.equals("눈")))) {
+            temp -= 1.5;
+        } else if ((!sky.equals("맑음") && (sky_state.equals("비/눈") || sky_state.equals("눈")))) {
+            temp -= 2.0;
+        }
+
+        if (temp <= -10.0) {
+            tagList.add("4");
+        } else if (temp >= -9.9 && temp <= 0.0) {
+            tagList.addAll(Arrays.asList("4", "7", "10", "13", "15"));
+        } else if (temp >= 0.1 && temp <= 15.0) {
+            tagList.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"));
+        } else if (temp >= 15.1 && temp <= 25.0) {
+            tagList.addAll(Arrays.asList("1", "2", "3", "5", "6", "8", "11", "15"));
+        } else if (temp >= 25.1) {
+            tagList.addAll(Arrays.asList("2", "3", "5", "6", "8", "11"));
+        }
+
+        return tagList;
     }
 }

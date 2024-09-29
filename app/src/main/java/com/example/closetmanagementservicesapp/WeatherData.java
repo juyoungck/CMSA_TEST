@@ -19,11 +19,13 @@ public class WeatherData {
 
     private TextView weatherTextView;
     private ImageView imageViewIcon;
+    private WeatherDataCallback callback;
 
     // 생성자에서 TextView를 전달받도록 수정
-    public WeatherData(TextView weatherTextView, ImageView imageViewIcon) {
+    public WeatherData(TextView weatherTextView, ImageView imageViewIcon, WeatherDataCallback callback) {
         this.weatherTextView = weatherTextView;
         this.imageViewIcon = imageViewIcon;
+        this.callback = callback;
     }
 
     // 비동기 작업 클래스
@@ -64,9 +66,6 @@ public class WeatherData {
                     case "맑음":
                         imageViewIcon.setImageResource(R.drawable.sun);
                         break;
-                    case "비":
-                        imageViewIcon.setImageResource(R.drawable.rain);
-                        break;
                     case "구름많음":
                         imageViewIcon.setImageResource(R.drawable.cloud);
                         break;
@@ -76,8 +75,32 @@ public class WeatherData {
                     default:
                         break;
                 }
+
+                switch (weatherarray[2]) {
+                    case "없음":
+                        break;
+                    case "비":
+                        imageViewIcon.setImageResource(R.drawable.rain);
+                        break;
+                    case "비/눈":
+                        imageViewIcon.setImageResource(R.drawable.snow);
+                        break;
+                    case "눈":
+                        imageViewIcon.setImageResource(R.drawable.rain);
+                        break;
+                    case "소나기":
+                        imageViewIcon.setImageResource(R.drawable.snow);
+                        break;
+                    default:
+                        break;
+                }
+
                 // xml 설정
-                weatherTextView.setText(weatherarray[2]);
+                String temp = weatherarray[3] + "°";
+                weatherTextView.setText(temp);
+                if (callback != null) {
+                    callback.onWeatherDataResult(weatherarray[0], weatherarray[2], Float.parseFloat(weatherarray[3]));
+                }
             } else {
                 Log.e("WeatherData", "날씨 정보 오류");
             }
@@ -88,7 +111,7 @@ public class WeatherData {
         new FetchWeatherTask().execute(date, time, nx, ny);
     }
 
-    private String sky, temperature, wind, rain, snow, humidity;
+    private String sky, sky_state, temperature, wind, rain, snow, humidity;
 
     public String lookUpWeather(String date, String time, String nx, String ny) throws IOException, JSONException {
         String baseDate = date;
@@ -151,9 +174,11 @@ public class WeatherData {
             Log.d("category", category + ": " + fcstValue);
 
             if (category.equals("SKY")) {
-                sky = fcstValue.equals("1") ? "맑음 " : fcstValue.equals("2") ? "비 " : fcstValue.equals("3") ? "구름많음 " : "흐림 ";
+                sky = fcstValue.equals("1") ? "맑음 " : fcstValue.equals("3") ? "구름많음 " : fcstValue.equals("4") ? "흐림 " : "해당없음 ";
+            } else if (category.equals("PTY")) {
+                sky_state = fcstValue.equals("0") ? "없음 " : fcstValue.equals("1") ? "비 " : fcstValue.equals("2") ? "비/눈 " : fcstValue.equals("3") ? "눈 " : "소나기 ";
             } else if (category.equals("TMP")) {
-                temperature = fcstValue + "° ";
+                temperature = fcstValue + " ";
             } else if (category.equals("WSD")) {
                 wind = fcstValue + "m/s ";
             } else if (category.equals("POP")) {
@@ -164,8 +189,8 @@ public class WeatherData {
                 humidity = fcstValue + "% ";
             }
         }
-        Log.d("Sky",sky + rain + temperature + wind + snow + humidity);
-        return sky + rain + temperature + wind + snow + humidity;
+        Log.d("Sky",sky + rain + sky_state + temperature + wind + snow + humidity);
+        return sky + rain + sky_state + temperature + wind + snow + humidity;
     }
 
     public String timeChange(String time) {

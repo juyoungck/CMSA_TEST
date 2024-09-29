@@ -178,17 +178,16 @@
         android:layout_weight="10" >
 
         <ScrollView
+            android:id="@+id/sv_main"
             android:layout_width="match_parent"
             android:layout_height="600dp"
-            android:id="@+id/sv_main"
-            android:fillViewport="true" >
+            android:fillViewport="true">
 
             <GridLayout
                 android:id="@+id/gl_cody"
-                tools:background="#00ff0000"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </GridLayout>
+                android:layout_height="match_parent"
+                tools:background="#00ff0000"></GridLayout>
         </ScrollView>
 
         <ImageButton
@@ -201,6 +200,28 @@
             android:translationZ="500dp"
             android:background="@drawable/addcircle"
             android:elevation="-50dp"/>
+
+        <ImageButton
+            android:id="@+id/cod_rec"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="400dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="40dp"
+            android:translationZ="500dp"
+            android:background="@drawable/cod_rec"
+            android:elevation="50dp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="460dp"
+            android:layout_marginRight="10dp"
+            android:translationZ="500dp"
+            android:textAlignment="center"
+            android:text="오늘의\n추천 코디" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
