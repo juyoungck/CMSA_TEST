@@ -326,7 +326,6 @@ public class CodyAdd extends AppCompatActivity {
                                         values.put("cod_index1", cIdArray[0] != -1 ? cIdArray[0] : null);
                                         values.put("cod_index2", cIdArray[1] != -1 ? cIdArray[1] : null);
                                         values.put("cod_index3", cIdArray[2] != -1 ? cIdArray[2] : null);
-                                        Log.d("DetailCody", "cod_index3 value: " + (cIdArray[2] != -1 ? cIdArray[2] : "null"));
                                         values.put("cod_index4", cIdArray[3] != -1 ? cIdArray[3] : null);
                                         values.put("cod_index5", cIdArray[4] != -1 ? cIdArray[4] : null);
                                         values.put("cod_index6", cIdArray[5] != -1 ? cIdArray[5] : null);
