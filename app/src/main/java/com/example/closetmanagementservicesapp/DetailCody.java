@@ -275,6 +275,7 @@ public class DetailCody extends AppCompatActivity {
                     if (which == 0) {
                         Drawable defaultDrawable = getResources().getDrawable(R.drawable.baseline_add_box_24);
                         detailButtons[selectedButton].setCompoundDrawablesWithIntrinsicBounds(null, defaultDrawable, null, null);
+                        cIdValues[selectedButton] = 0;
                         Toast.makeText(DetailCody.this, "옷이 제거되었습니다.", Toast.LENGTH_SHORT).show();
                     } else if (which == 1) {
                         Dialog selectDialog = new Dialog(DetailCody.this);
