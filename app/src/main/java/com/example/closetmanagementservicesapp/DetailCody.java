@@ -40,8 +40,8 @@ public class DetailCody extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
-    private ImageLoader_Modify imageLoader_modify;
-    private CameraUtil_Modify cameraUtil_modify;
+    private ImageLoader_Cody_Modify imageLoader_modify;
+    private CameraUtil_Cody_Modify cameraUtil_modify;
     private static final int CAMERA_REQUEST_CODE = 1;
     private Button[] detailButtons = new Button[8];
     private int[] cIdValues = new int[8];
@@ -76,8 +76,8 @@ public class DetailCody extends AppCompatActivity {
         detailButtons[6] = findViewById(R.id.detail_cod_accessory);
         detailButtons[7] = findViewById(R.id.detail_cod_bag);
 
-        cameraUtil_modify = new CameraUtil_Modify(this, detail_cod_img, cod_id); //화면, 이미지뷰
-        imageLoader_modify = new ImageLoader_Modify(this, detail_cod_img, cod_id);
+        cameraUtil_modify = new CameraUtil_Cody_Modify(this, detail_cod_img, cod_id); //화면, 이미지뷰
+        imageLoader_modify = new ImageLoader_Cody_Modify(this, detail_cod_img, cod_id);
 
         // Intent에서 전달받은 데이터 가져오기
         Intent intent = getIntent();

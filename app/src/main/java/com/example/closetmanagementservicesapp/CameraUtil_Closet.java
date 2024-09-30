@@ -64,11 +64,10 @@ public class CameraUtil_Closet {
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
 
                 Intent intent = new Intent(context, Post.class);
-                intent.putExtra("imageData", byteArray);
                 intent.putExtra("fileName", fileName);
+                intent.putExtra("fileUpload", true);
                 context.startActivity(intent);
             }
         }

@@ -79,16 +79,15 @@ public class Post extends AppCompatActivity {
 
         //카메라
         cameraUtil = new CameraUtil_Closet(this, c_img_post); //화면, 이미지뷰
-        Intent intent = getIntent();
-        byte[] byteArray = intent.getByteArrayExtra("imageData");
-        if (byteArray != null && byteArray.length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            if (bitmap != null) {
-                c_img_post.setImageBitmap(bitmap);
-            }
-        }
         imageLoader = new ImageLoader_Closet(this, c_img_post);
-        intent = getIntent();
+        Intent intent = getIntent();
+        String fileName = intent.getStringExtra("fileName");
+        Boolean fileUpload = intent.getBooleanExtra("fileUpload", false);
+        if (fileUpload) {
+            String imagePath = "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + fileName;
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            c_img_post.setImageBitmap(bitmap);
+        }
 
         c_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

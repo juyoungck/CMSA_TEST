@@ -19,16 +19,18 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
-class ImageLoader_Closet {
+class ImageLoader_Closet_Modify {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Activity activity;
     private ImageView imageView;
     private String savedImagePath = "";
+    private int c_id;
 
-    public ImageLoader_Closet(Activity activity, ImageView imageView) {
+    public ImageLoader_Closet_Modify(Activity activity, ImageView imageView, int c_id) {
         this.activity = activity;
         this.imageView = imageView;
+        this.c_id = c_id;
     }
 
     // 이미지를 선택하는 메서드
@@ -53,16 +55,8 @@ class ImageLoader_Closet {
                     inputStream.close();
 
                     Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
-                    Cursor cursor = db.rawQuery("SELECT MAX(c_id) FROM Main_Closet", null);
-                    int cId = 0;
 
-                    if (cursor != null && cursor.moveToFirst()) {
-                        cId = cursor.getInt(0);
-                        cId++;
-                        cursor.close();
-                    }
-
-                    String fileName = "image_" + cId + ".png";
+                    String fileName = "image_modify" + c_id + ".png";
 
                     // 이미지 저장
                     savedImagePath = saveImageInternalStorage(resizedBitmap, fileName);
@@ -75,10 +69,26 @@ class ImageLoader_Closet {
                     imageView.setImageBitmap(bitmap);
                     Toast.makeText(activity.getApplicationContext(), "이미지를 성공적으로 로드했습니다.", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(activity, Post.class);
-                    intent.putExtra("fileName", fileName);
-                    intent.putExtra("fileUpload", true);
-                    activity.startActivity(intent);
+                    Cursor cursor = db.rawQuery("SELECT * FROM Main_Closet WHERE c_id = " + c_id, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        Intent intent = new Intent(activity, DetailActivity.class);
+                        intent.putExtra("c_id", cursor.getInt(cursor.getColumnIndexOrThrow("c_id")));
+                        intent.putExtra("c_img", cursor.getString(cursor.getColumnIndexOrThrow("c_img")));
+                        intent.putExtra("c_loc", cursor.getInt(cursor.getColumnIndexOrThrow("c_loc")));
+                        intent.putExtra("c_name", cursor.getString(cursor.getColumnIndexOrThrow("c_name")));
+                        intent.putExtra("c_type", cursor.getString(cursor.getColumnIndexOrThrow("c_type")));
+                        intent.putExtra("c_size", cursor.getString(cursor.getColumnIndexOrThrow("c_size")));
+                        intent.putExtra("c_brand", cursor.getString(cursor.getColumnIndexOrThrow("c_brand")));
+                        intent.putExtra("c_tag", cursor.getInt(cursor.getColumnIndexOrThrow("c_tag")));
+                        intent.putExtra("c_memo", cursor.getString(cursor.getColumnIndexOrThrow("c_memo")));
+                        intent.putExtra("c_date", cursor.getString(cursor.getColumnIndexOrThrow("c_date")));
+                        intent.putExtra("c_stack", cursor.getInt(cursor.getColumnIndexOrThrow("c_stack")));
+                        intent.putExtra("c_img_modify", fileName);
+                        intent.putExtra("fileUpload", true);
+
+                        activity.startActivity(intent);
+                        cursor.close();
+                    }
                 } catch (Exception e) {
                     Toast.makeText(activity.getApplicationContext(), "이미지 로드에 실패했습니다.", Toast.LENGTH_LONG).show();
                     Log.e("ImageLoader", "Error loading image", e);

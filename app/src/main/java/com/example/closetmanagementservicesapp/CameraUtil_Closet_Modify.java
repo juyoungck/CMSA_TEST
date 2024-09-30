@@ -18,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class CameraUtil_Modify {
+public class CameraUtil_Closet_Modify {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Context context;
@@ -26,7 +26,7 @@ public class CameraUtil_Modify {
     private String savedImagePath = "";
     private int c_id;
 
-    public CameraUtil_Modify(Context context, ImageButton imageButton, int c_id) {
+    public CameraUtil_Closet_Modify(Context context, ImageButton imageButton, int c_id) {
         this.context = context;
         this.imageButton = imageButton;
         this.c_id = c_id;
@@ -48,7 +48,7 @@ public class CameraUtil_Modify {
             if (bitmap != null) {
                 Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
 
-                String fileName = "image_" + c_id + ".png";
+                String fileName = "image_modify" + c_id + ".png";
 
                 // 이미지 저장
                 savedImagePath = saveImageInternalStorage(resizedBitmap, fileName);
@@ -58,7 +58,6 @@ public class CameraUtil_Modify {
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
 
                 Cursor cursor = db.rawQuery("SELECT * FROM Main_Closet WHERE c_id = " + c_id, null);
                 if (cursor != null && cursor.moveToFirst()) {
@@ -74,6 +73,8 @@ public class CameraUtil_Modify {
                     intent.putExtra("c_memo", cursor.getString(cursor.getColumnIndexOrThrow("c_memo")));
                     intent.putExtra("c_date", cursor.getString(cursor.getColumnIndexOrThrow("c_date")));
                     intent.putExtra("c_stack", cursor.getInt(cursor.getColumnIndexOrThrow("c_stack")));
+                    intent.putExtra("c_img_modify", fileName);
+                    intent.putExtra("fileUpload", true);
 
                     context.startActivity(intent);
                     cursor.close();

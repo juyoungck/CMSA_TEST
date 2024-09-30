@@ -221,16 +221,16 @@ public class CodyAdd extends AppCompatActivity {
 
 
         cameraUtil = new CameraUtil_Cody(this, thumb); //화면, 이미지뷰
-        Intent intent = getIntent();
-        byte[] byteArray = intent.getByteArrayExtra("imageData");
-        if (byteArray != null && byteArray.length > 0) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            if (bitmap != null) {
-                thumb.setImageBitmap(bitmap);
-            }
-        }
         imageLoader = new ImageLoader_Cody(this, thumb);
-        intent = getIntent();
+        Intent intent = getIntent();
+        String fileName = intent.getStringExtra("codyFileName");
+        Boolean fileUpload = intent.getBooleanExtra("fileUpload", false);
+
+        if (fileUpload) {
+            String imagePath = "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + fileName;
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            thumb.setImageBitmap(bitmap);
+        }
 
         for (int i = 0; i < 8; i++) {
             Drawable drawable = detailCodIndices[i].getDrawable();
@@ -258,11 +258,11 @@ public class CodyAdd extends AppCompatActivity {
                 String CodyFileName = intent.getStringExtra("codyFileName");
 
                 Cursor cursor = db.rawQuery("SELECT MAX(cod_id) FROM Coordy", null);
-                int cId = 0;
+                int codId = 0;
 
                 if (cursor != null && cursor.moveToFirst()) {
-                    cId = cursor.getInt(0);
-                    cId++;
+                    codId = cursor.getInt(0);
+                    codId++;
                     cursor.close();
                 }
 
@@ -318,10 +318,7 @@ public class CodyAdd extends AppCompatActivity {
 
                                         ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
 
-
-                                        if (thumb.getDrawable() instanceof BitmapDrawable && ((BitmapDrawable) thumb.getDrawable()).getBitmap() != null) {
-                                            String modifyFileName = "thumb_" + CodyFileName;
-                                            values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName); }
+                                        values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName);
 
                                         values.put("cod_index1", cIdArray[0] != -1 ? cIdArray[0] : null);
                                         values.put("cod_index2", cIdArray[1] != -1 ? cIdArray[1] : null);

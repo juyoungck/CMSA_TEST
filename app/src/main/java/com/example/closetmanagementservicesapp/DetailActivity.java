@@ -29,8 +29,10 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -42,9 +44,10 @@ public class DetailActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private List<Integer> c_loc_value;
     private int c_id;
+    private String c_img;
     private boolean isModified = false;
-    private ImageLoader_Modify imageLoader_modify;
-    private CameraUtil_Modify cameraUtil_modify;
+    private ImageLoader_Closet_Modify imageLoader_modify;
+    private CameraUtil_Closet_Modify cameraUtil_modify;
     private static final int CAMERA_REQUEST_CODE = 1;
 
     @Override
@@ -87,7 +90,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         c_id = intent.getIntExtra("c_id", -1);
-        String c_img = intent.getStringExtra("c_img");
+        c_img = intent.getStringExtra("c_img");
         int c_loc = intent.getIntExtra("c_loc", 1);
         String c_name = intent.getStringExtra("c_name");
         String c_type = intent.getStringExtra("c_type");
@@ -97,6 +100,8 @@ public class DetailActivity extends AppCompatActivity {
         String c_memo = intent.getStringExtra("c_memo");
         String c_date = intent.getStringExtra("c_date");
         int c_stack = intent.getIntExtra("c_stack", 0);
+        String fileName = intent.getStringExtra("c_img_modify");
+        Boolean fileUpload = intent.getBooleanExtra("fileUpload", false);
 
         Bitmap bitmap = BitmapFactory.decodeFile(c_img);
         detail_c_img.setImageBitmap(bitmap);
@@ -118,8 +123,8 @@ public class DetailActivity extends AppCompatActivity {
         fillSpinner_type(c_type);
         fillSpinner_size(c_size);
 
-        cameraUtil_modify = new CameraUtil_Modify(this, detail_c_img, c_id); //화면, 이미지뷰
-        imageLoader_modify = new ImageLoader_Modify(this, detail_c_img, c_id);
+        cameraUtil_modify = new CameraUtil_Closet_Modify(this, detail_c_img, c_id); //화면, 이미지뷰
+        imageLoader_modify = new ImageLoader_Closet_Modify(this, detail_c_img, c_id);
 
         detailModifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +160,7 @@ public class DetailActivity extends AppCompatActivity {
                         builder.setMessage("옷을 저장하겠습니까?")
                                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+
                                         int selectedLocIndex = ((Spinner) findViewById(R.id.detail_c_loc)).getSelectedItemPosition();
                                         Integer c_loc = c_loc_value.get(selectedLocIndex);
                                         String c_name = detail_c_name.getText().toString();
@@ -168,6 +174,34 @@ public class DetailActivity extends AppCompatActivity {
                                         db.beginTransaction();
                                         try {
                                             ContentValues values = new ContentValues();
+                                            if (fileUpload) {
+                                                String oldFileName = "image_modify" + c_id + ".png";
+                                                String newFileName = "image_" + c_id + ".png";
+
+                                                File dir = new File(DetailActivity.this.getFilesDir(), "images");
+                                                File oldFile = new File(dir, oldFileName);
+                                                File newFile = new File(dir, newFileName);
+
+                                                try {
+                                                    // 1. 새 파일이 이미 존재하는지 확인하고, 존재하면 삭제
+                                                    if (newFile.exists()) {
+                                                        if (newFile.delete()) { }
+                                                    }
+
+                                                    if (oldFile.exists()) {
+                                                        Files.copy(oldFile.toPath(), newFile.toPath());
+
+                                                        // 3. 복사가 완료되면 원본 파일 삭제
+                                                        if (oldFile.delete()) { }
+
+                                                        // 4. DB에 c_img 경로 업데이트
+                                                        c_img = newFile.getAbsolutePath();
+                                                        values.put("c_img", c_img);
+                                                    }
+                                                } catch (IOException e) {
+                                                    Log.e("FileRename", "파일 이름 변경 중 오류 발생", e);
+                                                }
+                                            }
                                             values.put("c_loc", c_loc);
                                             values.put("c_name", c_name);
 
@@ -251,6 +285,14 @@ public class DetailActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        if (fileUpload) {
+            String imagePath = "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + fileName;
+            bitmap = BitmapFactory.decodeFile(imagePath);
+            detail_c_img.setImageBitmap(bitmap);
+            isModified = false;
+            detailModifyButton.performClick();
+        }
     }
 
     private void fillSpinner_location(int selected_loc) {

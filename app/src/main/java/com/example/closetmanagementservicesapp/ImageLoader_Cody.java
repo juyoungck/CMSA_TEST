@@ -25,7 +25,6 @@ class ImageLoader_Cody {
     private Activity activity;
     private ImageView imageButton;
     private String savedImagePath = "";
-    private Bitmap loadedImage;  // 로드된 이미지를 저장할 변수
 
     public ImageLoader_Cody(Activity activity, ImageView imageButton) {
         this.activity = activity;
@@ -53,7 +52,7 @@ class ImageLoader_Cody {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
 
-                    Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
+                    Bitmap resizedBitmap = resizeBitmap(bitmap, 450, 800);
                     Cursor cursor = db.rawQuery("SELECT MAX(cod_id) FROM Coordy", null);
                     int cId = 0;
 
@@ -68,21 +67,20 @@ class ImageLoader_Cody {
                     // 이미지 저장
                     savedImagePath = saveImageInternalStorage(resizedBitmap, fileName);
 
-                    // 로드된 이미지 저장
-                    this.loadedImage = resizedBitmap;  // 저장된 이미지
+                    loadImageFromStorage(savedImagePath);
 
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
-
-                    Intent intent = new Intent(activity, CodyAdd.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    intent.putExtra("imageData", byteArray);
-                    intent.putExtra("codyFileName", fileName);
-                    activity.startActivity(intent);
 
                     imageButton.setImageBitmap(bitmap);
                     Toast.makeText(activity.getApplicationContext(), "이미지를 성공적으로 로드했습니다.", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(activity, CodyAdd.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    intent.putExtra("codyFileName", fileName);
+                    intent.putExtra("fileUpload", true);
+                    activity.startActivity(intent);
+
                 } catch (Exception e) {
                     Toast.makeText(activity.getApplicationContext(), "이미지 로드에 실패했습니다.", Toast.LENGTH_LONG).show();
                     Log.e("ImageLoader", "Error loading image", e);
@@ -109,6 +107,15 @@ class ImageLoader_Cody {
             e.printStackTrace();
             Toast.makeText(activity, "이미지 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
             return null;
+        }
+    }
+
+    private void loadImageFromStorage(String path) {
+        if (path != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            imageButton.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(activity, "이미지를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 

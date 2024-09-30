@@ -1,7 +1,5 @@
 package com.example.closetmanagementservicesapp;
 
-import static android.content.Intent.getIntent;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -21,7 +19,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
-class ImageLoader_Modify {
+class ImageLoader_Cody_Modify {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Activity activity;
@@ -29,7 +27,7 @@ class ImageLoader_Modify {
     private String savedImagePath = "";
     private int c_id;
 
-    public ImageLoader_Modify(Activity activity, ImageView imageView, int c_id) {
+    public ImageLoader_Cody_Modify(Activity activity, ImageView imageView, int c_id) {
         this.activity = activity;
         this.imageView = imageView;
         this.c_id = c_id;
@@ -56,7 +54,7 @@ class ImageLoader_Modify {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
 
-                    Bitmap resizedBitmap = resizeBitmap(bitmap, 300, 300);
+                    Bitmap resizedBitmap = resizeBitmap(bitmap, 500, 500);
 
                     String fileName = "image_" + c_id + ".png";
 
