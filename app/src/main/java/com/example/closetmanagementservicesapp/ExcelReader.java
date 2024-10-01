@@ -38,6 +38,8 @@ public class ExcelReader {
                             x = sheet.getCell(1, row).getContents();
                             y = sheet.getCell(2, row).getContents();
                             break;
+                        }else if(row==rowTotal-1){
+                            return new String[]{"0", "0"};
                         }
                     }
                 }
