@@ -452,13 +452,13 @@ public class MainActivity extends AppCompatActivity {
         if (basicLocationLoad) {
             ContentValues values = new ContentValues();
             values.put("c_loc", 1);
-            values.put("c_loc_name", "옷장 1");
+            values.put("c_loc_name", "전체");
             values.put("c_loc_date", getToday());
             db.insert("Closet_Location", null, values);
 
             values = new ContentValues();
             values.put("cod_loc", 1);
-            values.put("cod_loc_name", "코디 1");
+            values.put("cod_loc_name", "기본");
             values.put("cod_loc_date", getToday());
             db.insert("Coordy_Location", null, values);
 

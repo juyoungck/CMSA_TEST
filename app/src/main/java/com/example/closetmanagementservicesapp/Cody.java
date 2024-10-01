@@ -205,7 +205,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
             @Override
             public void onClick(View view) {
                 Dialog dialog = new Dialog(Cody.this);
-                View modifyView = LayoutInflater.from(Cody.this).inflate(R.layout.tab_modify, null);
+                View modifyView = LayoutInflater.from(Cody.this).inflate(R.layout.tab_modify_cody, null);
 
                 dialog.setContentView(modifyView);
                 dialog.show();
@@ -222,9 +222,9 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                         dialog.dismiss();
                     }
                 });
-                TabModify tabModify = new TabModify(Cody.this);
+                TabModifyCody tabModifyCody = new TabModifyCody(Cody.this);
 
-                tabModify.modifyButton(modifyView);
+                tabModifyCody.modifyButton(modifyView);
             }
         });
 
