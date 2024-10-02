@@ -13,7 +13,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +30,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Button;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 
 import android.widget.ImageView;
@@ -426,7 +430,6 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
                 Bitmap thumbBitmap = BitmapFactory.decodeFile(cod_img);
 
-
                 Integer[] cod_indices = new Integer[8];
                 for (int idx = 0; idx < 8; idx++) {
                     String columnName = "cod_index" + (idx + 1);
@@ -495,18 +498,6 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                                         // cod_id 값을 태그로 저장 (codIdValues는 cod_id 배열)
                                         imageView.setTag(cod_indices[index]);
 
-                                        // 클릭 리스너 설정
-                                        imageView.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                int cod_id = (int) v.getTag();
-
-                                                // DetailCody 액티비티로 이동
-                                                Intent intent = new Intent(Cody.this, DetailCody.class);
-                                                intent.putExtra("cod_id", cod_id);
-                                                startActivity(intent);
-                                            }
-                                        });
 
                                         Log.d("ImageAssignment", "ImageView ID: " + imgViewId + ", Bitmap Index: " + index);
                                     } else {
@@ -551,27 +542,27 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                         new Thread(() -> {
                             Cursor detailCursor = db.query("Coordy", null, null, null, null, null, null);
                             if (detailCursor != null && detailCursor.moveToPosition(finalI)) {
-                                Intent intent = new Intent(Cody.this, DetailCody.class);
-                                intent.putExtra("cod_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_id")));
-                                intent.putExtra("cod_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_img")));
-                                intent.putExtra("cod_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_loc")));
-                                intent.putExtra("cod_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_name")));
-                                intent.putExtra("cod_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_tag")));
-                                intent.putExtra("cod_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_date")));
-                                intent.putExtra("cod_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_stack")));
+                                Intent getIntent = new Intent(Cody.this, DetailCody.class);
+                                getIntent.putExtra("cod_id", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_id")));
+                                getIntent.putExtra("cod_img", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_img")));
+                                getIntent.putExtra("cod_loc", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_loc")));
+                                getIntent.putExtra("cod_name", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_name")));
+                                getIntent.putExtra("cod_tag", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_tag")));
+                                getIntent.putExtra("cod_date", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_date")));
+                                getIntent.putExtra("cod_stack", detailCursor.getInt(detailCursor.getColumnIndexOrThrow("cod_stack")));
 
-                                intent.putExtra("cod_index1", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index1")));
-                                intent.putExtra("cod_index2", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index2")));
-                                intent.putExtra("cod_index3", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index3")));
-                                intent.putExtra("cod_index4", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index4")));
-                                intent.putExtra("cod_index5", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index5")));
-                                intent.putExtra("cod_index6", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index6")));
-                                intent.putExtra("cod_index7", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index7")));
-                                intent.putExtra("cod_index8", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index8")));
+                                getIntent.putExtra("cod_index1", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index1")));
+                                getIntent.putExtra("cod_index2", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index2")));
+                                getIntent.putExtra("cod_index3", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index3")));
+                                getIntent.putExtra("cod_index4", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index4")));
+                                getIntent.putExtra("cod_index5", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index5")));
+                                getIntent.putExtra("cod_index6", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index6")));
+                                getIntent.putExtra("cod_index7", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index7")));
+                                getIntent.putExtra("cod_index8", detailCursor.getString(detailCursor.getColumnIndexOrThrow("cod_index8")));
 
                                 // 커서 닫기 및 인텐트 실행은 UI 스레드에서 실행
                                 runOnUiThread(() -> {
-                                    startActivity(intent);
+                                    startActivity(getIntent);
                                     detailCursor.close(); // 사용 후 커서 닫기
                                 });
                             } else if (detailCursor != null) {
@@ -740,4 +731,5 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
         return tagList;
     }
+
 }
