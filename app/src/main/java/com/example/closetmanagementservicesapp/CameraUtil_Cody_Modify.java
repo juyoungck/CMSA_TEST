@@ -24,12 +24,12 @@ public class CameraUtil_Cody_Modify {
     private Context context;
     private ImageButton imageButton;
     private String savedImagePath = "";
-    private int c_id;
+    private int cod_id;
 
-    public CameraUtil_Cody_Modify(Context context, ImageButton imageButton, int c_id) {
+    public CameraUtil_Cody_Modify(Context context, ImageButton imageButton, int cod_id) {
         this.context = context;
         this.imageButton = imageButton;
-        this.c_id = c_id;
+        this.cod_id = cod_id;
     }
 
     public void openCameraForResult(int requestCode) {
@@ -48,7 +48,7 @@ public class CameraUtil_Cody_Modify {
             if (bitmap != null) {
                 Bitmap resizedBitmap = resizeBitmap(bitmap, 500, 500);
 
-                String fileName = "image_" + c_id + ".png";
+                String fileName = "cody_modify" + cod_id + ".png";
 
                 // 이미지 저장
                 savedImagePath = saveImageInternalStorage(resizedBitmap, fileName);
@@ -60,20 +60,19 @@ public class CameraUtil_Cody_Modify {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] byteArray = stream.toByteArray();
 
-                Cursor cursor = db.rawQuery("SELECT * FROM Main_Closet WHERE c_id = " + c_id, null);
+                Cursor cursor = db.rawQuery("SELECT * FROM Coordy WHERE cod_id = " + cod_id, null);
                 if (cursor != null && cursor.moveToFirst()) {
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("c_id", cursor.getInt(cursor.getColumnIndexOrThrow("c_id")));
-                    intent.putExtra("c_img", cursor.getString(cursor.getColumnIndexOrThrow("c_img")));
-                    intent.putExtra("c_loc", cursor.getInt(cursor.getColumnIndexOrThrow("c_loc")));
-                    intent.putExtra("c_name", cursor.getString(cursor.getColumnIndexOrThrow("c_name")));
-                    intent.putExtra("c_type", cursor.getString(cursor.getColumnIndexOrThrow("c_type")));
-                    intent.putExtra("c_size", cursor.getString(cursor.getColumnIndexOrThrow("c_size")));
-                    intent.putExtra("c_brand", cursor.getString(cursor.getColumnIndexOrThrow("c_brand")));
-                    intent.putExtra("c_tag", cursor.getInt(cursor.getColumnIndexOrThrow("c_tag")));
-                    intent.putExtra("c_memo", cursor.getString(cursor.getColumnIndexOrThrow("c_memo")));
-                    intent.putExtra("c_date", cursor.getString(cursor.getColumnIndexOrThrow("c_date")));
-                    intent.putExtra("c_stack", cursor.getInt(cursor.getColumnIndexOrThrow("c_stack")));
+                    Intent intent = new Intent(context, DetailCody.class);
+
+                    intent.putExtra("cod_id", cursor.getInt(cursor.getColumnIndexOrThrow("cod_id")));
+                    intent.putExtra("cod_img", cursor.getString(cursor.getColumnIndexOrThrow("cod_img")));
+                    intent.putExtra("cod_loc", cursor.getInt(cursor.getColumnIndexOrThrow("cod_loc")));
+                    intent.putExtra("cod_name", cursor.getString(cursor.getColumnIndexOrThrow("cod_name")));
+                    intent.putExtra("cod_tag", cursor.getInt(cursor.getColumnIndexOrThrow("cod_tag")));
+                    intent.putExtra("cod_date", cursor.getString(cursor.getColumnIndexOrThrow("cod_date")));
+                    intent.putExtra("cod_stack", cursor.getInt(cursor.getColumnIndexOrThrow("cod_stack")));
+                    intent.putExtra("cod_img_modify", fileName);
+                    intent.putExtra("fileUpload", true);
 
                     context.startActivity(intent);
                     cursor.close();
