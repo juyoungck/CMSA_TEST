@@ -42,6 +42,7 @@ package com.example.closetmanagementservicesapp;
 
         import androidx.annotation.Nullable;
         import androidx.appcompat.app.AppCompatActivity;
+        import androidx.core.content.ContextCompat;
 
         import com.gun0912.tedpermission.PermissionListener;
         import com.gun0912.tedpermission.TedPermission;
@@ -74,6 +75,8 @@ public class CodyAdd extends AppCompatActivity {
     private int tagRow = 0;
     private ImageButton[] detailCodIndices;
 
+    private boolean thumbFromCamera = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,8 @@ public class CodyAdd extends AppCompatActivity {
 
         ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
 
+        CheckBox default_img = (CheckBox) findViewById(R.id.default_img);
+
         thumb.setOnClickListener(v -> showImageOptionsDialog());
 
         detailCodIndices = new ImageButton[]{
@@ -101,7 +106,6 @@ public class CodyAdd extends AppCompatActivity {
                 findViewById(R.id.detail_cod_index7),
                 findViewById(R.id.detail_cod_index8)
         };
-
 
         for (int i = 0; i < 8; i++) {
             final int index = i;
@@ -237,6 +241,34 @@ public class CodyAdd extends AppCompatActivity {
             boolean hasImage = drawable instanceof BitmapDrawable && ((BitmapDrawable) drawable).getBitmap() != null;
         }
 
+        default_img.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ImageButton add_cod_thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
+                if(isChecked) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CodyAdd.this);
+                    builder.setTitle("기본 이미지 설정")
+                            .setMessage("정말 기본 이미지로 설정하시겠습니까?")
+                            .setCancelable(false)
+                            .setPositiveButton("확인", (dialog, which) -> {
+                                add_cod_thumb.setImageResource(R.drawable.image3);
+                                thumbFromCamera = false;
+                            })
+                            .setNegativeButton("취소", (dialog, which) -> {
+                                default_img.setChecked(!isChecked);
+                                dialog.dismiss();
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                if(!isChecked) {
+                    add_cod_thumb.setImageResource(R.drawable.baseline_add_box_24);
+                    thumbFromCamera = false;
+                }
+            }
+        });
+
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_codyadd);
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -317,17 +349,29 @@ public class CodyAdd extends AppCompatActivity {
                                         ContentValues values = new ContentValues();
 
                                         ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
+                                        Drawable drawable = thumb.getDrawable();
 
                                         values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName);
 
-                                        values.put("cod_index1", cIdArray[0] != -1 ? cIdArray[0] : null);
-                                        values.put("cod_index2", cIdArray[1] != -1 ? cIdArray[1] : null);
-                                        values.put("cod_index3", cIdArray[2] != -1 ? cIdArray[2] : null);
-                                        values.put("cod_index4", cIdArray[3] != -1 ? cIdArray[3] : null);
-                                        values.put("cod_index5", cIdArray[4] != -1 ? cIdArray[4] : null);
-                                        values.put("cod_index6", cIdArray[5] != -1 ? cIdArray[5] : null);
-                                        values.put("cod_index7", cIdArray[6] != -1 ? cIdArray[6] : null);
-                                        values.put("cod_index8", cIdArray[7] != -1 ? cIdArray[7] : null);
+                                        String[] codIndexColumns = {
+                                                "cod_index1",
+                                                "cod_index2",
+                                                "cod_index3",
+                                                "cod_index4",
+                                                "cod_index5",
+                                                "cod_index6",
+                                                "cod_index7",
+                                                "cod_index8"
+                                        };
+
+                                        for (int i = 0; i < codIndexColumns.length; i++) {
+                                            String key = codIndexColumns[i];
+                                            if (cIdArray[i] != -1) {
+                                                values.put(key, cIdArray[i]);
+                                            } else {
+                                                values.putNull(key);
+                                            }
+                                        }
 
                                         values.put("cod_loc", cod_loc);
                                         values.put("cod_name", cod_name);
@@ -342,8 +386,6 @@ public class CodyAdd extends AppCompatActivity {
                                     } finally {
                                         db.endTransaction();
                                     }
-
-
 
                                     Toast.makeText(getApplicationContext(), "코디 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CodyAdd.this, Cody.class);
@@ -596,7 +638,6 @@ public class CodyAdd extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             requestCameraPermission();
-
                         } else if (which == 1) {
                             imageLoader.selectImage();
                         }
@@ -631,9 +672,11 @@ public class CodyAdd extends AppCompatActivity {
         if(requestCode==1) {
             System.out.println("되는듯");
             cameraUtil.handleCameraResult(requestCode, resultCode, data);
+            thumbFromCamera = true;
         }
         if(requestCode==2) {
             imageLoader.loadImageFromResult(requestCode, resultCode, data);
+            thumbFromCamera = true;
         }
     }
 
@@ -724,6 +767,23 @@ public class CodyAdd extends AppCompatActivity {
         }
 
         return tagCounters;
+    }
+
+    private String saveBitmapToFile(Bitmap bitmap, String fileName) {
+        File directory = new File(getFilesDir(), "images");
+        if (!directory.exists()) {
+            directory.mkdirs();  // 디렉토리 생성
+        }
+
+        File file = new File(directory, fileName);
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);  // PNG로 압축하여 파일로 저장
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file.getAbsolutePath();  // 저장된 파일 경로 반환
     }
 
 }
