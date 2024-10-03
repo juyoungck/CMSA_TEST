@@ -154,6 +154,7 @@ public class Post extends AppCompatActivity {
                     cId++;
                     cursor.close();
                 }
+
                 String fileNameCheck = "image_" + cId + ".png";
 
                 int selectedLocIndex = ((Spinner) findViewById(R.id.c_loc_post)).getSelectedItemPosition();

@@ -100,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
         // 중앙 태그 레이아웃과 태그 호출
         List<Integer> tagCounterList = ItemAddTag(tagCounter);
 
-        // 옷장 위치 스피너 출력
-        fillSpinner_c_loc();
-
         // 기본 옷장, 코디 위치 추가
         basicLocation(BasicLocationLoad);
 
@@ -349,6 +346,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // 옷장 위치 스피너 출력
+        fillSpinner_c_loc();
     }
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정

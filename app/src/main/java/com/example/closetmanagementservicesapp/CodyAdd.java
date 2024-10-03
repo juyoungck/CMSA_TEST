@@ -74,6 +74,7 @@ public class CodyAdd extends AppCompatActivity {
     private int imgRow = 0;
     private int tagRow = 0;
     private ImageButton[] detailCodIndices;
+    private Boolean hasImage = false;
 
     private boolean thumbFromCamera = false;
 
@@ -298,7 +299,7 @@ public class CodyAdd extends AppCompatActivity {
                     cursor.close();
                 }
 
-                boolean hasImage = false;
+                String fileNameCheck = "cody_" + codId + ".png";
 
                 int[] cIdArray = new int[8];
 
@@ -333,74 +334,95 @@ public class CodyAdd extends AppCompatActivity {
                 Integer cod_loc = cod_loc_value.get(selectedLocIndex);
                 String cod_name = codyadd_title.getText().toString();
 
-                if (!hasImage) {
-                    Toast.makeText(getApplicationContext(), "사진 파일이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                } else if (cod_name.equals("")) {
-                    Toast.makeText(getApplicationContext(), "코디 이름이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                } else {
+                if (!fileNameCheck.equals(fileName)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CodyAdd.this);
-                    builder.setTitle("코디 등록")        // 제목 설정
-                            .setMessage("해당 설정으로 코디를 등록하시겠습니까?")        // 메세지 설정
-                            .setCancelable(false)                               // 뒤로 버튼 클릭시 취소 가능 설정
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    db.beginTransaction();
-                                    try {
-                                        ContentValues values = new ContentValues();
+                    builder.setTitle("썸네일 등록");
+                    builder.setMessage("썸네일 이미지가 등록되지 않았습니다.\n기본 썸네일 이미지를 사용하시겠습니까?");
 
-                                        ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
-                                        Drawable drawable = thumb.getDrawable();
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (!hasImage) {
+                                Toast.makeText(getApplicationContext(), "사진 파일이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                            } else if (cod_name.equals("")) {
+                                Toast.makeText(getApplicationContext(), "코디 이름이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CodyAdd.this);
+                                builder.setTitle("코디 등록")        // 제목 설정
+                                        .setMessage("해당 설정으로 코디를 등록하시겠습니까?")        // 메세지 설정
+                                        .setCancelable(false)                               // 뒤로 버튼 클릭시 취소 가능 설정
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                db.beginTransaction();
+                                                try {
+                                                    ContentValues values = new ContentValues();
 
-                                        values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName);
+                                                    ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
+                                                    Drawable drawable = thumb.getDrawable();
 
-                                        String[] codIndexColumns = {
-                                                "cod_index1",
-                                                "cod_index2",
-                                                "cod_index3",
-                                                "cod_index4",
-                                                "cod_index5",
-                                                "cod_index6",
-                                                "cod_index7",
-                                                "cod_index8"
-                                        };
+                                                    values.put("cod_img", "/data/user/0/com.example.closetmanagementservicesapp/files/images/" + CodyFileName);
 
-                                        for (int i = 0; i < codIndexColumns.length; i++) {
-                                            String key = codIndexColumns[i];
-                                            if (cIdArray[i] != -1) {
-                                                values.put(key, cIdArray[i]);
-                                            } else {
-                                                values.putNull(key);
+                                                    String[] codIndexColumns = {
+                                                            "cod_index1",
+                                                            "cod_index2",
+                                                            "cod_index3",
+                                                            "cod_index4",
+                                                            "cod_index5",
+                                                            "cod_index6",
+                                                            "cod_index7",
+                                                            "cod_index8"
+                                                    };
+
+                                                    for (int i = 0; i < codIndexColumns.length; i++) {
+                                                        String key = codIndexColumns[i];
+                                                        if (cIdArray[i] != -1) {
+                                                            values.put(key, cIdArray[i]);
+                                                        } else {
+                                                            values.putNull(key);
+                                                        }
+                                                    }
+
+                                                    values.put("cod_loc", cod_loc);
+                                                    values.put("cod_name", cod_name);
+                                                    values.put("cod_date", getToday());
+                                                    values.put("cod_tag", getTag());
+                                                    values.put("cod_stack", 0);
+
+                                                    db.insert("Coordy", null, values);
+                                                    db.setTransactionSuccessful();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                } finally {
+                                                    db.endTransaction();
+                                                }
+
+                                                Toast.makeText(getApplicationContext(), "코디 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(CodyAdd.this, Cody.class);
+                                                startActivity(intent);
+                                                finish();
                                             }
-                                        }
+                                        })
+                                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                            }
+                                        });
 
-                                        values.put("cod_loc", cod_loc);
-                                        values.put("cod_name", cod_name);
-                                        values.put("cod_date", getToday());
-                                        values.put("cod_tag", getTag());
-                                        values.put("cod_stack", 0);
+                                AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                                dialog.show();    // 알림창 띄우기
+                            }
+                        }
+                    });
 
-                                        db.insert("Coordy", null, values);
-                                        db.setTransactionSuccessful();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        db.endTransaction();
-                                    }
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
 
-                                    Toast.makeText(getApplicationContext(), "코디 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(CodyAdd.this, Cody.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            })
-                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                }
-                            });
-
-                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
-                    dialog.show();    // 알림창 띄우기
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
