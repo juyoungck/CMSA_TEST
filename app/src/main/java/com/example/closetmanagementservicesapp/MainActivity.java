@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -245,6 +246,13 @@ public class MainActivity extends AppCompatActivity {
                 TabModify tabModify = new TabModify(MainActivity.this);
 
                 tabModify.modifyButton(modifyView);
+
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        recreate();  // 액티비티 재생성
+                    }
+                });
             }
         });
 
