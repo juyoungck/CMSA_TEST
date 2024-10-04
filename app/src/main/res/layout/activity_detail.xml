@@ -36,30 +36,47 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="45dp"
             android:layout_gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/detail_Modify"
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
+                android:id="@+id/detail_Cancle"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="2"
-                android:drawableLeft="@drawable/edit"
-                android:text="수정" />
+                android:textAlignment="center"
+                android:button="@null"
+                android:background="#e9ecef"
+                android:text="취소"
+                android:drawableLeft="@drawable/cancle"/>
+
+            <CheckBox
+                android:id="@+id/detail_Modify"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_gravity="right|center"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="center"
+                android:button="@null"
+                android:background="#e9ecef"
+                android:text="수정"
+                android:drawableLeft="@drawable/edit"/>
 
             <Button
                 android:id="@+id/detail_delete"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_gravity="right|center"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="2"
-                android:drawableLeft="@drawable/delete"
-                android:text="삭제" />
+                android:textAlignment="center"
+                android:button="@null"
+                android:background="#e9ecef"
+                android:text="삭제"
+                android:drawableLeft="@drawable/delete"/>
 
         </LinearLayout>
 
