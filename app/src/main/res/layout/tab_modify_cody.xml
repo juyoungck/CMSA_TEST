@@ -54,6 +54,21 @@
         android:layout_height="2dp"
         android:background="@color/black" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:text="기본"
+        android:background="#00ff0000"
+        android:gravity="left|center"
+        android:paddingLeft="60dp"
+        android:textSize="28dp"
+        android:textStyle="bold"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f1f3f5" />
+
     <ListView
         android:id="@+id/list_item"
         android:layout_width="match_parent"
