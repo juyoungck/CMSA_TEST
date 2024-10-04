@@ -1,5 +1,7 @@
 package com.example.closetmanagementservicesapp;
 
+import static android.view.View.GONE;
+
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -49,6 +51,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageLoader_Closet_Modify imageLoader_modify;
     private CameraUtil_Closet_Modify cameraUtil_modify;
     private static final int CAMERA_REQUEST_CODE = 1;
+    private boolean justCancle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,9 @@ public class DetailActivity extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         weatherSelect(); // 태그(계절) 함수 호출
+
+        Button detail_Cancle = (Button) findViewById(R.id.detail_Cancle);
+        detail_Cancle.setVisibility(GONE);
 
         ImageButton detail_c_img = (ImageButton) findViewById(R.id.detail_c_img);
         Spinner detail_c_loc = (Spinner) findViewById(R.id.detail_c_loc);
@@ -76,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         CheckBox weatherSelectcommunal= findViewById(R.id.weatherSelect_communal);
         EditText detail_c_memo = (EditText) findViewById(R.id.detail_c_memo);
         EditText detail_c_date = (EditText) findViewById(R.id.detail_c_date);
-        Button detailModifyButton = findViewById(R.id.detail_Modify);
+        CheckBox detailModifyButton = (CheckBox) findViewById(R.id.detail_Modify);
         Button deleteButton = findViewById(R.id.detail_delete);
 
         detail_c_img.setOnClickListener(v -> showImageOptionsDialog());
@@ -126,10 +132,16 @@ public class DetailActivity extends AppCompatActivity {
         cameraUtil_modify = new CameraUtil_Closet_Modify(this, detail_c_img, c_id); //화면, 이미지뷰
         imageLoader_modify = new ImageLoader_Closet_Modify(this, detail_c_img, c_id);
 
-        detailModifyButton.setOnClickListener(new View.OnClickListener() {
+        detailModifyButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!isModified) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (justCancle) {
+
+                    return;
+                }
+
+                if (isChecked) {
+                    detail_Cancle.setVisibility(View.VISIBLE);
                     detailModifyButton.setText("저장");
                     isModified = true;
                     detail_c_img.setClickable(true);
@@ -149,6 +161,18 @@ public class DetailActivity extends AppCompatActivity {
                     weatherSelectwinter.setEnabled(true);
                     weatherSelectcommunal.setEnabled(true);
                     detail_c_memo.setEnabled(true);
+
+                    detail_Cancle.setOnClickListener(v -> {
+                        justCancle = true; // 플래그 설정
+                        detailModifyButton.setChecked(false);   // 체크 해제 (리스너 호출됨)
+                        detail_Cancle.setVisibility(View.GONE);
+                        // 상태를 원래대로 되돌림
+                        detailModifyButton.setText("수정");
+                        detailModifyButton.setBackgroundColor(Color.parseColor("#e9ecef"));
+                        // 필요한 다른 UI 요소들도 원래 상태로 되돌림
+                        justCancle = false; // 플래그 해제
+                    });
+
                 } else {
                     if (detail_c_name.equals("")) {
                         Toast.makeText(getApplicationContext(), "옷 이름이 등록되지 않았습니다.", Toast.LENGTH_SHORT).show();
