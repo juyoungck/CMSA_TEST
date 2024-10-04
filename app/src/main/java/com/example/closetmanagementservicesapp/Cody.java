@@ -229,6 +229,13 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                 TabModifyCody tabModifyCody = new TabModifyCody(Cody.this);
 
                 tabModifyCody.modifyButton(modifyView);
+
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        recreate();  // 액티비티 재생성
+                    }
+                });
             }
         });
 
