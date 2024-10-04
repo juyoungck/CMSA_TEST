@@ -93,8 +93,6 @@ public class CodyAdd extends AppCompatActivity {
 
         ImageButton thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
 
-        CheckBox default_img = (CheckBox) findViewById(R.id.default_img);
-
         thumb.setOnClickListener(v -> showImageOptionsDialog());
 
         detailCodIndices = new ImageButton[]{
@@ -242,33 +240,6 @@ public class CodyAdd extends AppCompatActivity {
             boolean hasImage = drawable instanceof BitmapDrawable && ((BitmapDrawable) drawable).getBitmap() != null;
         }
 
-        default_img.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ImageButton add_cod_thumb = (ImageButton) findViewById(R.id.add_cod_thumb);
-                if(isChecked) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CodyAdd.this);
-                    builder.setTitle("기본 이미지 설정")
-                            .setMessage("정말 기본 이미지로 설정하시겠습니까?")
-                            .setCancelable(false)
-                            .setPositiveButton("확인", (dialog, which) -> {
-                                add_cod_thumb.setImageResource(R.drawable.image3);
-                                thumbFromCamera = false;
-                            })
-                            .setNegativeButton("취소", (dialog, which) -> {
-                                default_img.setChecked(!isChecked);
-                                dialog.dismiss();
-                            });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-                if(!isChecked) {
-                    add_cod_thumb.setImageResource(R.drawable.baseline_add_box_24);
-                    thumbFromCamera = false;
-                }
-            }
-        });
 
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack_codyadd);
         btnBack.setOnClickListener(new View.OnClickListener() {
