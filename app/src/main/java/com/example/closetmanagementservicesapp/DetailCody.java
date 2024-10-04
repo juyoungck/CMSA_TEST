@@ -1,5 +1,6 @@
 package com.example.closetmanagementservicesapp;
 
+import static android.view.View.GONE;
 import static androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior.getTag;
 
 import android.app.Dialog;
@@ -66,6 +67,7 @@ public class DetailCody extends AppCompatActivity {
     private int tagRow = 0;
     private GridLayout gridLayout;
 
+    private boolean justCancle = false;
     private boolean isModified = false;
 
     @Override
@@ -78,6 +80,9 @@ public class DetailCody extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         weatherSelect();
+
+        Button detail_Cancle = (Button) findViewById(R.id.detail_Cancle);
+        detail_Cancle.setVisibility(GONE);
 
         // 수정 체크박스 초기화
         CheckBox detail_Modify = (CheckBox) findViewById(R.id.detail_Modify);
@@ -252,12 +257,16 @@ public class DetailCody extends AppCompatActivity {
         detail_Modify.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (justCancle) {
+
+                    return;
+                }
 
                 if (isChecked) {
+                    detail_Cancle.setVisibility(View.VISIBLE);
                     detail_Modify.setText("저장");
                     detail_Modify.setBackgroundColor(Color.parseColor("#ff6e6e"));
                     detail_cod_img.setClickable(true);
-                    isModified = true;
                     detail_cod_loc.setClickable(true);
                     detail_cod_loc.setEnabled(true);
                     detail_cod_name.setClickable(true);
@@ -267,6 +276,18 @@ public class DetailCody extends AppCompatActivity {
                     weatherSelectfall.setEnabled(true);
                     weatherSelectwinter.setEnabled(true);
                     weatherSelectcommunal.setEnabled(true);
+
+                    detail_Cancle.setOnClickListener(v -> {
+                        justCancle = true; // 플래그 설정
+                        detail_Modify.setChecked(false);   // 체크 해제 (리스너 호출됨)
+                        detail_Cancle.setVisibility(View.GONE);
+                        // 상태를 원래대로 되돌림
+                        detail_Modify.setText("수정");
+                        detail_Modify.setBackgroundColor(Color.parseColor("#e9ecef"));
+                        // 필요한 다른 UI 요소들도 원래 상태로 되돌림
+                        justCancle = false; // 플래그 해제
+                    });
+
 
                 } else {
                     if (detail_cod_name.equals("")) {
