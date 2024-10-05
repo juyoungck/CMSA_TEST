@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -49,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onDismiss(DialogInterface dialogInterface) {
                         // TabSort_Closet에서 체크박스 상태 가져와서 저장
                         checkboxStates = tabsort.getCheckboxStates(tabView);
+                        saveCheckboxStates();
                     }
                 });
             }
@@ -375,6 +378,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        loadCheckboxStates();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        // SharedPreferences에서 체크박스 상태 로드
+        loadCheckboxStates();
     }
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
@@ -833,6 +843,28 @@ public class MainActivity extends AppCompatActivity {
             }
             cursor.close();
         }
+    }
+
+    private void loadCheckboxStates() {
+        SharedPreferences sharedPref = getSharedPreferences("CheckboxStates", Context.MODE_PRIVATE);
+        Map<String, ?> allEntries = sharedPref.getAll();
+        checkboxStates.clear();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            int key = Integer.parseInt(entry.getKey());
+            boolean value = (Boolean) entry.getValue();
+            checkboxStates.put(key, value);
+        }
+    }
+
+    private void saveCheckboxStates() {
+        SharedPreferences sharedPref = getSharedPreferences("CheckboxStates", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        for (Map.Entry<Integer, Boolean> entry : checkboxStates.entrySet()) {
+            editor.putBoolean(String.valueOf(entry.getKey()), entry.getValue());
+        }
+
+        editor.apply();
     }
 }
 
