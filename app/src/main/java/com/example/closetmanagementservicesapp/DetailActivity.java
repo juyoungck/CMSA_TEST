@@ -166,10 +166,26 @@ public class DetailActivity extends AppCompatActivity {
                         justCancle = true; // 플래그 설정
                         detailModifyButton.setChecked(false);   // 체크 해제 (리스너 호출됨)
                         detail_Cancle.setVisibility(View.GONE);
-                        // 상태를 원래대로 되돌림
                         detailModifyButton.setText("수정");
                         detailModifyButton.setBackgroundColor(Color.parseColor("#e9ecef"));
-                        // 필요한 다른 UI 요소들도 원래 상태로 되돌림
+
+                        detail_c_img.setClickable(false);
+                        detail_c_loc.setEnabled(false);
+                        detail_c_loc.setClickable(false);
+                        detail_c_name.setEnabled(false);
+                        detail_c_brand.setEnabled(false);
+                        detail_c_type.setEnabled(false);
+                        detail_c_type.setClickable(false);
+                        detail_c_type_add.setEnabled(false);
+                        detail_c_size.setEnabled(false);
+                        detail_c_size.setClickable(false);
+                        detail_c_size_add.setEnabled(false);
+                        weatherSelectspring.setEnabled(false);
+                        weatherSelectsummer.setEnabled(false);
+                        weatherSelectfall.setEnabled(false);
+                        weatherSelectwinter.setEnabled(false);
+                        weatherSelectcommunal.setEnabled(false);
+                        detail_c_memo.setEnabled(false);
                         justCancle = false; // 플래그 해제
                     });
 
