@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private static String search_c_name = null;
 
     private HashMap<Integer, Boolean> checkboxStates = new HashMap<>();
+    private static boolean isAppStarted = false;
 
 
     BottomNavigationView bottomNavigationView;
@@ -93,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!isAppStarted) {
+            clearCheckboxStatesPreferences(); // 앱이 처음 시작되었으므로 정렬 설정 초기화
+            isAppStarted = true; // 앱이 시작되었음을 표시
+        }
+
+        loadCheckboxStates();
 
         // DB OPEN
         dbHelper = MyApplication.getDbHelper();
@@ -378,7 +386,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        loadCheckboxStates();
     }
 
     protected void onResume() {
@@ -514,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
     // MainActivity가 종료 될 때 호출 되는 메서드
     @Override
@@ -843,6 +850,13 @@ public class MainActivity extends AppCompatActivity {
             }
             cursor.close();
         }
+    }
+
+    private void clearCheckboxStatesPreferences() {
+        SharedPreferences sharedPref = getSharedPreferences("CheckboxStates", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.apply();
     }
 
     private void loadCheckboxStates() {
