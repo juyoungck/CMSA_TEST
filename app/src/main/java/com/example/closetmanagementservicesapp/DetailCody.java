@@ -452,8 +452,6 @@ public class DetailCody extends AppCompatActivity {
 
                         List<Integer> tagCounterList = CodyAddTag(tagCounter);
 
-                        SQLiteDatabase db = DBHelper.getInstance(DetailCody.this).getReadableDatabase();
-
                         Cursor cursor = db.query("Main_Closet", null, null, null, null, null, null);
 
                         int initialImgCounter = 8001;
@@ -497,6 +495,10 @@ public class DetailCody extends AppCompatActivity {
                                     }
                                 }
 
+                                int finalI = j;
+
+                                int finalcId = c_id;
+
                                 // Set OnClickListener for imageButton
                                 imageButton.setOnClickListener(v -> {
                                     AlertDialog.Builder Codybuilder = new AlertDialog.Builder(DetailCody.this);
@@ -521,10 +523,10 @@ public class DetailCody extends AppCompatActivity {
                                             });
                                     Codybuilder.show();
                                 });
-                            } while (cursor.moveToNext());
-                            cursor.close();
+                                cursor.moveToNext();
+                            }
                         }
-
+                        cursor.close();
                         ImageButton addClose = addView.findViewById(R.id.addClose);
                         addClose.setOnClickListener(v -> {
                             selectDialog.dismiss();  // 다이얼로그 닫기
