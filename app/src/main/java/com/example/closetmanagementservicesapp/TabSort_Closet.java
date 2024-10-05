@@ -28,10 +28,12 @@ public class TabSort_Closet extends AppCompatActivity {
     private SQLiteDatabase db;
     private ArrayList<Integer> sort_c_id = new ArrayList<>();
     private Context context;
+    private BottomSheetDialog bottomSheetDialog;
     private TabSortCallback callback;
 
-    public TabSort_Closet(Context context, TabSortCallback callback) {
+    public TabSort_Closet(Context context, BottomSheetDialog bottomSheetDialog, TabSortCallback callback) {
         this.context = context;
+        this.bottomSheetDialog = bottomSheetDialog;
         this.callback = callback;
     }
 
@@ -193,6 +195,7 @@ public class TabSort_Closet extends AppCompatActivity {
                 if (callback != null) {
                     callback.onSortResult(sort_c_id, orderBy);
                 }
+                bottomSheetDialog.dismiss();
             }
         });
 

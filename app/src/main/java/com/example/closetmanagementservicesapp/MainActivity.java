@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 // 정렬 기능 호출 (TabSort 클래스)
-                TabSort_Closet tabsort = new TabSort_Closet(getApplicationContext(), new TabSortCallback() {
+                TabSort_Closet tabsort = new TabSort_Closet(getApplicationContext(), bottomSheetDialog, new TabSortCallback() {
                     @Override
                     public void onSortResult(ArrayList<Integer> sort_c_id, String orderBy) {
                         // 데이터 출력을 위한 메서드
