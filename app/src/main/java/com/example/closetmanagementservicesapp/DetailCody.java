@@ -156,8 +156,6 @@ public class DetailCody extends AppCompatActivity {
                     detail_cod_img.setImageResource(R.drawable.baseline_add_box_24);
                 }
 
-
-
             // cod_index1 ~ cod_index8 가져오기
             for (int i = 0; i < bitmaps.length; i++) {
                 String codIndexColumn = "cod_index" + (i + 1);
@@ -281,10 +279,20 @@ public class DetailCody extends AppCompatActivity {
                         justCancle = true; // 플래그 설정
                         detail_Modify.setChecked(false);   // 체크 해제 (리스너 호출됨)
                         detail_Cancle.setVisibility(View.GONE);
-                        // 상태를 원래대로 되돌림
                         detail_Modify.setText("수정");
                         detail_Modify.setBackgroundColor(Color.parseColor("#e9ecef"));
-                        // 필요한 다른 UI 요소들도 원래 상태로 되돌림
+
+                        detail_cod_img.setClickable(false);
+                        detail_cod_loc.setClickable(false);
+                        detail_cod_loc.setEnabled(false);
+                        detail_cod_name.setClickable(false);
+                        detail_cod_name.setEnabled(false);
+                        weatherSelectspring.setEnabled(false);
+                        weatherSelectsummer.setEnabled(false);
+                        weatherSelectfall.setEnabled(false);
+                        weatherSelectwinter.setEnabled(false);
+                        weatherSelectcommunal.setEnabled(false);
+
                         justCancle = false; // 플래그 해제
                     });
 
