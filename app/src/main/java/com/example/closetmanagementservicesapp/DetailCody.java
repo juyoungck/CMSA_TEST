@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -130,6 +131,8 @@ public class DetailCody extends AppCompatActivity {
         detail_cod_name.setText(cod_name);
         detail_cod_date.setText(cod_date);
         cod_tag_reader(cod_tag);
+
+        fillSpinner_cod_location(cod_loc);
 
         cameraUtil_modify = new CameraUtil_Cody_Modify(this, detail_cod_img, cod_id); //화면, 이미지뷰
         imageLoader_modify = new ImageLoader_Cody_Modify(this, detail_cod_img, cod_id);
@@ -421,6 +424,31 @@ public class DetailCody extends AppCompatActivity {
             startActivity(backIntent);
             finish();
         });
+    }
+
+    private void fillSpinner_cod_location(int selected_loc) {
+        Spinner c_loc = findViewById(R.id.detail_cod_loc);
+
+        List<String> locations = new ArrayList<>();
+        cod_loc_value = new ArrayList<>();    // c_loc 값을 저장할 리스트 초기화
+        Cursor cursor = db.rawQuery("SELECT cod_loc, cod_loc_name FROM Coordy_Location ORDER BY cod_loc ASC", null);
+
+        while (cursor.moveToNext()) {
+            locations.add(cursor.getString(cursor.getColumnIndex("cod_loc_name")));
+            cod_loc_value.add(cursor.getInt(cursor.getColumnIndex("cod_loc")));
+        }
+        cursor.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        c_loc.setAdapter(adapter);
+
+        int position = cod_loc_value.indexOf(selected_loc);
+
+        if (position >= 0) {
+            c_loc.setSelection(position);
+        }
+
     }
 
     // 이미지 선택 다이얼로그를 표시하는 메서드

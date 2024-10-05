@@ -91,6 +91,9 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
         gridLayout = findViewById(R.id.gl_cody);
 
+        // 코디 위치 스피너 출력
+        fillSpinner_cod_loc();
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.btnCody);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -117,9 +120,6 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         ItemCodyTag(tagCounter);
 
         displayDataCody();
-
-        // 코디 위치 스피너 출력
-        fillSpinner_cod_loc();
 
         // 하단 등록 버튼 이동
         ImageButton btnAdd = (ImageButton) findViewById(R.id.btnAdd);
@@ -298,7 +298,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                     //날씨 재동기화
                     weatherTextView = findViewById(R.id.weatherDegree);
                     imageViewIcon = findViewById(R.id.btnWeather);
-                    WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
+                    WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, Cody.this);
                     wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
                 }
                 catch (Exception e){
@@ -310,7 +310,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         });
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
-        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, this);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
         // 코디 추천 버튼
         ImageButton cod_rec = (ImageButton) findViewById(R.id.cod_rec);
@@ -600,7 +600,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
     // 코디 위치 스피너 출력
     private void fillSpinner_cod_loc() {
-        Spinner spinner = findViewById(R.id.main_cod_loc);
+        Spinner cod_loc_spinner = findViewById(R.id.main_cod_loc);
 
         List<String> locations = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT cod_loc_name FROM Coordy_Location ORDER BY cod_loc ASC", null);
@@ -612,7 +612,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        cod_loc_spinner.setAdapter(adapter);
     }
 
     private Pair<List<Integer>, List<Integer>> ItemCodyImgBtn(int imgCounter){

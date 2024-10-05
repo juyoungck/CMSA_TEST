@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -52,31 +53,31 @@ import java.util.TimeZone;
 public class MainActivity extends AppCompatActivity {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-
+    private static List<Integer> c_loc_value = new ArrayList<>();
 
     String date = "", time = "";
     String x = "55", y = "127";
 
     TextView weatherTextView,timeNow;
-
     ImageView imageViewIcon;
 
     private GpsHelper gpsHelper;
-
     private ExcelReader excelReader;
 
     private GridLayout gridLayout;
-
     private int imgCounter = 1001;
     private int tagCounter = 2001;
     private int imgRow = 0;
     private int tagRow = 0;
-    static Boolean BasicLocationLoad = true;
-    static Boolean FilterDataLoad = false;
-    static Boolean ClickSearchView = false;
-    static ArrayList<Integer> st_sort_c_id = null;
-    static String orderBy_set = null;
-    static String search_c_name = null;
+
+    private static Boolean BasicLocationLoad = true;
+    private static boolean isSpinnerValueChanged = false;
+    private static int selectedLocId = 1;
+    private static Boolean FilterDataLoad = false;
+    private static Boolean ClickSearchView = false;
+    private static ArrayList<Integer> st_sort_c_id = null;
+    private static String orderBy_set = null;
+    private static String search_c_name = null;
 
     BottomNavigationView bottomNavigationView;
 
@@ -104,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
         // 기본 옷장, 코디 위치 추가
         basicLocation(BasicLocationLoad);
 
+        // 옷장 위치 스피너 출력
+        fillSpinner_c_loc();
+        Spinner_Selected();
+
         if (ClickSearchView) {
 
         }
@@ -111,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
         if (!FilterDataLoad) {
             displayDataCloset();
         } else if (FilterDataLoad) {
-            filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name);
+            filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name, selectedLocId);
+        }
+
+        if (isSpinnerValueChanged) {
+            FilterDataLoad = true;
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -211,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                         st_sort_c_id = sort_c_id;
                         orderBy_set = orderBy;
                         FilterDataLoad = true;
-                        filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name);
+                        filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name, selectedLocId);
                     }
                 });
 
@@ -340,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                 // 검색어가 제출되면 실행될 코드 (제출 후 엔터 시)
                 search_c_name = query;
                 FilterDataLoad = true;
-                filterDataByQuery(st_sort_c_id, orderBy_set, query);
+                filterDataByQuery(st_sort_c_id, orderBy_set, query, selectedLocId);
                 return false;
             }
 
@@ -350,13 +359,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("SearchView", newText);
                 search_c_name = newText;
                 FilterDataLoad = true;
-                filterDataByQuery(st_sort_c_id, orderBy_set, newText);
+                filterDataByQuery(st_sort_c_id, orderBy_set, newText, selectedLocId);
                 return false;
             }
         });
-
-        // 옷장 위치 스피너 출력
-        fillSpinner_c_loc();
     }
 
     // 임의 데이터 출력, 추후 출력 코드 작성 시 아래와 비슷하게 작성할 예정
@@ -442,19 +448,49 @@ public class MainActivity extends AppCompatActivity {
 
     // 옷장 위치 스피너 출력
     private void fillSpinner_c_loc() {
-        Spinner spinner = findViewById(R.id.main_c_loc);
+        Spinner c_loc_spinner = findViewById(R.id.main_c_loc);
 
         List<String> locations = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT c_loc_name FROM Closet_Location ORDER BY c_loc ASC", null);
+        c_loc_value.clear();
+
+        Cursor cursor = db.rawQuery("SELECT c_loc, c_loc_name FROM Closet_Location ORDER BY c_loc ASC", null);
+        int selectedPosition = -1;
 
         while (cursor.moveToNext()) {
             locations.add(cursor.getString(cursor.getColumnIndex("c_loc_name")));
+            c_loc_value.add(cursor.getInt(cursor.getColumnIndex("c_loc")));
+
+            if (cursor.getInt((cursor.getColumnIndex("c_loc"))) == selectedLocId) {
+                selectedPosition = c_loc_value.size() - 1;
+            }
         }
         cursor.close();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        c_loc_spinner.setAdapter(adapter);
+
+        if (selectedPosition != -1) {
+            c_loc_spinner.setSelection(selectedPosition);
+        }
+    }
+
+    private void Spinner_Selected() {
+        Spinner c_loc_spinner = findViewById(R.id.main_c_loc);
+
+        c_loc_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                selectedLocId = c_loc_value.get(position);
+                isSpinnerValueChanged = true;
+                filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name, selectedLocId);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     
 
@@ -574,16 +610,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 쿼리로 데이터를 필터링하는 함수
-    private void filterDataByQuery(ArrayList<Integer> sort_c_id, String orderBy, String search_c_name) {
+    private void filterDataByQuery(ArrayList<Integer> sort_c_id, String orderBy, String search_c_name, int selectedLocId) {
         // 검색어가 없으면 전체 데이터를 다시 불러옴
         String selection = null;
         String[] selectionArgs = null;
         StringBuilder c_id_builder = new StringBuilder();
 
+        if (selectedLocId > 1) {
+            c_id_builder.append("c_loc = ?");  // c_loc 값 필터링
+            if ((search_c_name != null && !search_c_name.isEmpty()) || (sort_c_id != null && !sort_c_id.isEmpty())) {
+                c_id_builder.append(" AND ");
+            }
+        }
 
         if (search_c_name != null && !search_c_name.isEmpty()) {
             if (sort_c_id != null && !sort_c_id.isEmpty()) {
-                selectionArgs = new String[sort_c_id.size() + 1];
+                selectionArgs = new String[sort_c_id.size() + 2];
 
                 c_id_builder.append("c_id IN (");
                 for (int i = 0; i < sort_c_id.size(); i++) {
@@ -594,17 +636,31 @@ public class MainActivity extends AppCompatActivity {
                 }
                 c_id_builder.append(") AND c_name LIKE ?");
 
-                for (int i = 0; i < sort_c_id.size(); i++) {
-                    selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+                if (selectedLocId > 1) {
+                    selectionArgs[0] = String.valueOf(selectedLocId);
+                    for (int i = 0; i < sort_c_id.size(); i++) {
+                        selectionArgs[i + 1] = String.valueOf(sort_c_id.get(i));
+                    }
+                    selectionArgs[sort_c_id.size() + 1] = "%" + search_c_name + "%";
+                } else {
+                    for (int i = 0; i < sort_c_id.size(); i++) {
+                        selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+                    }
+
+                    selectionArgs[sort_c_id.size()] = "%" + search_c_name + "%";
                 }
                 selection = c_id_builder.toString();
-                selectionArgs[sort_c_id.size()] = "%" + search_c_name + "%";
             } else {
                 selection = "c_name LIKE ?";
-                selectionArgs = new String[]{"%" + search_c_name + "%"};
+                if (selectedLocId > 1) {
+                    selection = "c_loc = ? AND " + selection;
+                    selectionArgs = new String[]{String.valueOf(selectedLocId), "%" + search_c_name + "%"};
+                } else {
+                    selectionArgs = new String[]{"%" + search_c_name + "%"};
+                }
             }
         } else if (sort_c_id != null && !sort_c_id.isEmpty()) {
-            selectionArgs = new String[sort_c_id.size()];
+            selectionArgs = new String[sort_c_id.size() + (selectedLocId > 1 ? 1 : 0)];
 
             c_id_builder.append("c_id IN (");
             for (int i = 0; i < sort_c_id.size(); i++) {
@@ -616,11 +672,24 @@ public class MainActivity extends AppCompatActivity {
             c_id_builder.append(")");
 
             selection = c_id_builder.toString();
-            for (int i = 0; i < sort_c_id.size(); i++) {
-                selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+
+            if (selectedLocId > 1) {
+                selectionArgs[0] = String.valueOf(selectedLocId);
+                for (int i = 0; i < sort_c_id.size(); i++) {
+                    selectionArgs[i + 1] = String.valueOf(sort_c_id.get(i));
+                }
+            } else {
+                for (int i = 0; i < sort_c_id.size(); i++) {
+                    selectionArgs[i] = String.valueOf(sort_c_id.get(i));
+                }
             }
+        } else if (selectedLocId > 1) {
+            selection = "c_loc = ?";
+            selectionArgs = new String[]{String.valueOf(selectedLocId)};
         }
 
+        Log.d("filterdata", String.valueOf(selection));
+        Log.d("filterdata", Arrays.toString(selectionArgs));
         // Main_Closet 테이블에서 필터링된 데이터를 가져옴
         Cursor cursor = db.query("Main_Closet", null, selection, selectionArgs, null, null, orderBy);
 

@@ -210,8 +210,6 @@ public class CodyAdd extends AppCompatActivity {
                     cursor.close();
                 }
 
-                fillSpinner_cod_location();
-
                 ImageButton addClose = addView.findViewById(R.id.addClose);
                 addClose.setOnClickListener(new View.OnClickListener() {
                     @Override
