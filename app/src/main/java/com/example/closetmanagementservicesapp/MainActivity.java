@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<Integer> st_sort_c_id = null;
     private static String orderBy_set = null;
     private static String search_c_name = null;
+
+    private HashMap<Integer, Boolean> checkboxStates = new HashMap<>();
+
 
     BottomNavigationView bottomNavigationView;
 
@@ -222,10 +226,18 @@ public class MainActivity extends AppCompatActivity {
                         FilterDataLoad = true;
                         filterDataByQuery(st_sort_c_id, orderBy_set, search_c_name, selectedLocId);
                     }
-                });
+                }, checkboxStates);
 
                 // 정렬 확인 버튼
                 tabsort.sortApply(tabView);
+
+                bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        // TabSort_Closet에서 체크박스 상태 가져와서 저장
+                        checkboxStates = tabsort.getCheckboxStates(tabView);
+                    }
+                });
             }
         });
 
