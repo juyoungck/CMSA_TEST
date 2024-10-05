@@ -272,34 +272,46 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         ShowLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                double[] location = gpsHelper.getCurrentLocation();
-                double latitude = location[0];
-                double longitude = location[1];
+                try {
+                    double[] location = gpsHelper.getCurrentLocation();
+                    double latitude = location[0];
+                    double longitude = location[1];
 
-                String address = gpsHelper.getCurrentAddress(latitude, longitude);
-                textview_address.setText("수정구 복정동");//textview_address.setText(address);
+                    String address = gpsHelper.getCurrentAddress(latitude, longitude);
 
-                String[] local = address.split(" ");
-                String localName = local[3];
-                localName ="복정동"; //임시값
-                String[] gridCoordinates = excelReader.readExcel(localName);
-                String x = gridCoordinates[0];
-                String y = gridCoordinates[1];
 
-                Toast.makeText(Cody.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
-                System.out.println("격자값 x: " + x + ", y: " + y);
-                //날씨 재동기화
-                weatherTextView = findViewById(R.id.weatherDegree);
-                imageViewIcon = findViewById(R.id.btnWeather);
-                WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, Cody.this);
-                wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+                    String[] local = address.split(" ");
+                    if (local[4].indexOf("로")!= -1) {
+                        local[4] = local[4].replace("로","");
+                    }
+                    String localName = local[4];
+                    textview_address.setText(local[3]+" "+local[4]+"동");
+                    String[] gridCoordinates = excelReader.readExcel(localName);
+                    String x = gridCoordinates[0];
+                    String y = gridCoordinates[1];
+                    if (x=="0"&&y=="0"){
+                        Toast.makeText(Cody.this, "등록된 위치가 없어 위치와 함께 문의 바랍니다", Toast.LENGTH_LONG).show();
+                        x = "55";
+                        y = "127";
+                    }
+                    System.out.println("격자값 x: " + x + ", y: " + y);
+                    //날씨 재동기화
+                    weatherTextView = findViewById(R.id.weatherDegree);
+                    imageViewIcon = findViewById(R.id.btnWeather);
+                    WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
+                    wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+                }
+                catch (Exception e){
+                    Toast.makeText(Cody.this, "오류가 발생했습니다.", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();  // 오류 로그 출력
+                }
+
             }
         });
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
-        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, this);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
-
         // 코디 추천 버튼
         ImageButton cod_rec = (ImageButton) findViewById(R.id.cod_rec);
         cod_rec.setOnClickListener(new View.OnClickListener() {
