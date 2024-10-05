@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -19,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,13 +30,15 @@ public class TabSort_Closet extends AppCompatActivity {
     private SQLiteDatabase db;
     private ArrayList<Integer> sort_c_id = new ArrayList<>();
     private Context context;
-    private BottomSheetDialog bottomSheetDialog;
     private TabSortCallback callback;
+    private BottomSheetDialog bottomSheetDialog;
+    private HashMap<Integer, Boolean> checkboxStates;
 
-    public TabSort_Closet(Context context, BottomSheetDialog bottomSheetDialog, TabSortCallback callback) {
+    public TabSort_Closet(Context context, BottomSheetDialog bottomSheetDialog, TabSortCallback callback, HashMap<Integer, Boolean> checkboxStates) {
         this.context = context;
-        this.bottomSheetDialog = bottomSheetDialog;
         this.callback = callback;
+        this.bottomSheetDialog = bottomSheetDialog;
+        this.checkboxStates = checkboxStates;
     }
 
     public void sortApply(View view) {
@@ -42,8 +46,10 @@ public class TabSort_Closet extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         clothesSelect(view);
+        initializeCheckBoxes(view);
         weatherSelect(view);
         weatherButtonBase(view);
+
 
         Button tag_refresh = (Button) view.findViewById(R.id.tag_refresh);
 
@@ -208,6 +214,44 @@ public class TabSort_Closet extends AppCompatActivity {
                 sortSelect_asc.setChecked(false);
             }
         });
+    }
+
+    private void initializeCheckBoxes(View rootView) {
+        List<CheckBox> checkBoxList = new ArrayList<>();
+        findAllCheckBoxes(rootView, checkBoxList);
+
+        for (CheckBox checkBox : checkBoxList) {
+            int id = checkBox.getId();
+            if (checkboxStates.containsKey(id)) {
+                checkBox.setChecked(checkboxStates.get(id));
+            }
+        }
+    }
+
+    public HashMap<Integer, Boolean> getCheckboxStates(View rootView) {
+        List<CheckBox> checkBoxList = new ArrayList<>();
+        findAllCheckBoxes(rootView, checkBoxList);
+
+        HashMap<Integer, Boolean> currentStates = new HashMap<>();
+
+        for (CheckBox checkBox : checkBoxList) {
+            int id = checkBox.getId();
+            currentStates.put(id, checkBox.isChecked());
+        }
+
+        return currentStates;
+    }
+
+    private void findAllCheckBoxes(View view, List<CheckBox> checkBoxList) {
+        if (view instanceof CheckBox) {
+            checkBoxList.add((CheckBox) view);
+        } else if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                findAllCheckBoxes(child, checkBoxList);
+            }
+        }
     }
 
     // 옷 선택
