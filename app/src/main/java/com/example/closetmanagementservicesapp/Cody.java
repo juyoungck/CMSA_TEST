@@ -720,7 +720,6 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
         return tagCounters;
     }
-
     private ArrayList<String> getTagArgs() {
         ArrayList<String> tagList = new ArrayList<>();
 

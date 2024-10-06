@@ -47,7 +47,7 @@ public class CameraUtil_Cody extends AppCompatActivity{
             Bitmap bitmap = (Bitmap) data.getParcelableExtra("data");
 
             if (bitmap != null) {
-                Bitmap resizedBitmap = resizeBitmap(bitmap, 450, 800);
+                Bitmap resizedBitmap = resizeBitmap(bitmap, 600, 600);
                 Cursor cursor = db.rawQuery("SELECT MAX(cod_id) FROM Coordy", null);
                 int cId = 0;
 
