@@ -36,12 +36,13 @@
 
                         <ImageButton
                             android:id="@+id/btnWeather"
-                            android:layout_width="64dp"
-                            android:layout_height="72dp"
-                            android:layout_marginLeft="13dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:layout_marginLeft="15dp"
                             android:background="#00ff0000"
-                            android:padding="0dp"
-                            android:scaleType="centerCrop"
+                            android:paddingBottom="15dp"
+                            android:paddingLeft="15dp"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/loading" />
                     </LinearLayout>
                     <LinearLayout
@@ -57,20 +58,20 @@
                                 android:id="@+id/weatherDegree"
                                 android:layout_width="70dp"
                                 android:layout_height="match_parent"
-                                android:text="로딩중"
-                                android:textSize="40dp" />
+                                android:text="00°"
+                                android:textSize="34dp" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/weatherTime"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1">
+
                             <TextView
                                 android:id="@+id/timeNow"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="오전 10:00"
-                                android:layout_marginTop="3dp"/>
+                                android:text="   로딩중" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -80,16 +81,17 @@
                     android:layout_weight="1"
                     android:layout_marginLeft="13dp"
                     android:layout_marginRight="32dp">
+
                     <Button
                         android:id="@+id/refresh"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
+                        android:background="#00ff0000"
                         android:drawableLeft="@drawable/location"
                         android:drawablePadding="-7dp"
                         android:text="주소 출력"
-                        android:textSize="14dp"
-                        android:background="#00ff0000"/>
+                        android:textSize="14dp" />
                     <ImageButton
                         android:id="@+id/btnLocation"
                         android:layout_width="0dp"
