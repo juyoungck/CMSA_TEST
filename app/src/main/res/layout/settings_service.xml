@@ -53,7 +53,7 @@
                 android:textColor="@color/black"
                 android:textSize="17dp"
                 android:paddingLeft="20dp"
-                android:text="기능 관련:@김주영  " />
+                android:text="옷장 디자인 관련 : ksisori@naver.com" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -62,7 +62,7 @@
                 android:textColor="@color/black"
                 android:textSize="17dp"
                 android:paddingLeft="20dp"
-                android:text="기능 관련: " />
+                android:text="코디 디자인 관련 : sean7890@naver.com" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -71,7 +71,7 @@
                 android:textColor="@color/black"
                 android:textSize="17dp"
                 android:paddingLeft="20dp"
-                android:text="디자인 관련: " />
+                android:text="위치 기능 관련 : dkrufd9@naver.com" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -80,7 +80,16 @@
                 android:textColor="@color/black"
                 android:textSize="17dp"
                 android:paddingLeft="20dp"
-                android:text="디자인 관련: sean7890@naver.com " />
+                android:text="기타 기능 관련 : juyoungck@naver.com" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="#00ff0000"
+                android:gravity="left|center"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:paddingLeft="20dp"
+                android:text="앱 오류 : juyoungck@naver.com" />
 
             <View
                 android:layout_width="match_parent"
