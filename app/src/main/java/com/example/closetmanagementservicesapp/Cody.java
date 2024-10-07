@@ -281,11 +281,16 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
 
                     String[] local = address.split(" ");
+                    String localDong ="";
                     if (local[4].indexOf("로")!= -1) {
                         local[4] = local[4].replace("로","");
+                        localDong =local[4]+"동";
+                    }
+                    else {
+                        localDong =local[4];
                     }
                     String localName = local[4];
-                    textview_address.setText(local[3]+" "+local[4]+"동");
+                    textview_address.setText(local[3]+" "+localDong);
                     String[] gridCoordinates = excelReader.readExcel(localName);
                     String x = gridCoordinates[0];
                     String y = gridCoordinates[1];
@@ -298,7 +303,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                     //날씨 재동기화
                     weatherTextView = findViewById(R.id.weatherDegree);
                     imageViewIcon = findViewById(R.id.btnWeather);
-                    WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, Cody.this);
+                    WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
                     wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
                 }
                 catch (Exception e){
@@ -310,8 +315,9 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         });
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
-        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, this);
+        WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
         wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+
         // 코디 추천 버튼
         ImageButton cod_rec = (ImageButton) findViewById(R.id.cod_rec);
         cod_rec.setOnClickListener(new View.OnClickListener() {

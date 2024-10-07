@@ -333,11 +333,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                     String[] local = address.split(" ");
+                    String localDong ="";
                     if (local[4].indexOf("로")!= -1) {
                         local[4] = local[4].replace("로","");
+                        localDong =local[4]+"동";
+                    }
+                    else {
+                        localDong =local[4];
                     }
                     String localName = local[4];
-                    textview_address.setText(local[3]+" "+local[4]+"동");
+                    textview_address.setText(local[3]+" "+localDong);
                     String[] gridCoordinates = excelReader.readExcel(localName);
                     String x = gridCoordinates[0];
                     String y = gridCoordinates[1];
