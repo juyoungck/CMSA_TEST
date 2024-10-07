@@ -15,8 +15,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -644,12 +646,13 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
             innerGridLayout.setRowCount(4);
             innerGridLayout.setColumnCount(2);
 
+
             // 내부 이미지 뷰(2X4)
             for (int row = 0; row < 4; row++) {
                 for(int gridCol = 0; gridCol < 2; gridCol++) {
 
                     ImageView gridImgView = new ImageView(this);
-                    gridImgView.setBackgroundColor(Color.parseColor("#efefef"));
+                    gridImgView.setBackgroundColor(Color.parseColor("#00ff0000"));
                     gridImgView.setId(imgViewCounter);
                     gridImgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -705,7 +708,7 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         for (int col = 0; col < 2; col++) {
             // TextView 생성 및 설정
             TextView clothTag = new TextView(this);
-            clothTag.setBackgroundColor(Color.parseColor("#ffffff"));
+            clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
             clothTag.setGravity(Gravity.CENTER);
             clothTag.setId(tagCounter);
 
