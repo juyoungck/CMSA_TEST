@@ -16,16 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="17dp"
+            android:textSize="25dp"
             android:layout_marginLeft="15dp"
-            android:text="코디 위치 : "
+            android:text="옷장"
             android:textColor="#000000"/>
-        <Spinner
-            android:id="@+id/add_c_loc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbarSize="100dp"
-            android:layout_gravity="center" />
 
         <View
             android:layout_width="0dp"
@@ -35,7 +29,7 @@
             android:id="@+id/addClose"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:padding="50dp"
             android:src="@drawable/xmark"
             android:background="#00ff0000"/>
