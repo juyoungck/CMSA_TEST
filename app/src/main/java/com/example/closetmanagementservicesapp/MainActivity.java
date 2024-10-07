@@ -773,6 +773,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView textView = new TextView(this);
                 textView.setId(tagCounter);
+                textView.setGravity(Gravity.CENTER);
                 textView.setText(c_name);
 
                 // GridLayout에 레이아웃 매개변수 설정
