@@ -31,7 +31,7 @@
                 android:textAlignment="center"
                 android:textSize="30sp"
                 android:layout_width="315dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:text="옷등록"/>
 
         </LinearLayout>
@@ -107,7 +107,7 @@
                 android:id="@+id/c_type_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="0.57"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="20dp"
@@ -124,7 +124,7 @@
                 android:id="@+id/c_size_post_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.9"
                 android:visibility="invisible"
                 android:text=""
                 android:hint="사이즈 입력"/>
@@ -156,6 +156,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:text="봄"
+                android:textSize="14dp"
                 android:textAlignment="center"
                 android:background="#f1f3f5" />
 
@@ -165,6 +166,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:text="여름"
+                android:textSize="14dp"
                 android:textAlignment="center"
                 android:background="#f1f3f5"
                 android:id="@+id/weatherSelect_summer"/>
@@ -173,6 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="가을"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
@@ -183,6 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="겨울"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
@@ -193,6 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="전체"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
