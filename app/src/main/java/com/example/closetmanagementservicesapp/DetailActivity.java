@@ -580,27 +580,27 @@ public class DetailActivity extends AppCompatActivity {
         CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
         CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
         if (weatherSelect_spring.isChecked()) {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_spring.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_summer.isChecked()) {
-            weatherSelect_summer.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_summer.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_fall.isChecked()) {
-            weatherSelect_fall.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_fall.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_winter.isChecked()) {
-            weatherSelect_winter.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_communal.isChecked()) {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_communal.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
