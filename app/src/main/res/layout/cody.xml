@@ -14,20 +14,26 @@
         android:orientation="horizontal">
 
         <View
-            android:layout_width="110dp"
-            android:layout_height="match_parent" />
-        <LinearLayout
-            android:layout_width="190dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="2">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -41,19 +47,21 @@
                             android:layout_marginLeft="15dp"
                             android:background="#00ff0000"
                             android:paddingBottom="15dp"
-                            android:paddingLeft="15dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/loading" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2">
+
                             <TextView
                                 android:id="@+id/weatherDegree"
                                 android:layout_width="70dp"
@@ -61,6 +69,7 @@
                                 android:text="00°"
                                 android:textSize="34dp" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/weatherTime"
                             android:layout_width="match_parent"
@@ -75,28 +84,30 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginRight="32dp">
+                    android:layout_marginRight="0dp" >
 
                     <Button
                         android:id="@+id/refresh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:background="#00ff0000"
-                        android:drawableLeft="@drawable/location"
-                        android:drawablePadding="-7dp"
-                        android:text="주소 출력"
-                        android:textSize="14dp" />
-                    <ImageButton
-                        android:id="@+id/btnLocation"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="#00ff0000"
+                        android:drawableLeft="@drawable/location"
+                        android:drawablePadding="0dp"
+                        android:paddingLeft="0dp"
+                        android:text="주소 출력"
+                        android:textSize="14dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnLocation"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
                         android:padding="5dp"
                         android:background="#00ff0000"
                         android:scaleType="centerCrop"
@@ -104,9 +115,12 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
         <View
-            android:layout_width="61dp"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <ImageButton
             android:id="@+id/btnSettings"
             android:layout_width="50dp"
@@ -180,17 +194,17 @@
         android:layout_weight="10" >
 
         <ScrollView
-            android:id="@+id/sv_main"
+            android:id="@+id/sv_cody"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:fillViewport="true">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingBottom="56dp">
 
             <GridLayout
                 android:id="@+id/gl_cody"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:background="#00ff0000"
-                >
+                tools:background="#00ff0000">
 
             </GridLayout>
         </ScrollView>
@@ -199,12 +213,10 @@
             android:id="@+id/btnAdd"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_gravity="top|center"
-            android:layout_marginTop="610dp"
-            android:paddingBottom="40dp"
-            android:translationZ="500dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="33dp"
             android:background="@drawable/addcircle"
-            android:elevation="-50dp"/>
+            android:elevation="10dp"/>
 
         <ImageButton
             android:id="@+id/cod_rec"
@@ -237,7 +249,9 @@
             app:menu="@menu/main_menu"
             android:background="#fff"
             app:itemIconTint="@drawable/navi_icon_color"
-            app:itemTextColor="@drawable/navi_icon_color" />
+            app:itemTextColor="@drawable/navi_icon_color"
+            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+            app:itemTextAppearanceInactive="@style/BottomNavigationView"/>
 
     </FrameLayout>
 </LinearLayout>
