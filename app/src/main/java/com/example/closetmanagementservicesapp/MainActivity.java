@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -18,11 +20,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
@@ -31,6 +38,7 @@ import android.widget.Button;
 
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View;
@@ -38,7 +46,9 @@ import android.widget.Toast;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.IOException;
 import java.sql.Array;
@@ -137,15 +147,25 @@ public class MainActivity extends AppCompatActivity {
             FilterDataLoad = true;
         }
 
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+
+                if (item.isChecked()) {
+                    return false;
+                }
+
+                item.setCheckable(false);
+                item.setChecked(true);
+
                 if (itemId == R.id.btnCody) {
                     bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
                     startActivity(new Intent(MainActivity.this, Cody.class));
                     overridePendingTransition(0, 0);
+
                     return true;
                 }
 
@@ -172,6 +192,18 @@ public class MainActivity extends AppCompatActivity {
                 Button BtnAddCody = (Button) findViewById(R.id.btnAddCodey);
                 ImageButton AddMenuClose = (ImageButton) findViewById(R.id.addMenuClose);
 
+                Animation fadeIn = new AlphaAnimation(0, 1);
+                fadeIn.setDuration(500);
+                Add_menu.startAnimation(fadeIn);
+
+                ObjectAnimator Animation = ObjectAnimator.ofFloat(AddMenuClose, "rotation", 0f, 45f);
+                Animation.setDuration(300);
+                Animation.start();
+
+                Animation = ObjectAnimator.ofFloat(btnAdd, "rotation", 0f, 45f);
+                Animation.setDuration(300);
+                Animation.start();
+
                 BtnAddClothes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -191,7 +223,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         ViewGroup parentViewGroup = (ViewGroup) Add_menu.getParent();
                         if(parentViewGroup != null) {
+                            Animation fadeIn = new AlphaAnimation(1, 0);
+                            fadeIn.setDuration(500);
+                            Add_menu.startAnimation(fadeIn);
+
                             parentViewGroup.removeView(Add_menu);
+
+                            ObjectAnimator Animation = ObjectAnimator.ofFloat(AddMenuClose, "rotation", 45f, 0f);
+                            Animation.setDuration(300);
+                            Animation.start();
+
+                            Animation = ObjectAnimator.ofFloat(btnAdd, "rotation", 45f, 0f);
+                            Animation.setDuration(300);
+                            Animation.start();
                         }
                     }
                 });
@@ -500,8 +544,8 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_title, locations);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         c_loc_spinner.setAdapter(adapter);
 
         if (selectedPosition != -1) {
@@ -624,6 +668,9 @@ public class MainActivity extends AppCompatActivity {
                 TextView clothTag = new TextView(this);
                 clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
                 clothTag.setGravity(Gravity.CENTER);
+                float dpValue = 16;
+                float fixedTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+                clothTag.setTextSize(TypedValue.COMPLEX_UNIT_PX, fixedTextSize);
                 clothTag.setId(tagCounter);
 
                 GridLayout.LayoutParams paramsTextView = new GridLayout.LayoutParams();
@@ -774,6 +821,9 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = new TextView(this);
                 textView.setId(tagCounter);
                 textView.setGravity(Gravity.CENTER);
+                float dpValue = 16;
+                float fixedTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, fixedTextSize);
                 textView.setText(c_name);
 
                 // GridLayout에 레이아웃 매개변수 설정
