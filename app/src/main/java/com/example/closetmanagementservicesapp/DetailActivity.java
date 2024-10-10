@@ -348,8 +348,8 @@ public class DetailActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_title, locations);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         c_loc.setAdapter(adapter);
 
         int position = c_loc_value.indexOf(selected_loc);
@@ -370,8 +370,8 @@ public class DetailActivity extends AppCompatActivity {
             selected_type = "직접입력";
         }
 
-        ArrayAdapter<CharSequence> detail_c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, android.R.layout.simple_spinner_item);
-        detail_c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> detail_c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, R.layout.spinner_title);
+        detail_c_type_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         detail_c_type_spinner.setAdapter(detail_c_type_adapter);
 
         int position = detail_c_type_adapter.getPosition(selected_type);
@@ -420,8 +420,8 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        ArrayAdapter<CharSequence> detail_c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, android.R.layout.simple_spinner_item);
-        detail_c_size_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> detail_c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, R.layout.spinner_title);
+        detail_c_size_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         detail_c_size_spinner.setAdapter(detail_c_size_adapter);
 
         int position = detail_c_size_adapter.getPosition(selected_size);
@@ -580,9 +580,9 @@ public class DetailActivity extends AppCompatActivity {
         CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
         CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
         if (weatherSelect_spring.isChecked()) {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#808080"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_on);
         } else {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_off);
         }
         if (weatherSelect_summer.isChecked()) {
             weatherSelect_summer.setBackgroundColor(Color.parseColor("#808080"));
@@ -600,9 +600,9 @@ public class DetailActivity extends AppCompatActivity {
             weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_communal.isChecked()) {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#808080"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_on);
         } else {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_off);
         }
     }
 
