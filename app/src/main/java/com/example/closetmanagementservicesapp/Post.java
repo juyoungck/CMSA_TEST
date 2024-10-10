@@ -72,8 +72,8 @@ public class Post extends AppCompatActivity {
         EditText c_brand_post = (EditText) findViewById(R.id.c_brand_post); // 옷 브랜드 호출
 
         Spinner c_type_spinner = (Spinner) findViewById(R.id.c_type_post);  // 옷 종류 호출
-        ArrayAdapter<CharSequence> c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, android.R.layout.simple_spinner_item);
-        c_type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> c_type_adapter = ArrayAdapter.createFromResource(this, R.array.c_type_array, R.layout.spinner_title);
+        c_type_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         c_type_spinner.setAdapter(c_type_adapter);
         EditText c_type_post_add = (EditText) findViewById(R.id.c_type_post_add);   // 옷 종류(직접입력) 호출
 
@@ -108,8 +108,8 @@ public class Post extends AppCompatActivity {
         });
 
         Spinner c_size_spinner = (Spinner) findViewById(R.id.c_size_post);  // 옷 사이즈 호출
-        ArrayAdapter<CharSequence> c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, android.R.layout.simple_spinner_item);
-        c_size_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> c_size_adapter = ArrayAdapter.createFromResource(this, R.array.c_size_array, R.layout.spinner_title);
+        c_size_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         c_size_spinner.setAdapter(c_size_adapter);
         EditText c_size_post_add = (EditText) findViewById(R.id.c_size_post_add);   // 옷 사이즈((직접입력) 호출
 
@@ -268,8 +268,8 @@ public class Post extends AppCompatActivity {
         }
         cursor.close();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_title, locations);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         c_loc.setAdapter(adapter);
     }
 
@@ -408,9 +408,9 @@ public class Post extends AppCompatActivity {
         CheckBox weatherSelect_winter = (CheckBox) findViewById(R.id.weatherSelect_winter);
         CheckBox weatherSelect_communal = (CheckBox) findViewById(R.id.weatherSelect_communal);
         if (weatherSelect_spring.isChecked()) {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#808080"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_on);
         } else {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_off);
         }
         if (weatherSelect_summer.isChecked()) {
             weatherSelect_summer.setBackgroundColor(Color.parseColor("#808080"));
@@ -428,9 +428,9 @@ public class Post extends AppCompatActivity {
             weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_communal.isChecked()) {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#808080"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_on);
         } else {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_off);
         }
     }
 
