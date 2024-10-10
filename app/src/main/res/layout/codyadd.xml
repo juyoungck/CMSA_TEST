@@ -29,7 +29,8 @@
             <TextView
                 android:layout_marginTop="-10dp"
                 android:textAlignment="center"
-                android:textSize="30sp"
+                android:textSize="30dp"
+                android:paddingTop="2dp"
                 android:layout_width="315dp"
                 android:layout_height="40dp"
                 android:text="코디등록"/>
@@ -251,7 +252,7 @@
 
             />
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="320dp"
             android:layout_height="30dp"
             android:layout_gravity="center">
 
@@ -262,8 +263,9 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:text="봄"
+                android:textSize="14dp"
                 android:textAlignment="center"
-                android:background="#f1f3f5" />
+                android:background="@drawable/left_rounded_off" />
 
             <CheckBox
                 android:layout_width="match_parent"
@@ -271,38 +273,42 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:text="여름"
+                android:textSize="14dp"
                 android:textAlignment="center"
-                android:background="#f1f3f5"
+                android:background="#e9ecef"
                 android:id="@+id/weatherSelect_summer"/>
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="가을"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
-                android:background="#f1f3f5"
+                android:background="#e9ecef"
                 android:id="@+id/weatherSelect_fall" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="겨울"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
-                android:background="#f1f3f5"
+                android:background="#e9ecef"
                 android:id="@+id/weatherSelect_winter" />
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="전체"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:textAlignment="center"
-                android:background="#f1f3f5"
+                android:background="@drawable/right_rounded_off"
                 android:id="@+id/weatherSelect_communal"/>
         </LinearLayout>
         <Button
@@ -310,6 +316,7 @@
             android:id="@+id/codyadd_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14dp"
             android:text="등록"/>
     </LinearLayout>
 
