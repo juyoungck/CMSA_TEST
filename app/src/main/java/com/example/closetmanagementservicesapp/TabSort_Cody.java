@@ -142,10 +142,10 @@ public class TabSort_Cody extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(sortSelect_name.isChecked()) {
-                    sortSelect_name.setBackgroundColor(Color.parseColor("#ced4da"));
+                    sortSelect_name.setBackgroundResource(R.drawable.left_rounded_on);
                     sortSelect_name.setText("날짜순정렬");
                 } else {
-                    sortSelect_name.setBackgroundColor(Color.parseColor("#e9ecef"));
+                    sortSelect_name.setBackgroundResource(R.drawable.left_rounded_off);
                     sortSelect_name.setText("이름순정렬");
                 }
             }
@@ -154,10 +154,10 @@ public class TabSort_Cody extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(sortSelect_asc.isChecked()) {
-                    sortSelect_asc.setBackgroundColor(Color.parseColor("#ced4da"));
+                    sortSelect_asc.setBackgroundResource(R.drawable.right_rounded_on);
                     sortSelect_asc.setText("↓ 내림차순");
                 } else {
-                    sortSelect_asc.setBackgroundColor(Color.parseColor("#e9ecef"));
+                    sortSelect_asc.setBackgroundResource(R.drawable.right_rounded_off);
                     sortSelect_asc.setText("↑ 오름차순");
                 }
             }
@@ -172,29 +172,29 @@ public class TabSort_Cody extends AppCompatActivity {
         CheckBox weatherSelect_winter = (CheckBox) view.findViewById(R.id.weatherSelect_winter);
         CheckBox weatherSelect_communal = (CheckBox) view.findViewById(R.id.weatherSelect_communal);
         if (weatherSelect_spring.isChecked()) {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_on);
         } else {
-            weatherSelect_spring.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_spring.setBackgroundResource(R.drawable.left_rounded_off);
         }
         if (weatherSelect_summer.isChecked()) {
-            weatherSelect_summer.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_summer.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_summer.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_fall.isChecked()) {
-            weatherSelect_fall.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_fall.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_fall.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_winter.isChecked()) {
-            weatherSelect_winter.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_winter.setBackgroundColor(Color.parseColor("#808080"));
         } else {
             weatherSelect_winter.setBackgroundColor(Color.parseColor("#e9ecef"));
         }
         if (weatherSelect_communal.isChecked()) {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#a374db"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_on);
         } else {
-            weatherSelect_communal.setBackgroundColor(Color.parseColor("#e9ecef"));
+            weatherSelect_communal.setBackgroundResource(R.drawable.right_rounded_off);
         }
     }
 }
