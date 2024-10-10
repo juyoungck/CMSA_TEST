@@ -40,6 +40,7 @@
             android:layout_weight="1"
             android:layout_gravity="right"
             android:src="@drawable/xmark"
+            android:paddingRight="-10dp"
             android:background="#00ff0000"/>
     </LinearLayout>
 
@@ -57,6 +58,7 @@
             android:layout_weight="1.5"
             android:text="모두선택"
             android:checked="true"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_all" />
     </LinearLayout>
 
@@ -71,6 +73,7 @@
             android:checked="true"
             android:layout_weight="1"
             android:layout_marginLeft="17dp"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_all_clothes"/>
 
         <View
@@ -85,6 +88,7 @@
             android:text="상의"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_top"/>
 
         <CheckBox
@@ -93,6 +97,7 @@
             android:text="하의"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_bottom"/>
 
         <CheckBox
@@ -101,6 +106,7 @@
             android:text="아우터"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_outer"/>
     </LinearLayout>
 
@@ -125,6 +131,7 @@
             android:text="신발"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_shoes"/>
 
         <CheckBox
@@ -133,6 +140,7 @@
             android:text="속옷"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_under"/>
 
         <CheckBox
@@ -141,6 +149,7 @@
             android:text="양말"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_socks"/>
 
 
@@ -157,6 +166,7 @@
             android:layout_marginLeft="17dp"
             android:layout_weight="1"
             android:text="악세사리"
+            android:textSize="14dp"
             android:checked="true"/>
 
         <View
@@ -172,6 +182,7 @@
             android:text="모자"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_hat"/>
 
         <CheckBox
@@ -180,6 +191,7 @@
             android:text="악세사리"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_access"/>
 
         <CheckBox
@@ -188,6 +200,7 @@
             android:text="가방"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_bag"/>
     </LinearLayout>
 
@@ -202,6 +215,7 @@
             android:checked="true"
             android:layout_weight="1"
             android:layout_marginLeft="17dp"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_all_etc"/>
         <View
             android:layout_width="1dp"
@@ -215,6 +229,7 @@
             android:text="세트"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_set"/>
 
         <CheckBox
@@ -223,6 +238,7 @@
             android:text="기타"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_etc"/>
 
         <CheckBox
@@ -231,6 +247,7 @@
             android:text="직접입력"
             android:checked="true"
             android:layout_weight="1"
+            android:textSize="14dp"
             android:id="@+id/clothesSelect_input"/>
     </LinearLayout>
 
@@ -247,6 +264,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="태그"
+            android:textSize="14dp"
             android:textAlignment="center"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="35dp" />
@@ -266,7 +284,8 @@
             android:text="봄"
             android:checked="true"
             android:textAlignment="center"
-            android:background="#f1f3f5" />
+            android:textSize="14dp"
+            android:background="@drawable/left_rounded_off" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -277,6 +296,7 @@
             android:checked="true"
             android:textAlignment="center"
             android:background="#f1f3f5"
+            android:textSize="14dp"
             android:id="@+id/weatherSelect_summer"/>
 
         <CheckBox
@@ -288,6 +308,7 @@
             android:button="@null"
             android:textAlignment="center"
             android:background="#f1f3f5"
+            android:textSize="14dp"
             android:id="@+id/weatherSelect_fall" />
 
         <CheckBox
@@ -299,6 +320,7 @@
             android:button="@null"
             android:textAlignment="center"
             android:background="#f1f3f5"
+            android:textSize="14dp"
             android:id="@+id/weatherSelect_winter" />
 
         <CheckBox
@@ -309,7 +331,8 @@
             android:layout_weight="1"
             android:button="@null"
             android:textAlignment="center"
-            android:background="#f1f3f5"
+            android:textSize="14dp"
+            android:background="@drawable/right_rounded_off"
             android:id="@+id/weatherSelect_communal"/>
     </LinearLayout>
 
@@ -328,7 +351,8 @@
             android:layout_weight="1"
             android:button="@null"
             android:textAlignment="center"
-            android:background="#e9ecef"
+            android:textSize="14dp"
+            android:background="@drawable/left_rounded_off"
             android:id="@+id/sortSelect_name"/>
 
         <CheckBox
@@ -338,7 +362,8 @@
             android:layout_weight="1"
             android:button="@null"
             android:textAlignment="center"
-            android:background="#e9ecef"
+            android:textSize="14dp"
+            android:background="@drawable/right_rounded_off"
             android:id="@+id/sortSelect_asc"/>
     </LinearLayout>
 
@@ -359,6 +384,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
+            android:textSize="14dp"
             android:text="적용" />
         <View
             android:layout_width="0dp"
