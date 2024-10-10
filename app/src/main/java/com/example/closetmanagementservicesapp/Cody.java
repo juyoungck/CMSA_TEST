@@ -3,6 +3,7 @@ package com.example.closetmanagementservicesapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -21,11 +22,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -45,6 +49,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,11 +103,20 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.btnCody);
+
+        bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
+
+                if (item.isChecked()) {
+                    return false;
+                }
+
+                item.setCheckable(false);
+                item.setChecked(true);
+
                 if (itemId == R.id.btnCloset) {
                     bottomNavigationView.setItemBackgroundResource(android.R.color.transparent);
                     startActivity(new Intent(Cody.this, MainActivity.class));
@@ -115,13 +129,14 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
             }
         });
 
+
         Pair<List<Integer>, List<Integer>> counters = ItemCodyImgBtn(imgCounter);
         imgCounterList = counters.first;
         imgViewCounterList = counters.second;
-
         ItemCodyTag(tagCounter);
 
         displayDataCody();
+
 
         // 하단 등록 버튼 이동
         ImageButton btnAdd = (ImageButton) findViewById(R.id.btnAdd);
@@ -142,6 +157,18 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                 Button BtnAddCody = (Button) findViewById(R.id.btnAddCodey);
                 ImageButton AddMenuClose = (ImageButton) findViewById(R.id.addMenuClose);
 
+                Animation fadeIn = new AlphaAnimation(0, 1);
+                fadeIn.setDuration(500);
+                Add_menu.startAnimation(fadeIn);
+
+                ObjectAnimator Animation = ObjectAnimator.ofFloat(AddMenuClose, "rotation", 0f, 45f);
+                Animation.setDuration(300);
+                Animation.start();
+
+                Animation = ObjectAnimator.ofFloat(btnAdd, "rotation", 0f, 45f);
+                Animation.setDuration(300);
+                Animation.start();
+
                 BtnAddClothes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,7 +188,19 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                     public void onClick(View view) {
                         ViewGroup parentViewGroup = (ViewGroup) Add_menu.getParent();
                         if(parentViewGroup != null) {
+                            Animation fadeIn = new AlphaAnimation(1, 0);
+                            fadeIn.setDuration(500);
+                            Add_menu.startAnimation(fadeIn);
+
                             parentViewGroup.removeView(Add_menu);
+
+                            ObjectAnimator Animation = ObjectAnimator.ofFloat(AddMenuClose, "rotation", 45f, 0f);
+                            Animation.setDuration(300);
+                            Animation.start();
+
+                            Animation = ObjectAnimator.ofFloat(btnAdd, "rotation", 45f, 0f);
+                            Animation.setDuration(300);
+                            Animation.start();
                         }
                     }
                 });
@@ -618,8 +657,8 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
         }
         cursor.close();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_title, locations);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         cod_loc_spinner.setAdapter(adapter);
     }
 
@@ -710,6 +749,9 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
             TextView clothTag = new TextView(this);
             clothTag.setBackgroundColor(Color.parseColor("#00ff0000"));
             clothTag.setGravity(Gravity.CENTER);
+            float dpValue = 16;
+            float fixedTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
+            clothTag.setTextSize(TypedValue.COMPLEX_UNIT_PX, fixedTextSize);
             clothTag.setId(tagCounter);
 
 
