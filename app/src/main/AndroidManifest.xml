@@ -38,7 +38,9 @@
             android:exported="true"
             android:launchMode="singleTop"/>
         <activity android:name=".Settings"/>
-        <activity android:name=".Cody" />
+        <activity
+            android:name=".Cody"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".SettingsNotice" />
         <activity android:name=".SettingsService" />
         <activity android:name=".DetailActivity"/>
