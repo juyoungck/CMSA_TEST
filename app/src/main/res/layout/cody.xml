@@ -80,6 +80,7 @@
                                 android:id="@+id/timeNow"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:textSize="14dp"
                                 android:text="   로딩중" />
                         </LinearLayout>
                     </LinearLayout>
