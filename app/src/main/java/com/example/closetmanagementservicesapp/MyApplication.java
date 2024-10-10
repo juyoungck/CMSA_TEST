@@ -2,11 +2,15 @@ package com.example.closetmanagementservicesapp;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class MyApplication extends Application {
     private static DBHelper dbHelper;
 
     public void onCreate() {
         super.onCreate();
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // DBHelper 생성
         dbHelper = DBHelper.getInstance(this);
