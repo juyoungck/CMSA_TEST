@@ -323,15 +323,27 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
                     String[] local = address.split(" ");
                     String localDong ="";
-                    if (local[4].indexOf("로")!= -1) {
-                        local[4] = local[4].replace("로","");
-                        localDong =local[4]+"동";
+                    int a = 4;
+                    int b = 3;
+                    String localTwo;
+                    if (local[1].indexOf("서울")!= -1) {
+                        a = 3;
+                        b = 2;
                     }
                     else {
-                        localDong =local[4];
+                        a = 4;
+                        b = 3;
                     }
-                    String localName = local[4];
-                    textview_address.setText(local[3]+" "+localDong);
+                    /*if (local[a].indexOf("로")!= -1) {
+                        local[a] = local[a].replace("로","");
+                        localDong =local[a]+"동";
+                    }
+                    else {
+                        localDong =local[a];
+                    }*/
+                    localTwo = local[a].substring(0, 2);
+                    String localName = localTwo;
+                    textview_address.setText(local[b]+" "+local[a]);
                     String[] gridCoordinates = excelReader.readExcel(localName);
                     String x = gridCoordinates[0];
                     String y = gridCoordinates[1];
@@ -346,6 +358,12 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
                     imageViewIcon = findViewById(R.id.btnWeather);
                     WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
                     wd.fetchWeather(getDate, getTime, x, y);  // 비동기적으로 날씨 데이터를 가져옴
+
+                    //스테틱으로 값 유지
+                    GPSImpo.printingGPS = local[b];
+                    GPSImpo.printingGPS2 = local[a];
+                    GPSImpo.weatherX = x;
+                    GPSImpo.weatherY = y;
                 }
                 catch (Exception e){
                     Toast.makeText(Cody.this, "오류가 발생했습니다.", Toast.LENGTH_LONG).show();
@@ -354,6 +372,11 @@ public class Cody extends AppCompatActivity implements WeatherDataCallback {
 
             }
         });
+        if(GPSImpo.printingGPS != null){
+            textview_address.setText(GPSImpo.printingGPS+" "+GPSImpo.printingGPS2);
+            x = GPSImpo.weatherX;
+            y = GPSImpo.weatherY;
+        }
         weatherTextView = findViewById(R.id.weatherDegree);
         imageViewIcon = findViewById(R.id.btnWeather);
         WeatherData wd = new WeatherData(weatherTextView,imageViewIcon, null);
